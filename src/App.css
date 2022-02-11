@@ -1,5 +1,8 @@
 /** GENERAL CLASSES CSS START
 ********************************/
+.cursor-pointer {
+  cursor: pointer;
+}
 .section-heading {
   max-width: 750px;
   margin: 30px auto;
@@ -276,7 +279,7 @@ header {
   object-fit: cover;
   object-position: center;
 }
-.indexSec1-slider .owl-nav {
+.owl-carousel .owl-nav {
   position: absolute;
   top: 40%;
   left: 0;
@@ -288,7 +291,7 @@ header {
   justify-content: space-between;
   margin: 0 auto;
 }
-.indexSec1-slider .owl-nav button {
+.owl-carousel .owl-nav button {
   width: 50px;
   height: 50px;
   display: flex !important;
@@ -491,7 +494,7 @@ header {
   position: absolute;
   bottom: -35%;
   left: 0;
-  max-width: 200px;
+  max-width: 200px !important;
   width: 100%;
   object-fit: cover;
   object-position: center;
@@ -500,7 +503,7 @@ header {
   position: absolute;
   top: -35%;
   right: 0;
-  max-width: 200px;
+  max-width: 200px !important;
   width: 100%;
   object-fit: cover;
   object-position: center;
@@ -517,8 +520,8 @@ header {
 }
 .testimonial-item .rating span {
   color: #ffdc64;
-  font-size: 16px;
-  margin: 0 -2px;
+  font-size: 18px;
+  margin: 0 2px;
   display: inline-block;
 }
 .testimonial-item .content p {
