@@ -1,7 +1,7 @@
 import React from "react";
-// import OwlCarousel from "react-owl-carousel";
-import Header from "./components/header";
-import Footer from "./components/footer";
+import { BrowserRouter as Router } from "react-router-dom";
+import MainLayout from "./layout/MainLayout";
+import RenderRoutes from "./routes";
 import "./App.css";
 import "./responsive.css";
 
@@ -9,10 +9,11 @@ console.clear();
 
 const App = () => {
   return (
-    <>
-      <Header />
-      <Footer />
-    </>
+    <Router>
+      <MainLayout>
+        <RenderRoutes />
+      </MainLayout>
+    </Router>
   );
 };
 

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const openSearch = () => {
     document.getElementById("myOverlay").style.display = "block";
@@ -32,7 +34,7 @@ const Header = () => {
           <div className="row align-items-center">
             <div className="col-4 col-md-3 col-lg-3">
               <div className="logo">
-                <span>
+                <span onClick={() => [navigate("/")]}>
                   <img
                     src="assets/images/logo.png"
                     alt="logo"
@@ -96,31 +98,31 @@ const Header = () => {
                 <div className="stellarnav main_menu">
                   <ul>
                     <li className="menu-links">
-                      <span>Home</span>
+                      <span onClick={() => [navigate("/")]}>Home</span>
                     </li>
                     <li className="menu-links">
-                      <span>About Us</span>
+                      <span onClick={() => [navigate("/")]}>About Us</span>
                     </li>
                     <li className="menu-links">
-                      <span>New Arrivals</span>
+                      <span onClick={() => [navigate("/")]}>New Arrivals</span>
                     </li>
                     <li className="menu-links">
-                      <span>Men's</span>
+                      <span onClick={() => [navigate("/")]}>Men's</span>
                     </li>
                     <li className="menu-links">
-                      <span>Women's</span>
+                      <span onClick={() => [navigate("/")]}>Women's</span>
                     </li>
                     <li className="menu-links">
-                      <span>Youth</span>
+                      <span onClick={() => [navigate("/")]}>Youth</span>
                     </li>
                     <li className="menu-links">
-                      <span>Hats</span>
+                      <span onClick={() => [navigate("/")]}>Hats</span>
                     </li>
                     <li className="menu-links">
-                      <span>Accessories</span>
+                      <span onClick={() => [navigate("/")]}>Accessories</span>
                     </li>
                     <li className="menu-links">
-                      <span>Contact Us</span>
+                      <span onClick={() => [navigate("/")]}>Contact Us</span>
                     </li>
                   </ul>
                 </div>
