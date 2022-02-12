@@ -111,6 +111,11 @@ header {
 }
 .main_menu ul {
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  list-style-type: none;
 }
 .main_menu > ul > li > span {
   padding: 10px 14px;
@@ -150,6 +155,9 @@ header {
 .menu-links span:hover:before,
 .menu-links span:hover:after {
   width: 100%;
+}
+.toggle-btn {
+  display: none;
 }
 /** SEARCH OVERLY CSS START
 ************************************/
@@ -363,7 +371,7 @@ header {
   margin: 0 15px;
 }
 .arrivalsTabs-links .nav-link.active {
-  background: transparent;
+  background: transparent !important;
   color: #333333 !important;
   border: 1px dashed #333333;
   border-radius: 0 !important;
@@ -391,7 +399,7 @@ header {
   width: 80px;
   transition: all 0.8s ease-in-out;
 }
-.product-icons a {
+.product-icons span {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -400,16 +408,17 @@ header {
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease-in-out;
+  cursor: pointer;
 }
-.product-icons a img {
+.product-icons span img {
   max-width: 18px;
   max-height: 18px !important;
   min-height: 18px !important;
 }
-.product-icons a:hover {
+.product-icons span:hover {
   background: #006db7;
 }
-.product-icons a:hover img {
+.product-icons span:hover img {
   filter: invert(1);
 }
 .arrival-card:hover .product-icons {
@@ -449,14 +458,14 @@ header {
 .product-rating span {
   color: #ffdc64;
   font-size: 20px;
-  margin: 0 -2px;
+  margin: 0 1px;
   display: inline-block;
 }
 .left-vector {
   position: absolute;
   top: 15%;
   left: 2%;
-  max-width: 150px;
+  max-width: 150px !important;
   width: 100%;
   object-fit: cover;
   object-position: center;
@@ -466,7 +475,7 @@ header {
   position: absolute;
   bottom: 15%;
   right: 2%;
-  max-width: 150px;
+  max-width: 150px !important;
   width: 100%;
   object-fit: cover;
   object-position: center;
@@ -887,7 +896,7 @@ header {
   position: absolute;
   top: -50%;
   right: 0;
-  max-width: 300px;
+  max-width: 300px !important;
   width: 100%;
   object-fit: cover;
   object-position: center;
@@ -1574,7 +1583,7 @@ aside {
   align-items: center;
   justify-content: center;
 }
-.about-videoBox a {
+.about-videoBox span {
   color: #fff;
   font-size: 30px;
   width: 100px;
@@ -1588,8 +1597,9 @@ aside {
   transition: all 0.3s ease-in-out;
   animation: pulse-animation 2s infinite;
 }
-.about-videoBox a:hover {
+.about-videoBox span:hover {
   color: #292929;
+  cursor: pointer;
 }
 @keyframes pulse-animation {
   0% {
