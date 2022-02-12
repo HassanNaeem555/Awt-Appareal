@@ -1,6 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
+  const navigate = useNavigate();
   return (
     <>
       <footer className="foot-sec-1">
@@ -19,7 +21,7 @@ const Footer = () => {
           <div className="footer-row">
             <div className="footer-col type-1">
               <div className="logo-box">
-                <span>
+                <span onClick={() => [navigate("/")]}>
                   <img
                     src="assets/images/foot-logo.png"
                     className="img-fluid"
@@ -58,10 +60,10 @@ const Footer = () => {
               <div className="content-wrap-1">
                 <ul className="list-unstyled">
                   <li>
-                    <span> Home</span>
+                    <span onClick={() => [navigate("/")]}> Home</span>
                   </li>
                   <li>
-                    <span> About Us</span>
+                    <span onClick={() => [navigate("/about")]}> About Us</span>
                   </li>
                   <li>
                     <span> Men's</span>
@@ -70,7 +72,9 @@ const Footer = () => {
                     <span>Women's</span>
                   </li>
                   <li>
-                    <span>New Arrival's</span>
+                    <span onClick={() => [navigate("/new-arrival")]}>
+                      New Arrival's
+                    </span>
                   </li>
                 </ul>
                 <ul className="list-unstyled">
@@ -84,7 +88,9 @@ const Footer = () => {
                     <span>Accessories</span>
                   </li>
                   <li>
-                    <span>Contact Us</span>
+                    <span onClick={() => [navigate("/contact")]}>
+                      Contact Us
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -96,7 +102,9 @@ const Footer = () => {
               <div className="content-wrap-1">
                 <ul className="list-unstyled">
                   <li>
-                    <span>Privacy Policy</span>
+                    <span onClick={() => [navigate("/privacy-policy")]}>
+                      Privacy Policy
+                    </span>
                   </li>
                   <li>
                     <span> Terms and conditions</span>

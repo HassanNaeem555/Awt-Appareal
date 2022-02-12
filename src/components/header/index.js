@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const navigate = useNavigate();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [responsiveNav, setResponsiveNav] = useState(false);
+  const toggleNav = () => {
+    setResponsiveNav(!responsiveNav);
+  };
   const openSearch = () => {
     document.getElementById("myOverlay").style.display = "block";
   };
@@ -27,6 +31,9 @@ const Header = () => {
       login_wrap.classList.add("right-panel-active");
     }
   };
+  useEffect(() => {
+    console.log("window.location", window.location);
+  });
   return (
     <>
       <header>
@@ -81,7 +88,7 @@ const Header = () => {
                       href="https://www.facebook.com/"
                       target="_blank"
                       rel="noreferrer"
-                      className="social-icon"
+                      className="social-icon icon-none"
                     >
                       <i className="fa fa-facebook-f"></i>
                     </a>
@@ -89,22 +96,32 @@ const Header = () => {
                       href="https://www.instagram.com/"
                       target="_blank"
                       rel="noreferrer"
-                      className="social-icon"
+                      className="social-icon icon-none"
                     >
                       <i className="fa fa-instagram"></i>
                     </a>
+                    <span
+                      className="social-icon toggle-btn"
+                      onClick={toggleNav}
+                    >
+                      <i className="fa fa-bars"></i>
+                    </span>
                   </div>
                 </div>
-                <div className="stellarnav main_menu">
+                <div
+                  className={responsiveNav ? `main_menu active` : `main_menu`}
+                >
                   <ul>
                     <li className="menu-links">
                       <span onClick={() => [navigate("/")]}>Home</span>
                     </li>
                     <li className="menu-links">
-                      <span onClick={() => [navigate("/")]}>About Us</span>
+                      <span onClick={() => [navigate("/about")]}>About Us</span>
                     </li>
                     <li className="menu-links">
-                      <span onClick={() => [navigate("/")]}>New Arrivals</span>
+                      <span onClick={() => [navigate("/new-arrival")]}>
+                        New Arrivals
+                      </span>
                     </li>
                     <li className="menu-links">
                       <span onClick={() => [navigate("/")]}>Men's</span>
@@ -122,7 +139,9 @@ const Header = () => {
                       <span onClick={() => [navigate("/")]}>Accessories</span>
                     </li>
                     <li className="menu-links">
-                      <span onClick={() => [navigate("/")]}>Contact Us</span>
+                      <span onClick={() => [navigate("/contact")]}>
+                        Contact Us
+                      </span>
                     </li>
                   </ul>
                 </div>
@@ -155,8 +174,8 @@ const Header = () => {
         show={isLoginModalOpen}
       >
         <Modal.Header>
-          <button type="button" className="close" onClick={toggleLoginModal}>
-            <span aria-hidden="true">&times;</span>
+          <button className="close" onClick={toggleLoginModal}>
+            <span>&times;</span>
           </button>
         </Modal.Header>
         <Modal.Body>
@@ -215,7 +234,7 @@ const Header = () => {
                 <span>or use your account</span>
                 <input type="email" placeholder="Email" />
                 <input type="password" placeholder="Password" />
-                <a href="#!">Forgot your password?</a>
+                <a href="/#">Forgot your password?</a>
                 <button className="submit" type="submit">
                   Sign In
                 </button>

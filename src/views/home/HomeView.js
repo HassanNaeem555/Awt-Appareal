@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import HomeBanner from "../../components/home/homeBanner";
 import ShopByCollection from "../../components/home/shopByCollection";
 import HomeCenterBanner from "../../components/home/homeCenterBanner";
@@ -9,13 +9,17 @@ import InstagramApparealPost from "../../components/home/instagramApparealPost";
 import Subscribe from "../../components/home/subscribe";
 
 function HomeView() {
+  useLayoutEffect(() => {
+    console.log("home");
+    window.scrollTo(0, 0);
+  });
   return (
     <>
       <HomeBanner />
       <ShopByCollection />
+      <NewArrival />
       <HomeCenterBanner />
       <BestSeller />
-      <NewArrival />
       <Testimonials />
       <InstagramApparealPost />
       <Subscribe />
