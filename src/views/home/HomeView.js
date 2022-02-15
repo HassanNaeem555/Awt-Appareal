@@ -10,7 +10,6 @@ import Subscribe from "../../components/home/subscribe";
 
 function HomeView() {
   useLayoutEffect(() => {
-    console.log("home");
     window.scrollTo(0, 0);
   });
   return (

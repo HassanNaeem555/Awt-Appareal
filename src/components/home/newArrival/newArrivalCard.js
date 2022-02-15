@@ -1,7 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { newArrivalData } from "../../../dummyData";
 
 const NewArrivalCard = () => {
+  const navigate = useNavigate();
   return (
     <>
       {newArrivalData.map((item, index) => {
@@ -29,7 +31,11 @@ const NewArrivalCard = () => {
                       className="img-fluid"
                     />
                   </span>
-                  <span>
+                  <span
+                    onClick={() => {
+                      navigate(`/product_detail`, { state: { id: item.id } });
+                    }}
+                  >
                     <img
                       src="assets/images/eye-icon.png"
                       alt="img"
