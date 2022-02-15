@@ -8,10 +8,7 @@ const About = () => {
   });
   return (
     <>
-      <CommonBanner
-        img={"assets/images/innerSec1-vector1.png"}
-        name={"About Us"}
-      />
+      <CommonBanner img={"about-sec1"} name={"About Us"} />
       <section className="about-sec2">
         <div className="container">
           <div className="row align-items-center">

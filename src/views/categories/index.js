@@ -12,10 +12,7 @@ const Category = () => {
   };
   return (
     <>
-      <CommonBanner
-        img={"assets/images/innerSec1-vector1.png"}
-        name={"New Arrivals"}
-      />
+      <CommonBanner img={"arrivals-sec1"} name={"New Arrivals"} />
       <section className="inner-sec2">
         <div className="innerSec2-wrap">
           <aside>
@@ -312,7 +309,7 @@ const Category = () => {
           </div>
         </div>
       </section>
-      <RecommendedProducts />
+      <RecommendedProducts name={"Keep Trending Items"} />
     </>
   );
 };

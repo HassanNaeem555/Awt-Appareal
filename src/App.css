@@ -356,11 +356,15 @@ header {
   padding: 40px 0 70px;
   position: relative;
 }
+.newArrivals-wrap .nav-tabs {
+  border: none !important;
+}
 .arrivalsTabs-links {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 40px;
+  flex-direction: column;
 }
 .arrivalsTabs-links .nav-link {
   font-size: 20px;
@@ -373,7 +377,7 @@ header {
 .arrivalsTabs-links .nav-link.active {
   background: transparent !important;
   color: #333333 !important;
-  border: 1px dashed #333333;
+  border: 1px dashed #333333 !important;
   border-radius: 0 !important;
 }
 .arrival-card .image {
@@ -1653,99 +1657,6 @@ aside {
 .productDetail-sec2 {
   padding: 70px 0;
 }
-/*Swiper Slider CSS Start*/
-.swiper-slide {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-.swiper-container {
-  width: 80%;
-  height: 700px;
-  float: left;
-  transition: opacity 0.6s ease, transform 0.3s ease;
-}
-.main-slider {
-  width: 75%;
-  margin-left: 20px;
-}
-.swiper-container.nav-slider {
-  width: 20%;
-}
-.swiper-container.nav-slider .swiper-slide {
-  cursor: pointer;
-  transition: opacity 0.3s ease;
-}
-.swiper-container.nav-slider .swiper-slide.swiper-slide-active {
-  opacity: 1;
-}
-.swiper-container.nav-slider .swiper-slide .content {
-  width: 100%;
-}
-.swiper-container.nav-slider .swiper-slide .content .title {
-  font-size: 20px;
-}
-.swiper-container:hover .swiper-button-prev,
-.swiper-container:hover .swiper-button-next {
-  transform: translateX(0);
-  opacity: 1;
-  visibility: visible;
-}
-.swiper-container.loading {
-  opacity: 0;
-  visibility: hidden;
-}
-.swiper-slide {
-  overflow: hidden;
-}
-.swiper-slide .slide-bgimg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-position: center;
-  background-size: cover;
-}
-.swiper-slide .entity-img {
-  display: none;
-}
-.swiper-slide .content {
-  position: absolute;
-  top: 40%;
-  left: 0;
-  width: 50%;
-  padding-left: 5%;
-  color: #fff;
-}
-.swiper-slide .content .title {
-  font-size: 2.6em;
-  font-weight: bold;
-  margin-bottom: 30px;
-}
-.swiper-slide .content .caption {
-  display: block;
-  font-size: 13px;
-  line-height: 1.4;
-  transform: translateX(50px);
-  opacity: 0;
-  transition: opacity 0.3s ease, transform 0.7s ease;
-}
-.swiper-slide .content .caption.show {
-  transform: translateX(0);
-  opacity: 1;
-}
-[class^="swiper-button-"] {
-  width: 44px;
-  opacity: 0;
-  visibility: hidden;
-}
-.swiper-button-prev {
-  transform: translateX(50px);
-}
-.swiper-button-next {
-  transform: translateX(-50px);
-}
-/*End*/
 
 .productDetail-content .black-heading {
   font-size: 40px;
@@ -1893,6 +1804,53 @@ PRODUCT QUANTITY CSS END
 /** PRODUCT DETAIL PAGE CSS END
 *************************************/
 
+/*** NEW PRODUCT SLIDER CSS START
+**************************************/
+.prodcutSlider-wrap {
+  max-height: 650px;
+}
+.slider1 {
+  max-width: 480px;
+  width: 100%;
+  margin-left: auto;
+}
+.slide-thumbnail {
+  max-width: 300px;
+  width: 100%;
+  max-height: 120px;
+  transform: rotate(-90deg);
+  cursor: pointer;
+}
+.slide-thumbnail img {
+  width: 100%;
+  min-height: 120px;
+  max-height: 120px;
+  object-fit: cover;
+  object-position: top center;
+  filter: brightness(0.9);
+}
+.product-lg {
+  display: flex;
+  justify-content: flex-end;
+  cursor: pointer;
+}
+.product-lg img {
+  max-height: 640px;
+  width: 100%;
+  max-width: 480px;
+  min-height: 640px;
+  object-fit: cover;
+  object-position: top center;
+}
+.slider-thumbnail .slick-list {
+  transform: rotate(90deg) !important;
+  position: relative;
+  top: -392px;
+  left: -240px;
+}
+/*** NEW PRODUCT SLIDER CSS END
+**************************************/
+
 /** CART PAGE CSS START
 *************************************/
 .cart-sec1 {
@@ -1906,6 +1864,10 @@ PRODUCT QUANTITY CSS END
 *************************************/
 
 /*****CHECKOUT PAGE START START'S*****/
+.checkout-tabs .nav-tabs li button {
+  background: none !important;
+  border: none !important;
+}
 .checkout-sec-2 {
   padding: 50px 0;
   background-size: cover;
@@ -2479,6 +2441,7 @@ PRODUCT QUANTITY CSS END
   font-size: 16px;
   font-weight: 400;
   color: #292929;
+  background: white;
   border: none;
   outline: none;
   text-align: center;
@@ -2504,6 +2467,8 @@ PRODUCT QUANTITY CSS END
 }
 .cart-list-item .product-action-price .remove-cart-item {
   color: #dc3545;
+  border: none;
+  background: none;
 }
 .cart-list-item .product-action-price .add-cart-item {
   color: #ff0000;

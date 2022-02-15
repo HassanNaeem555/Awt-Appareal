@@ -73,7 +73,10 @@ const Header = () => {
                       </span>
                     </li>
                     <li>
-                      <span className="cart-icon">
+                      <span
+                        className="cart-icon"
+                        onClick={() => [navigate("/cart")]}
+                      >
                         <img
                           src="assets/images/cart-icon.png"
                           alt="img"
@@ -202,7 +205,7 @@ const Header = () => {
                   </a>
                 </div>
                 <span>or use your email for registration</span>
-                <input type="text" placeholder="Name" />
+                <input type="text" placeholder="Full Name" />
                 <input type="email" placeholder="Email" />
                 <input type="password" placeholder="Password" />
                 <button className="submit" type="submit">

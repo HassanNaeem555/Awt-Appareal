@@ -1,6 +1,9 @@
 import React, { Suspense, Fragment, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 import HomeView from "./views/home/HomeView";
+import CartView from "./views/cart/CartView";
+import CheckoutView from "./views/checkout/CheckoutView";
+import ProductDetail from "./views/product-detail";
 import Category from "./views/categories";
 import AboutView from "./views/about/AboutView";
 import PrivacyPolicy from "./views/cms/privacyPolicy";
@@ -13,6 +16,9 @@ export const RenderRoutes = () => (
     <Routes>
       <Route path="/" element={<HomeView />} />
       <Route path="/about" element={<AboutView />} />
+      <Route path="/cart" element={<CartView />} />
+      <Route path="/checkout" element={<CheckoutView />} />
+      <Route path="/product_detail" element={<ProductDetail />} />
       <Route path="/:id" element={<Category />} />
       <Route path="/contact" element={<ContactView />} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />

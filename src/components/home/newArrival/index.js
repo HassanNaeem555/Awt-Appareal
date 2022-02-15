@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
+import { Tabs, Tab } from "react-bootstrap";
 import NewArrivalCard from "../../../components/home/newArrival/newArrivalCard";
 
 const NewArrival = () => {
+  const [key, setKey] = useState("all-tab-1");
   return (
     <section className="index-sec3">
       <div className="container">
@@ -10,150 +12,73 @@ const NewArrival = () => {
         </div>
         <div className="newArrivals-wrap">
           <div className="arrivalsTabs-links">
-            <ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
-              <li className="nav-item" role="presentation">
-                <button
-                  className="nav-link active"
-                  id="pills-all-tab"
-                  type="button"
-                  role="tab"
-                >
-                  All
-                </button>
-              </li>
-              <li className="nav-item" role="presentation">
-                <button
-                  className="nav-link"
-                  id="pills-hats-tab"
-                  type="button"
-                  role="tab"
-                >
-                  Hats
-                </button>
-              </li>
-              <li className="nav-item" role="presentation">
-                <button
-                  className="nav-link"
-                  id="pills-mens-tab"
-                  type="button"
-                  role="tab"
-                >
-                  Mens
-                </button>
-              </li>
-              <li className="nav-item" role="presentation">
-                <button
-                  className="nav-link"
-                  id="pills-womens-tab"
-                  type="button"
-                  role="tab"
-                >
-                  Womens
-                </button>
-              </li>
-              <li className="nav-item" role="presentation">
-                <button
-                  className="nav-link"
-                  id="pills-kids-tab"
-                  type="button"
-                  role="tab"
-                >
-                  Kids
-                </button>
-              </li>
-              <li className="nav-item" role="presentation">
-                <button
-                  className="nav-link"
-                  id="pills-accessories-tab"
-                  type="button"
-                  role="tab"
-                >
-                  Accessories
-                </button>
-              </li>
-            </ul>
-          </div>
-          <div className="arrivalsTabs-wrap">
-            <div className="tab-content" id="pills-tabContent">
-              {/* <!-- Arrival Tab 01 --> */}
-              <div
-                className="tab-pane fade show active"
-                id="pills-all"
-                role="tabpanel"
-                aria-labelledby="pills-all-tab"
-              >
-                <div className="arrivalTab-innerWrap">
-                  <div className="row">
-                    <NewArrivalCard />
+            <Tabs
+              id="pills-tab"
+              activeKey={key}
+              onSelect={(k) => setKey(k)}
+              className="nav nav-pills mb-4"
+            >
+              <Tab eventKey="all-tab-1" title="All">
+                {/* <!-- Arrival Tab 01 --> */}
+                <div className="tab-pane fade show active">
+                  <div className="arrivalTab-innerWrap">
+                    <div className="row">
+                      <NewArrivalCard />
+                    </div>
                   </div>
                 </div>
-              </div>
-              {/* <!-- Arrival Tab 02 --> */}
-              <div
-                className="tab-pane fade"
-                id="pills-hats"
-                role="tabpanel"
-                aria-labelledby="pills-hats-tab"
-              >
-                <div className="arrivalTab-innerWrap">
-                  <div className="row">
-                    <NewArrivalCard />
+              </Tab>
+              <Tab eventKey="all-tab-2" title="Hats">
+                {/* <!-- Arrival Tab 02 --> */}
+                <div className="tab-pane fade show active">
+                  <div className="arrivalTab-innerWrap">
+                    <div className="row">
+                      <NewArrivalCard />
+                    </div>
                   </div>
                 </div>
-              </div>
-              {/* <!-- Arrival Tab 03 --> */}
-              <div
-                className="tab-pane fade"
-                id="pills-mens"
-                role="tabpanel"
-                aria-labelledby="pills-mens-tab"
-              >
-                <div className="arrivalTab-innerWrap">
-                  <div className="row">
-                    <NewArrivalCard />
+              </Tab>
+              <Tab eventKey="all-tab-3" title="Mens">
+                {/* <!-- Arrival Tab 03 --> */}
+                <div className="tab-pane fade show active">
+                  <div className="arrivalTab-innerWrap">
+                    <div className="row">
+                      <NewArrivalCard />
+                    </div>
                   </div>
                 </div>
-              </div>
-              {/* <!-- Arrival Tab 04 --> */}
-              <div
-                className="tab-pane fade"
-                id="pills-womens"
-                role="tabpanel"
-                aria-labelledby="pills-womens-tab"
-              >
-                <div className="arrivalTab-innerWrap">
-                  <div className="row">
-                    <NewArrivalCard />
+              </Tab>
+              <Tab eventKey="all-tab-4" title="Womens">
+                {/* <!-- Arrival Tab 04 --> */}
+                <div className="tab-pane fade show active">
+                  <div className="arrivalTab-innerWrap">
+                    <div className="row">
+                      <NewArrivalCard />
+                    </div>
                   </div>
                 </div>
-              </div>
-              {/* <!-- Arrival Tab 05 --> */}
-              <div
-                className="tab-pane fade"
-                id="pills-kids"
-                role="tabpanel"
-                aria-labelledby="pills-kids-tab"
-              >
-                <div className="arrivalTab-innerWrap">
-                  <div className="row">
-                    <NewArrivalCard />
+              </Tab>
+              <Tab eventKey="all-tab-5" title="Kids">
+                {/* <!-- Arrival Tab 05 --> */}
+                <div className="tab-pane fade show active">
+                  <div className="arrivalTab-innerWrap">
+                    <div className="row">
+                      <NewArrivalCard />
+                    </div>
                   </div>
                 </div>
-              </div>
-              {/* <!-- Arrival Tab 06 --> */}
-              <div
-                className="tab-pane fade"
-                id="pills-accessories"
-                role="tabpanel"
-                aria-labelledby="pills-accessories-tab"
-              >
-                <div className="arrivalTab-innerWrap">
-                  <div className="row">
-                    <NewArrivalCard />
+              </Tab>
+              <Tab eventKey="all-tab-6" title="Accessories">
+                {/* <!-- Arrival Tab 06 --> */}
+                <div className="tab-pane fade show active">
+                  <div className="arrivalTab-innerWrap">
+                    <div className="row">
+                      <NewArrivalCard />
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              </Tab>
+            </Tabs>
           </div>
         </div>
       </div>
