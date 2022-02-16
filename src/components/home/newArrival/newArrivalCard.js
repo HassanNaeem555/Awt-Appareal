@@ -33,7 +33,7 @@ const NewArrivalCard = () => {
                   </span>
                   <span
                     onClick={() => {
-                      navigate(`/product_detail`, { state: { id: item.id } });
+                      navigate(`/product-detail`, { state: { id: item.id } });
                     }}
                   >
                     <img
