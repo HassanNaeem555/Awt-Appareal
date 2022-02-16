@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { userLogedOut } from "../../store/action/authAction";
 import DataTable from "react-data-table-component";

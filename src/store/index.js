@@ -2,7 +2,6 @@ import rootReducer from "./reducer/index";
 import { createStore, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
 import { persistStore, persistReducer } from "redux-persist";
-import { ENABLE_REDUX_DEV_TOOLS } from "../constants";
 import storage from "redux-persist/lib/storage";
 import logger from "redux-logger";
 

@@ -3,9 +3,7 @@ import { Modal } from "react-bootstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { userAuth } from "../../store/action/authAction";
-import { Control, Form, Errors } from "react-redux-form";
-import { postApi } from "../../utils/apiFunctions";
-import { register, login } from "../../utils/api";
+import { Control, Form, Errors, actions } from "react-redux-form";
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !val || val.length <= len;
@@ -13,7 +11,7 @@ const minLength = (len) => (val) => val && val.length >= len;
 const validEmail = (val) =>
   /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 
-const Header = (props) => {
+const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -51,20 +49,21 @@ const Header = (props) => {
       login_wrap.classList.add("right-panel-active");
     }
   };
-  const onSubmitLogin = (e) => {
-    e.preventDefault();
-    dispatch(userAuth("hello"));
+  const onSubmitLogin = (values) => {
+    dispatch(userAuth("login"));
+    dispatch(actions.reset("login"));
     toggleLoginModal();
   };
   const handleSubmit = async (values) => {
     const updatedUser = JSON.parse(JSON.stringify(values));
     console.log("values", updatedUser);
+    dispatch(actions.reset("signup"));
     // const response = await postApi(register, updatedUser);
     // console.log("response Sign Up", response);
   };
   useEffect(() => {
     setCurrent_path(location.pathname);
-  });
+  }, [location.pathname]);
   console.log("header_categories", header_categories);
   return (
     <>
@@ -262,7 +261,8 @@ const Header = (props) => {
                   </a>
                 </div>
                 <span>or use your email for registration</span>
-                <Control.text
+                <Control
+                  type="text"
                   model=".full_name"
                   id="full_name"
                   name="full_name"
@@ -276,17 +276,18 @@ const Header = (props) => {
                 />
                 <Errors
                   className="text-danger"
-                  model=".fullname"
+                  model=".full_name"
                   show="touched"
                   messages={{
-                    required: "Required",
-                    minLength: "Must be greater than 2 characters",
+                    required: "Required! ",
+                    minLength: "Must be greater than 3 characters",
                     maxLength: "Must be 15 characters or less",
                   }}
                 />
-                <Control.text
+                <Control
+                  type="email"
                   model=".email"
-                  id="email"
+                  id="signupEmail"
                   name="email"
                   placeholder="Email"
                   className="form-control"
@@ -300,11 +301,12 @@ const Header = (props) => {
                   model=".email"
                   show="touched"
                   messages={{
-                    required: "Required",
+                    required: "Required! ",
                     validEmail: "Invalid Email Address",
                   }}
                 />
-                <Control.text
+                <Control
+                  type="password"
                   model=".password"
                   id="password"
                   name="password"
@@ -321,23 +323,18 @@ const Header = (props) => {
                   model=".password"
                   show="touched"
                   messages={{
-                    required: "Required",
-                    minLength: "Must be greater than 2 characters",
+                    required: "Required! ",
+                    minLength: "Must be greater than 3 characters",
                     maxLength: "Must be 15 characters or less",
                   }}
                 />
-                {/* <input type="text" placeholder="Full Name" /> */}
-                {/* <input type="email" placeholder="Email" /> */}
-                {/* <input type="password" placeholder="Password" /> */}
                 <button className="submit" type="submit">
                   Sign Up
                 </button>
               </Form>
-              {/* <form action="#">
-              </form> */}
             </div>
             <div className="form-container sign-in-container">
-              <form onSubmit={onSubmitLogin}>
+              <Form model="login" onSubmit={(values) => onSubmitLogin(values)}>
                 <h1>Sign in</h1>
                 <div className="social-container">
                   <a
@@ -358,13 +355,55 @@ const Header = (props) => {
                   </a>
                 </div>
                 <span>or use your account</span>
-                <input type="email" placeholder="Email" />
-                <input type="password" placeholder="Password" />
+                <Control
+                  type="email"
+                  model=".email"
+                  id="loginEmail"
+                  name="email"
+                  placeholder="Email"
+                  className="form-control"
+                  validators={{
+                    required,
+                    validEmail,
+                  }}
+                />
+                <Errors
+                  className="text-danger"
+                  model=".email"
+                  show="touched"
+                  messages={{
+                    required: "Required! ",
+                    validEmail: "Invalid Email Address",
+                  }}
+                />
+                <Control
+                  type="password"
+                  model=".password"
+                  id="password"
+                  name="password"
+                  placeholder="Password"
+                  className="form-control"
+                  validators={{
+                    required,
+                    minLength: minLength(3),
+                    maxLength: maxLength(15),
+                  }}
+                />
+                <Errors
+                  className="text-danger"
+                  model=".password"
+                  show="touched"
+                  messages={{
+                    required: "Required! ",
+                    minLength: "Must be greater than 3 characters",
+                    maxLength: "Must be 15 characters or less",
+                  }}
+                />
                 <a href="/#">Forgot your password?</a>
                 <button className="submit" type="submit">
                   Sign In
                 </button>
-              </form>
+              </Form>
             </div>
             <div className="overlay-container">
               <div className="overlay">

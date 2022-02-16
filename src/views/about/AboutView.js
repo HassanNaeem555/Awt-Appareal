@@ -5,7 +5,7 @@ import Subscribe from "../../components/home/subscribe";
 const About = () => {
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
-  });
+  }, []);
   return (
     <>
       <CommonBanner img={"about-sec1"} name={"About Us"} />
