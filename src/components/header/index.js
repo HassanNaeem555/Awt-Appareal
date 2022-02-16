@@ -1,9 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { userAuth } from "../../store/action/authAction";
+import { Control, Form, Errors } from "react-redux-form";
+import { postApi } from "../../utils/apiFunctions";
+import { register, login } from "../../utils/api";
 
-const Header = () => {
+const required = (val) => val && val.length;
+const maxLength = (len) => (val) => !val || val.length <= len;
+const minLength = (len) => (val) => val && val.length >= len;
+const validEmail = (val) =>
+  /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
+
+const Header = (props) => {
+  const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user_authenticate = useSelector(({ user_authenticate }) => {
+    return user_authenticate.userLogin;
+  });
+  const header_categories = useSelector(({ user_categories }) => {
+    return user_categories.categories;
+  });
+  const [current_path, setCurrent_path] = useState("");
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [responsiveNav, setResponsiveNav] = useState(false);
   const toggleNav = () => {
@@ -31,9 +51,21 @@ const Header = () => {
       login_wrap.classList.add("right-panel-active");
     }
   };
+  const onSubmitLogin = (e) => {
+    e.preventDefault();
+    dispatch(userAuth("hello"));
+    toggleLoginModal();
+  };
+  const handleSubmit = async (values) => {
+    const updatedUser = JSON.parse(JSON.stringify(values));
+    console.log("values", updatedUser);
+    // const response = await postApi(register, updatedUser);
+    // console.log("response Sign Up", response);
+  };
   useEffect(() => {
-    console.log("window.location", window.location);
+    setCurrent_path(location.pathname);
   });
+  console.log("header_categories", header_categories);
   return (
     <>
       <header>
@@ -64,7 +96,13 @@ const Header = () => {
                       </span>
                     </li>
                     <li>
-                      <span onClick={toggleLoginModal}>
+                      <span
+                        onClick={() => {
+                          user_authenticate
+                            ? navigate("/user-profile")
+                            : toggleLoginModal();
+                        }}
+                      >
                         <img
                           src="assets/images/user-icon.png"
                           alt="img"
@@ -116,33 +154,52 @@ const Header = () => {
                 >
                   <ul>
                     <li className="menu-links">
-                      <span onClick={() => [navigate("/")]}>Home</span>
-                    </li>
-                    <li className="menu-links">
-                      <span onClick={() => [navigate("/about")]}>About Us</span>
-                    </li>
-                    <li className="menu-links">
-                      <span onClick={() => [navigate("/new-arrival")]}>
-                        New Arrivals
+                      <span
+                        className={current_path === "/" ? "active_nav" : ""}
+                        onClick={() => [navigate("/")]}
+                      >
+                        Home
                       </span>
                     </li>
                     <li className="menu-links">
-                      <span onClick={() => [navigate("/")]}>Men's</span>
+                      <span
+                        className={
+                          current_path === "/about" ? "active_nav" : ""
+                        }
+                        onClick={() => [navigate("/about")]}
+                      >
+                        About Us
+                      </span>
                     </li>
+                    {header_categories.length
+                      ? header_categories.map((category, index) => {
+                          return (
+                            <li className="menu-links" key={index}>
+                              <span
+                                className={
+                                  current_path === `/${category?.category_slug}`
+                                    ? "active_nav"
+                                    : ""
+                                }
+                                onClick={() => [
+                                  navigate(category?.category_slug, {
+                                    state: { id: category?.id },
+                                  }),
+                                ]}
+                              >
+                                {category?.category_name}
+                              </span>
+                            </li>
+                          );
+                        })
+                      : null}
                     <li className="menu-links">
-                      <span onClick={() => [navigate("/")]}>Women's</span>
-                    </li>
-                    <li className="menu-links">
-                      <span onClick={() => [navigate("/")]}>Youth</span>
-                    </li>
-                    <li className="menu-links">
-                      <span onClick={() => [navigate("/")]}>Hats</span>
-                    </li>
-                    <li className="menu-links">
-                      <span onClick={() => [navigate("/")]}>Accessories</span>
-                    </li>
-                    <li className="menu-links">
-                      <span onClick={() => [navigate("/contact")]}>
+                      <span
+                        className={
+                          current_path === "/contact" ? "active_nav" : ""
+                        }
+                        onClick={() => [navigate("/contact")]}
+                      >
                         Contact Us
                       </span>
                     </li>
@@ -184,7 +241,7 @@ const Header = () => {
         <Modal.Body>
           <div className="login-modal" id="login-modal-wrap">
             <div className="form-container sign-up-container">
-              <form action="#">
+              <Form model="signup" onSubmit={(values) => handleSubmit(values)}>
                 <h1>Create Account</h1>
                 <div className="social-container">
                   <a
@@ -205,16 +262,82 @@ const Header = () => {
                   </a>
                 </div>
                 <span>or use your email for registration</span>
-                <input type="text" placeholder="Full Name" />
-                <input type="email" placeholder="Email" />
-                <input type="password" placeholder="Password" />
+                <Control.text
+                  model=".full_name"
+                  id="full_name"
+                  name="full_name"
+                  placeholder="Full Name"
+                  className="form-control"
+                  validators={{
+                    required,
+                    minLength: minLength(3),
+                    maxLength: maxLength(15),
+                  }}
+                />
+                <Errors
+                  className="text-danger"
+                  model=".fullname"
+                  show="touched"
+                  messages={{
+                    required: "Required",
+                    minLength: "Must be greater than 2 characters",
+                    maxLength: "Must be 15 characters or less",
+                  }}
+                />
+                <Control.text
+                  model=".email"
+                  id="email"
+                  name="email"
+                  placeholder="Email"
+                  className="form-control"
+                  validators={{
+                    required,
+                    validEmail,
+                  }}
+                />
+                <Errors
+                  className="text-danger"
+                  model=".email"
+                  show="touched"
+                  messages={{
+                    required: "Required",
+                    validEmail: "Invalid Email Address",
+                  }}
+                />
+                <Control.text
+                  model=".password"
+                  id="password"
+                  name="password"
+                  placeholder="Password"
+                  className="form-control"
+                  validators={{
+                    required,
+                    minLength: minLength(3),
+                    maxLength: maxLength(15),
+                  }}
+                />
+                <Errors
+                  className="text-danger"
+                  model=".password"
+                  show="touched"
+                  messages={{
+                    required: "Required",
+                    minLength: "Must be greater than 2 characters",
+                    maxLength: "Must be 15 characters or less",
+                  }}
+                />
+                {/* <input type="text" placeholder="Full Name" /> */}
+                {/* <input type="email" placeholder="Email" /> */}
+                {/* <input type="password" placeholder="Password" /> */}
                 <button className="submit" type="submit">
                   Sign Up
                 </button>
-              </form>
+              </Form>
+              {/* <form action="#">
+              </form> */}
             </div>
             <div className="form-container sign-in-container">
-              <form action="#">
+              <form onSubmit={onSubmitLogin}>
                 <h1>Sign in</h1>
                 <div className="social-container">
                   <a

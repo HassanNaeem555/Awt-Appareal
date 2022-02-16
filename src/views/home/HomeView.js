@@ -1,4 +1,5 @@
-import React, { useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect, useEffect } from "react";
+import { useSelector } from "react-redux";
 import HomeBanner from "../../components/home/homeBanner";
 import ShopByCollection from "../../components/home/shopByCollection";
 import HomeCenterBanner from "../../components/home/homeCenterBanner";
@@ -7,23 +8,53 @@ import NewArrival from "../../components/home/newArrival";
 import Testimonials from "../../components/home/testimonials";
 import InstagramApparealPost from "../../components/home/instagramApparealPost";
 import Subscribe from "../../components/home/subscribe";
+import { getApi } from "../../utils/apiFunctions";
+import { banner } from "../../utils/api";
 
-function HomeView() {
+const HomeView = () => {
+  const [mainBanner, setMainBanner] = useState([]);
+  const [renderSelectedCategory, setRenderSelectedCategory] = useState([]);
+  const header_categories = useSelector(({ user_categories }) => {
+    return user_categories.categories;
+  });
+  useEffect(() => {
+    async function getBanner() {
+      const selectedMenCategory = header_categories.find((e) => {
+        return e.category_slug === "mens";
+      });
+      const selectedWomenCategory = header_categories.find((e) => {
+        return e.category_slug === "women";
+      });
+      const selectedYouthCategory = header_categories.find((e) => {
+        return e.category_slug === "youth";
+      });
+      const result = await getApi(banner);
+      setMainBanner(result);
+      setRenderSelectedCategory([
+        selectedYouthCategory,
+        selectedMenCategory,
+        selectedWomenCategory,
+      ]);
+    }
+    if (mainBanner.length === 0) {
+      getBanner();
+    }
+  }, []);
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
-  });
+  }, []);
   return (
     <>
-      <HomeBanner />
-      <ShopByCollection />
+      <HomeBanner bannerContent={mainBanner} />
+      <ShopByCollection category={renderSelectedCategory} />
       <NewArrival />
       <HomeCenterBanner />
-      <BestSeller />
+      <BestSeller category={renderSelectedCategory} />
       <Testimonials />
       <InstagramApparealPost />
       <Subscribe />
     </>
   );
-}
+};
 
 export default HomeView;

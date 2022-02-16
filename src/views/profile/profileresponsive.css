@@ -1,0 +1,445 @@
+@media only screen and (max-width: 1920px) {
+  header .row {
+    justify-content: center;
+    align-items: center;
+  }
+}
+@media only screen and (max-width: 1540px) {
+  aside {
+    overflow-y: scroll;
+  }
+}
+@media only screen and (max-width: 1440px) {
+  .header-leftwrap {
+    max-width: 700px;
+    margin: 0 0 0 auto;
+  }
+  .dashboard-head-right {
+    width: calc(100% - 300px);
+    padding-right: 20px;
+    border-bottom: none;
+    margin-left: auto;
+  }
+}
+@media only screen and (max-width: 1040px) {
+}
+@media only screen and (max-width: 1025px) {
+  .profile-image img {
+    max-width: 80px;
+    max-height: 80px;
+    height: 100px;
+  }
+  .side-logo {
+    margin-bottom: 20px;
+  }
+  .dashboard-links {
+    padding-top: 20px;
+  }
+  .header-leftwrap {
+    max-width: 805px;
+    padding: 0px 90px;
+  }
+  .dashboard-head-right {
+    width: 100%;
+    border: none;
+  }
+  .mobile-wrap {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    flex-direction: column;
+    justify-content: center !important;
+    width: 100%;
+    max-width: 320px;
+    height: 100%;
+    background: #fff;
+    z-index: 9999;
+    overflow: auto;
+    transition: all 0.5s ease-in-out;
+  }
+  .mobile-wrap.active {
+    left: 0;
+  }
+  .mobile-toggle {
+    display: block;
+  }
+  .mobile-toggle {
+    font-size: 18px;
+    padding: 6px 14px;
+    max-width: 40px;
+    height: 40px;
+    width: 100%;
+    margin: -68px 10px 10px;
+  }
+  .toogle-close-btn {
+    font-size: 24px;
+    color: #fff;
+    background: transparent;
+    display: block;
+    width: 40px;
+    height: 40px;
+    border: 2px solid #0d2b59;
+    border-radius: 50%;
+    position: absolute;
+    top: 4%;
+    right: 5%;
+  }
+  .toogle-close-btn i {
+    color: #0d2b59;
+    font-size: 20px;
+  }
+  .toggle-button .toggle-btn {
+    display: block;
+  }
+  .right-box-wrap {
+    width: 100%;
+    background: #fff;
+    padding: 70px 0 0 35px;
+    margin: 0px;
+  }
+}
+@media only screen and (max-width: 1024px) {
+  .head-right-box {
+    border-left: none;
+  }
+  .header-leftwrap {
+    max-width: 775px;
+  }
+}
+@media only screen and (max-width: 991px) {
+  .header-leftwrap {
+    max-width: 690px;
+  }
+}
+@media only screen and (max-width: 910px) {
+  .overview-wrap .overview-boxes {
+    margin-top: 20px;
+  }
+  .statuswrap {
+    padding: 0px 0px 0px 45px;
+  }
+  .header-leftwrap {
+    max-width: 545px;
+  }
+  input[type="search"]:focus {
+    width: 260px !important;
+  }
+  .user-info-box {
+    min-width: 720px;
+    max-width: 720px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .change-pass-wrap p {
+    text-align: center;
+    margin: 0 auto;
+  }
+  .black-head {
+    text-align: center;
+  }
+  .change-pass-wrap {
+    margin: 0 auto;
+    text-align: center;
+    border: none;
+  }
+  .overview-boxes .box {
+    margin: 30px 20px 0 30px;
+  }
+  .lineChartWrap {
+    min-width: 630px;
+    max-width: 630px;
+    min-height: 435px;
+    max-height: 435px;
+    margin: 0 0px 0px 35px;
+  }
+  .box-text1 {
+    color: #797b7d;
+    font-weight: 500;
+    font-size: 16px;
+  }
+  .overview-boxes .box {
+    min-width: 290px;
+    max-width: 290px;
+    min-height: 220px;
+    max-height: 220px;
+    margin: 0 20px;
+  }
+}
+@media only screen and (max-width: 767px) {
+  .dataTables_wrapper {
+    overflow-x: scroll;
+  }
+  .statuswrap {
+    padding: 0px 0px 0px 3px;
+  }
+  .status-box {
+    margin: 0 auto;
+  }
+  .overview-wrap .overview-boxes {
+    justify-content: center;
+  }
+  .user-info-box {
+    min-width: 620px;
+    max-width: 620px;
+    width: 100%;
+  }
+  .dashboard-head-right {
+    width: 95%;
+    border: none;
+  }
+  .header-leftwrap {
+    margin: 0 auto;
+  }
+  input[type="search"]:focus {
+    margin: 0;
+    width: 210px !important;
+  }
+  .header-leftwrap {
+    max-width: 500px;
+  }
+  .overview-boxes .box {
+    min-width: 352px;
+    max-width: 352px;
+    margin: 20px 20px 20px;
+  }
+  .lineChartWrap {
+    min-width: 355px;
+    max-width: 355px;
+    min-height: 260px;
+    max-height: 260px;
+    margin: 0 auto;
+  }
+  .side-logo a img {
+    max-width: 120px;
+  }
+}
+@media only screen and (max-width: 576px) {
+  .notification-dropdown-wrap {
+    right: -110px;
+  }
+  .dataTable.nowrap td {
+    font-size: 14px !important;
+  }
+  .mobile-wrap {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    flex-direction: column;
+    justify-content: center !important;
+    width: 100%;
+    max-width: 403px;
+    height: 100%;
+    background: none;
+    z-index: 9999;
+    overflow: auto;
+    transition: all 0.5s ease-in-out;
+  }
+  .user-info-box {
+    min-width: 530px;
+    max-width: 530px;
+    width: 100%;
+    background: none;
+  }
+  .header-leftwrap {
+    max-width: 500px;
+    padding: 0px 30px 0 70px;
+  }
+  .header-leftwrap {
+    max-width: 330px;
+  }
+  input[type="search"]:focus {
+    margin: 0;
+    width: 125px !important;
+  }
+  .black-btn {
+    font-size: 13px;
+  }
+  .payment-text label {
+    font-size: 13px;
+  }
+}
+@media only screen and (max-width: 575px) {
+  .notification-dropdown-wrap {
+    right: -218px;
+  }
+  .overview-boxes .box {
+    min-width: 290px;
+    max-width: 290px;
+  }
+  .status-box {
+    min-width: 290px;
+    max-width: 290px;
+    padding: 25px 36px;
+    border-radius: 12px;
+  }
+  .change-pass-wrap {
+    min-width: 330px;
+    max-width: 330px;
+    width: 100%;
+  }
+  .lineChartWrap {
+    min-width: 300px;
+    max-width: 300px;
+    min-height: 230px;
+    max-height: 230px;
+    margin: 0 auto;
+  }
+  .header-leftwrap {
+    max-width: 140px;
+  }
+  .header-leftwrap {
+    justify-content: flex-end;
+  }
+  .mobile-toggle {
+    margin: -60px 10px 10px;
+  }
+  .head-right-box ul li {
+    max-width: 90px;
+  }
+  .search-form {
+    display: none;
+  }
+  .black-head {
+    text-align: center;
+  }
+  .user-info-box {
+    margin: 0;
+    padding: 0;
+  }
+  .pass-btn-box {
+    text-align: center;
+  }
+  .change-pass-wrap p {
+    text-align: center;
+  }
+  .user-info-box {
+    min-width: 350px;
+    max-width: 350px;
+    width: 100%;
+    background: none;
+    margin: 0 auto;
+  }
+  .info-box {
+    padding: 0;
+  }
+  .details p {
+    font-size: 14px;
+  }
+  .payment-btn {
+    margin: 20px 0 0 0;
+  }
+  .payment-box {
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .payment-text {
+    text-align: center;
+  }
+  .alert-box {
+    max-width: 350px;
+    min-width: 350px;
+    width: 100%;
+    text-align: center;
+    margin: 15px auto 0;
+  }
+}
+@media only screen and (max-width: 385px) {
+  table.dataTable.nowrap th,
+  table.dataTable.nowrap td {
+    padding: 15px 20px 15px 0;
+    font-size: 13px;
+  }
+  .voucher-input input {
+    padding: 15px 0px 15px 20px;
+  }
+  .close-btn {
+    top: 5px;
+  }
+  .popup-head h6 {
+    font-size: 16px;
+  }
+  .side-logo a img {
+    max-width: 100px;
+  }
+  .header-leftwrap {
+    max-width: 170px;
+  }
+  .lineChartWrap {
+    min-width: 250px;
+    max-width: 250px;
+    min-height: 190px;
+    max-height: 190px;
+  }
+  .overview-boxes .box {
+    min-width: 250px;
+    max-width: 250px;
+  }
+  .status-box {
+    min-width: 245px;
+    max-width: 245px;
+    padding: 25px 36px;
+    border-radius: 12px;
+  }
+  .alert-box {
+    max-width: 270px;
+    min-width: 270px;
+    width: 100%;
+    margin: 0;
+  }
+  .black-head {
+    font-size: 18px;
+    margin-bottom: 30px;
+  }
+  .user-info-box {
+    min-width: 270px;
+    max-width: 270px;
+    width: 100%;
+  }
+  .details p {
+    font-size: 11px;
+  }
+  .edit-btn a {
+    padding: 8px 30px;
+  }
+  .change-pass-wrap p {
+    font-size: 13px;
+    max-width: 510px;
+  }
+  .change-pass-wrap {
+    min-width: 300px;
+    max-width: 300px;
+    width: 100%;
+  }
+  .black-head {
+    font-size: 15px;
+    text-align: initial;
+  }
+  .pass-btn-box {
+    text-align: initial;
+  }
+  .change-pass-wrap p {
+    font-size: 13px;
+    min-width: 270px;
+    max-width: 270px;
+    text-align: initial;
+    margin: 0;
+  }
+  .payment-box {
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .payment-text {
+    text-align: initial;
+  }
+  .box-text2 {
+    font-size: 40px;
+  }
+  .box-text1 {
+    font-size: 15px;
+  }
+  .box-status {
+    font-size: 16px;
+  }
+}

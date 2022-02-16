@@ -1,17 +1,14 @@
 import { combineReducers } from "redux";
-// import Dishes from "./dishes";
-// import Leaders from "./leaders";
-// import Comments from "./comments";
-// import Promotions from "./promotions";
+import Authenticate from "./authReducer";
+import Categories from "./categoryReducer";
 import { createForms } from "react-redux-form";
-import { InitialFeedback } from "../forms";
+import { InitialFeedback, SignupUser } from "../forms";
 
 export default combineReducers({
-  //   dishesStorage: Dishes,
-  //   leadersStorage: Leaders,
-  //   Comments: Comments,
-  //   promotionsStorage: Promotions,
+  user_authenticate: Authenticate,
+  user_categories: Categories,
   ...createForms({
     feedback: InitialFeedback,
+    signup: SignupUser,
   }),
 });

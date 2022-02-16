@@ -7,3 +7,9 @@ export const InitialFeedback = {
   contactType: "Tel.",
   message: "",
 };
+
+export const SignupUser = {
+  full_name: "",
+  email: "",
+  password: "",
+};
