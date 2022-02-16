@@ -1316,14 +1316,14 @@ header {
 .filter-btn:hover {
   background: #333333;
 }
-aside {
-  max-width: 250px;
-  width: 100%;
-  position: absolute;
-  top: 0;
-  left: 1%;
+.filter-aside {
+  max-width: 250px !important;
+  width: 100% !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 1% !important;
   z-index: 999;
-  padding: 0 30px;
+  padding: 0 30px !important;
   transition: all 0.6s ease-in-out;
 }
 .filter-box {
@@ -2740,4 +2740,7 @@ PRODUCT QUANTITY CSS END
   color: #fff !important;
   background-color: #006eb7 !important;
   border-color: #006eb7 !important;
+}
+.owl-carousel .owl-controls {
+  display: none !important;
 }

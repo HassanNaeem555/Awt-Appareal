@@ -76,7 +76,7 @@ const Filters = ({ name }) => {
     setRenderParentCategory(name());
   });
   return (
-    <aside>
+    <aside className="filter-aside">
       <div className="filter-box">
         <Accordion>
           <ParentCategoryToggle eventKey="0" />

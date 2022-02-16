@@ -11,7 +11,7 @@ export function userAuth(user_data) {
 export function userLogedOut(navigate) {
   return async (dispatch) => {
     dispatch({
-      type: USER_AUTH,
+      type: USER_SIGNED_OUT,
     });
     navigate("/");
   };

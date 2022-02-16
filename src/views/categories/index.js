@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { Pagination } from "react-bootstrap";
 import Filter from "./filters";
@@ -82,6 +82,9 @@ const Category = () => {
       return <Filter name={getName} />;
     }
   };
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <>
       <CommonBanner img={getImage()} name={getName()} />

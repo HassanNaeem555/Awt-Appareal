@@ -20,6 +20,9 @@ const Header = (props) => {
   const user_authenticate = useSelector(({ user_authenticate }) => {
     return user_authenticate.userLogin;
   });
+  const header_categories = useSelector(({ user_categories }) => {
+    return user_categories.categories;
+  });
   const [current_path, setCurrent_path] = useState("");
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [responsiveNav, setResponsiveNav] = useState(false);
@@ -62,7 +65,7 @@ const Header = (props) => {
   useEffect(() => {
     setCurrent_path(location.pathname);
   });
-  console.log("props", props.resetFeedbackForm);
+  console.log("header_categories", header_categories);
   return (
     <>
       <header>
@@ -168,62 +171,28 @@ const Header = (props) => {
                         About Us
                       </span>
                     </li>
-                    <li className="menu-links">
-                      <span
-                        className={
-                          current_path === "/new-arrival" ? "active_nav" : ""
-                        }
-                        onClick={() => [navigate("/new-arrival")]}
-                      >
-                        New Arrivals
-                      </span>
-                    </li>
-                    <li className="menu-links">
-                      <span
-                        className={current_path === "/mens" ? "active_nav" : ""}
-                        onClick={() => [navigate("/mens")]}
-                      >
-                        Men's
-                      </span>
-                    </li>
-                    <li className="menu-links">
-                      <span
-                        className={
-                          current_path === "/women" ? "active_nav" : ""
-                        }
-                        onClick={() => [navigate("/women")]}
-                      >
-                        Women's
-                      </span>
-                    </li>
-                    <li className="menu-links">
-                      <span
-                        className={
-                          current_path === "/youth" ? "active_nav" : ""
-                        }
-                        onClick={() => [navigate("/youth")]}
-                      >
-                        Youth
-                      </span>
-                    </li>
-                    <li className="menu-links">
-                      <span
-                        className={current_path === "/hats" ? "active_nav" : ""}
-                        onClick={() => [navigate("/hats")]}
-                      >
-                        Hats
-                      </span>
-                    </li>
-                    <li className="menu-links">
-                      <span
-                        className={
-                          current_path === "/accessories" ? "active_nav" : ""
-                        }
-                        onClick={() => [navigate("/accessories")]}
-                      >
-                        Accessories
-                      </span>
-                    </li>
+                    {header_categories.length
+                      ? header_categories.map((category, index) => {
+                          return (
+                            <li className="menu-links" key={index}>
+                              <span
+                                className={
+                                  current_path === `/${category?.category_slug}`
+                                    ? "active_nav"
+                                    : ""
+                                }
+                                onClick={() => [
+                                  navigate(category?.category_slug, {
+                                    state: { id: category?.id },
+                                  }),
+                                ]}
+                              >
+                                {category?.category_name}
+                              </span>
+                            </li>
+                          );
+                        })
+                      : null}
                     <li className="menu-links">
                       <span
                         className={
