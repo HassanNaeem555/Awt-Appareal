@@ -1,6 +1,14 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { Control, Form, Errors, actions } from "react-redux-form";
+import { required, validEmail } from "../../../utils/custom";
 
 const Subscribe = () => {
+  const dispatch = useDispatch();
+  const handleSubscribe = (values) => {
+    console.log("values", values);
+    dispatch(actions.reset("subscribe"));
+  };
   return (
     <section className="index-sec-8">
       <img
@@ -18,21 +26,39 @@ const Subscribe = () => {
         <p className="paragraph text-center">
           We promise we won't write to you often
         </p>
-        <form className="subscribe_form">
+        <Form
+          model="subscribe"
+          className="subscribe_form"
+          onSubmit={(values) => handleSubscribe(values)}
+        >
           <div className="sec-8-input-wrap">
-            <input
-              type="text"
-              className="subscribe-input"
-              name="email"
+            <Control
+              type="email"
+              model=".subscribe_email"
+              name="subscribe_email"
               placeholder="Your Email"
+              className="subscribe-input"
+              validators={{
+                required,
+                validEmail,
+              }}
             />
             <span className="btn-sec-8-wrap">
               <button className="btn-sec-8" type="submit">
                 Subscribe
               </button>
             </span>
+            <Errors
+              className="text-danger mt-1"
+              model=".subscribe_email"
+              show="touched"
+              messages={{
+                required: "Required! ",
+                validEmail: "Invalid Email Address",
+              }}
+            />
           </div>
-        </form>
+        </Form>
       </div>
     </section>
   );

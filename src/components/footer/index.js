@@ -1,8 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Footer = () => {
   const navigate = useNavigate();
+  const footer_categories = useSelector(({ user_categories }) => {
+    return user_categories.categories;
+  });
   return (
     <>
       <footer className="foot-sec-1">
@@ -66,32 +70,28 @@ const Footer = () => {
                     <span onClick={() => [navigate("/about")]}> About Us</span>
                   </li>
                   <li>
-                    <span> Men's</span>
-                  </li>
-                  <li>
-                    <span>Women's</span>
-                  </li>
-                  <li>
-                    <span onClick={() => [navigate("/new-arrival")]}>
-                      New Arrival's
-                    </span>
-                  </li>
-                </ul>
-                <ul className="list-unstyled">
-                  <li>
-                    <span>Youth</span>
-                  </li>
-                  <li>
-                    <span>Hats</span>
-                  </li>
-                  <li>
-                    <span>Accessories</span>
-                  </li>
-                  <li>
                     <span onClick={() => [navigate("/contact")]}>
                       Contact Us
                     </span>
                   </li>
+                </ul>
+                <ul className="list-unstyled">
+                  {footer_categories.length > 0
+                    ? footer_categories.map((category, index) => {
+                        return (
+                          <li
+                            key={index}
+                            onClick={() => {
+                              navigate(category?.category_slug, {
+                                state: { id: category?.id },
+                              });
+                            }}
+                          >
+                            <span>{category?.category_name}</span>
+                          </li>
+                        );
+                      })
+                    : null}
                 </ul>
               </div>
             </div>
@@ -102,7 +102,11 @@ const Footer = () => {
               <div className="content-wrap-1">
                 <ul className="list-unstyled">
                   <li>
-                    <span onClick={() => [navigate("/privacy-policy")]}>
+                    <span
+                      onClick={() => {
+                        navigate("/privacy-policy");
+                      }}
+                    >
                       Privacy Policy
                     </span>
                   </li>
@@ -223,7 +227,7 @@ const Footer = () => {
         <div className="container">
           <div className="copyright-bar">
             <div className="text-box">
-              <p>©Copyright 2021 AWTB Apparel. All Right Reserved</p>
+              <p>©Copyright 2022 AWTB Apparel. All Right Reserved</p>
             </div>
           </div>
         </div>

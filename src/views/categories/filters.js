@@ -74,7 +74,7 @@ const Filters = ({ name }) => {
   };
   useEffect(() => {
     setRenderParentCategory(name());
-  });
+  }, []);
   return (
     <aside className="filter-aside">
       <div className="filter-box">

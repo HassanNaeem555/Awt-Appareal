@@ -1,6 +1,14 @@
 import React, { useLayoutEffect } from "react";
+import { useDispatch } from "react-redux";
+import { Control, Form, Errors, actions } from "react-redux-form";
+import { required, maxLength, minLength } from "../../utils/custom";
 
 const ContactView = () => {
+  const dispatch = useDispatch();
+  const handleSubmit = (values) => {
+    console.log("values", values);
+    dispatch(actions.reset("contact"));
+  };
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
   });
@@ -25,31 +33,83 @@ const ContactView = () => {
               Lorem ipsum dolor sit amet, consectetur adipisicing.
             </p>
           </div>
-          <form>
-            <input
+          <Form
+            model="contact"
+            onSubmit={(values) => {
+              handleSubmit(values);
+            }}
+          >
+            <Control
               type="text"
+              model=".full_name"
+              name="full_name"
               placeholder="Full Name"
-              className="contact-field mb-4"
+              className="contact-field mb-2"
+              validators={{
+                required,
+                minLength: minLength(3),
+                maxLength: maxLength(15),
+              }}
             />
-            <input
-              type="tel"
+            <Errors
+              className="text-danger mb-4"
+              model=".full_name"
+              show="touched"
+              messages={{
+                required: "Required! ",
+                minLength: "Must be greater than 3 characters",
+                maxLength: "Must be 15 characters or less",
+              }}
+            />
+            <Control
+              type="number"
+              model=".mobile_number"
+              name="mobile_number"
               placeholder="Phone Number"
-              className="contact-field mb-4"
+              className="contact-field mb-2"
+              validators={{
+                required,
+                maxLength: maxLength(11),
+              }}
             />
-            <select className="contact-field mb-4">
+            <Errors
+              className="text-danger mb-4"
+              model=".mobile_number"
+              show="touched"
+              messages={{
+                required: "Required! ",
+                maxLength: "Must be 11 numbers or less",
+              }}
+            />
+            <Control.textarea
+              model=".message"
+              name="message"
+              placeholder="Message.."
+              className="contact-field mb-2"
+              validators={{
+                required,
+                minLength: minLength(3),
+              }}
+            />
+            <Errors
+              className="text-danger mb-4"
+              model=".message"
+              show="touched"
+              messages={{
+                required: "Required! ",
+                minLength: "Must be greater than 3 characters",
+              }}
+            />
+            {/* <select className="contact-field mb-4">
               <option>Subjects</option>
               <option>Lorem ipsum</option>
               <option>Lorem ipsum</option>
               <option>Lorem ipsum</option>
-            </select>
-            <textarea
-              className="contact-field mb-4"
-              placeholder="Message.."
-            ></textarea>
+            </select> */}
             <button type="submit" className="cta-btn">
               Send Message
             </button>
-          </form>
+          </Form>
           <div className="contactUs-bottom">
             <p className="paragraph mb-3">
               Lorem ipsum dolor sit amet, consectetur adipisicing.

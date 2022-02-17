@@ -7,14 +7,15 @@ import RecommendedProducts from "../../components/recommendedProducts";
 import CommonProductCard from "../../components/commonProductCard";
 
 const Category = () => {
+  const location = useLocation();
   const [active, setActive] = useState(1);
   const { pathname } = useLocation();
-  const addCart = () => {
-    let btn = document.getElementById("cart_add");
-    if (btn) {
-      btn.classList.add("added");
-    }
-  };
+  // const addCart = () => {
+  //   let btn = document.getElementById("cart_add");
+  //   if (btn) {
+  //     btn.classList.add("added");
+  //   }
+  // };
   let items = [];
   for (let number = 1; number <= 5; number++) {
     items.push(
@@ -84,7 +85,7 @@ const Category = () => {
   };
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+  }, [location.pathname]);
   return (
     <>
       <CommonBanner img={getImage()} name={getName()} />

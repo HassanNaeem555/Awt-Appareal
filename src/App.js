@@ -1,7 +1,7 @@
-import React, { useLayoutEffect } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import MainLayout from "./layout/MainLayout";
 import RenderRoutes from "./routes";
 import { getApi } from "./utils/apiFunctions";
@@ -17,7 +17,7 @@ const App = () => {
   // const header_categories = useSelector(({ user_categories }) => {
   //   return user_categories.categories;
   // });
-  useLayoutEffect(() => {
+  useEffect(() => {
     async function getCategory() {
       const result = await getApi(categories);
       dispatch(getCategories(result));

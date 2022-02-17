@@ -1,4 +1,4 @@
-import React, { Suspense, Fragment, lazy } from "react";
+import React, { Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import HomeView from "./views/home/HomeView";
 import CartView from "./views/cart/CartView";
