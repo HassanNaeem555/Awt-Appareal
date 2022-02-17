@@ -2,7 +2,7 @@ import { combineReducers } from "redux";
 import Authenticate from "./authReducer";
 import Categories from "./categoryReducer";
 import { createForms } from "react-redux-form";
-import { SignupUser, LoginUser } from "../forms";
+import { SignupUser, LoginUser, Subscribe, Contact } from "../forms";
 
 export default combineReducers({
   user_authenticate: Authenticate,
@@ -10,5 +10,7 @@ export default combineReducers({
   ...createForms({
     signup: SignupUser,
     login: LoginUser,
+    subscribe: Subscribe,
+    contact: Contact,
   }),
 });

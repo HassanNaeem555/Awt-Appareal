@@ -4,12 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { userAuth } from "../../store/action/authAction";
 import { Control, Form, Errors, actions } from "react-redux-form";
-
-const required = (val) => val && val.length;
-const maxLength = (len) => (val) => !val || val.length <= len;
-const minLength = (len) => (val) => val && val.length >= len;
-const validEmail = (val) =>
-  /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
+import { required, maxLength, minLength, validEmail } from "../../utils/custom";
 
 const Header = () => {
   const location = useLocation();
@@ -180,11 +175,11 @@ const Header = () => {
                                     ? "active_nav"
                                     : ""
                                 }
-                                onClick={() => [
+                                onClick={() => {
                                   navigate(category?.category_slug, {
                                     state: { id: category?.id },
-                                  }),
-                                ]}
+                                  });
+                                }}
                               >
                                 {category?.category_name}
                               </span>
