@@ -28,7 +28,7 @@ const App = () => {
     // } else {
     //   console.log("api not hit for categories", header_categories.length);
     // }
-  }, []);
+  }, [dispatch]);
   return (
     <Router>
       <MainLayout>
@@ -42,7 +42,7 @@ const App = () => {
           closeOnClick
           rtl={false}
           pauseOnFocusLoss
-          draggable
+          draggable={true}
           pauseOnHover
         />
       </MainLayout>
