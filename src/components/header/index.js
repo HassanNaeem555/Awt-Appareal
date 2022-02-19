@@ -3,6 +3,7 @@ import { Modal } from "react-bootstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { userAuth } from "../../store/action/authAction";
+import { ImageURL } from "../../utils/custom";
 import { Control, Form, Errors, actions } from "react-redux-form";
 import { required, maxLength, minLength, validEmail } from "../../utils/custom";
 
@@ -15,6 +16,9 @@ const Header = () => {
   });
   const header_categories = useSelector(({ user_categories }) => {
     return user_categories.categories;
+  });
+  const header_content = useSelector(({ user_settings }) => {
+    return user_settings.web_setting;
   });
   const [current_path, setCurrent_path] = useState("");
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -69,7 +73,11 @@ const Header = () => {
               <div className="logo">
                 <span onClick={() => [navigate("/")]}>
                   <img
-                    src="assets/images/logo.png"
+                    src={
+                      header_content?.logo
+                        ? `${ImageURL}payment/${header_content?.logo}`
+                        : "assets/images/logo.png"
+                    }
                     alt="logo"
                     className="img-fluid"
                   />
@@ -120,7 +128,11 @@ const Header = () => {
                   </ul>
                   <div className="social-icons">
                     <a
-                      href="https://www.facebook.com/"
+                      href={
+                        header_content?.facebook
+                          ? header_content?.facebook
+                          : "https://www.facebook.com/"
+                      }
                       target="_blank"
                       rel="noreferrer"
                       className="social-icon icon-none"
@@ -128,7 +140,11 @@ const Header = () => {
                       <i className="fa fa-facebook-f"></i>
                     </a>
                     <a
-                      href="https://www.instagram.com/"
+                      href={
+                        header_content?.instagram
+                          ? header_content?.instagram
+                          : "https://www.instagram.com/"
+                      }
                       target="_blank"
                       rel="noreferrer"
                       className="social-icon icon-none"
@@ -171,14 +187,18 @@ const Header = () => {
                             <li className="menu-links" key={index}>
                               <span
                                 className={
-                                  current_path === `/${category?.category_slug}`
+                                  current_path ===
+                                  `/category/${category?.category_slug}`
                                     ? "active_nav"
                                     : ""
                                 }
                                 onClick={() => {
-                                  navigate(category?.category_slug, {
-                                    state: { id: category?.id },
-                                  });
+                                  navigate(
+                                    `/category/${category?.category_slug}`,
+                                    {
+                                      state: { id: category?.id },
+                                    }
+                                  );
                                 }}
                               >
                                 {category?.category_name}

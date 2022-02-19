@@ -1,13 +1,24 @@
 import React, { useLayoutEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Control, Form, Errors, actions } from "react-redux-form";
 import { required, maxLength, minLength } from "../../utils/custom";
+import { postApi } from "../../utils/apiFunctions";
+import { contact_us } from "../../utils/api";
+import { toast } from "react-toastify";
 
 const ContactView = () => {
   const dispatch = useDispatch();
-  const handleSubmit = (values) => {
-    console.log("values", values);
-    dispatch(actions.reset("contact"));
+  const contact_content = useSelector(({ user_settings }) => {
+    return user_settings.web_setting;
+  });
+  const handleSubmit = async (values) => {
+    const { status, data } = await postApi(contact_us, values);
+    if (status === 200) {
+      dispatch(actions.reset("contact"));
+      toast.success(data?.message);
+    } else {
+      toast.error("Something Went Wrong");
+    }
   };
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
@@ -29,9 +40,7 @@ const ContactView = () => {
         <div className="container">
           <div className="contactSection-heading">
             <p className="black-heading">Contact Us</p>
-            <p className="paragraph">
-              Lorem ipsum dolor sit amet, consectetur adipisicing.
-            </p>
+            <p className="paragraph">Contact us for getting info about us.</p>
           </div>
           <Form
             model="contact"
@@ -63,8 +72,8 @@ const ContactView = () => {
             />
             <Control
               type="number"
-              model=".mobile_number"
-              name="mobile_number"
+              model=".phone_number"
+              name="phone_number"
               placeholder="Phone Number"
               className="contact-field mb-2"
               validators={{
@@ -74,7 +83,7 @@ const ContactView = () => {
             />
             <Errors
               className="text-danger mb-4"
-              model=".mobile_number"
+              model=".phone_number"
               show="touched"
               messages={{
                 required: "Required! ",
@@ -100,35 +109,42 @@ const ContactView = () => {
                 minLength: "Must be greater than 3 characters",
               }}
             />
-            {/* <select className="contact-field mb-4">
-              <option>Subjects</option>
-              <option>Lorem ipsum</option>
-              <option>Lorem ipsum</option>
-              <option>Lorem ipsum</option>
-            </select> */}
             <button type="submit" className="cta-btn">
               Send Message
             </button>
           </Form>
           <div className="contactUs-bottom">
-            <p className="paragraph mb-3">
-              Lorem ipsum dolor sit amet, consectetur adipisicing.
-            </p>
-            <p className="paragraph mb-3">
-              2972 Westhlorem <br />
-              Rd. Sot,Amet Ana, <br />
-              Melbourne 85486
-            </p>
+            {contact_content?.footer_description && (
+              <p className="paragraph mb-3">
+                {contact_content?.footer_description}
+              </p>
+            )}
+            {contact_content?.address && (
+              <p className="paragraph mb-3">{contact_content?.address}</p>
+            )}
             <div className="contact-details">
-              <a href="tel:+15000800000" className="phoneNumber">
-                +1 500-0800-000
-              </a>
-              <a href="mailto:info@awtb.com">info@awtb.com</a>
+              {contact_content?.phone_number && (
+                <a
+                  href={`tel:${contact_content?.phone_number}`}
+                  className="phoneNumber"
+                >
+                  {contact_content?.phone_number}
+                </a>
+              )}
+              {contact_content?.email && (
+                <a href={`mailto:${contact_content?.email}`}>
+                  {contact_content?.email}
+                </a>
+              )}
             </div>
             <p className="black-heading mb-2">Follow Us</p>
             <div className="social-icons">
               <a
-                href="https://www.facebook.com/"
+                href={
+                  contact_content?.facebook
+                    ? contact_content?.facebook
+                    : "https://www.facebook.com/"
+                }
                 target="_blank"
                 rel="noreferrer"
                 className="social-icon"
@@ -136,7 +152,11 @@ const ContactView = () => {
                 <i className="fa fa-facebook-f"></i>
               </a>
               <a
-                href="https://www.instagram.com/"
+                href={
+                  contact_content?.instagram
+                    ? contact_content?.instagram
+                    : "https://www.instagram.com/"
+                }
                 target="_blank"
                 rel="noreferrer"
                 className="social-icon"

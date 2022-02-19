@@ -2,12 +2,21 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { Control, Form, Errors, actions } from "react-redux-form";
 import { required, validEmail } from "../../../utils/custom";
+import { subscribe } from "../../../utils/api";
+import { postApi } from "../../../utils/apiFunctions";
+import { toast } from "react-toastify";
 
 const Subscribe = () => {
   const dispatch = useDispatch();
-  const handleSubscribe = (values) => {
+  const handleSubscribe = async (values) => {
     console.log("values", values);
-    dispatch(actions.reset("subscribe"));
+    const { status, data } = await postApi(subscribe, values);
+    if (status === 200) {
+      dispatch(actions.reset("subscribe"));
+      toast.success(data?.message);
+    } else {
+      toast.error("Something Went Wrong");
+    }
   };
   return (
     <section className="index-sec-8">
@@ -34,8 +43,8 @@ const Subscribe = () => {
           <div className="sec-8-input-wrap">
             <Control
               type="email"
-              model=".subscribe_email"
-              name="subscribe_email"
+              model=".email"
+              name="email"
               placeholder="Your Email"
               className="subscribe-input"
               validators={{
@@ -50,7 +59,7 @@ const Subscribe = () => {
             </span>
             <Errors
               className="text-danger mt-1"
-              model=".subscribe_email"
+              model=".email"
               show="touched"
               messages={{
                 required: "Required! ",

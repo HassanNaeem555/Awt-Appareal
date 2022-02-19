@@ -32,7 +32,9 @@ const BestSeller = ({ category }) => {
                         <button
                           className="cta-btn"
                           onClick={() => {
-                            navigate(category?.category_slug);
+                            navigate(`/category/${category?.category_slug}`, {
+                              state: { id: category?.id },
+                            });
                           }}
                         >
                           View All
@@ -50,7 +52,7 @@ const BestSeller = ({ category }) => {
                       className="col-12 col-sm-6 col-md-4 col-lg-4 mb-4"
                       key={item + index}
                     >
-                      <LazyLoader />
+                      <LazyLoader height={470} />
                     </div>
                   );
                 })}

@@ -1,9 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { ImageURL } from "../../utils/custom";
 
 const Footer = () => {
   const navigate = useNavigate();
+  const footer_content = useSelector(({ user_settings }) => {
+    return user_settings.web_setting;
+  });
   const footer_categories = useSelector(({ user_categories }) => {
     return user_categories.categories;
   });
@@ -27,7 +31,11 @@ const Footer = () => {
               <div className="logo-box">
                 <span onClick={() => [navigate("/")]}>
                   <img
-                    src="assets/images/foot-logo.png"
+                    src={
+                      footer_content?.footer_logo
+                        ? `${ImageURL}payment/${footer_content?.footer_logo}`
+                        : "assets/images/foot-cloud.jpg"
+                    }
                     className="img-fluid"
                     alt="footer-logo"
                   />
@@ -35,13 +43,13 @@ const Footer = () => {
               </div>
               <div className="foot-text-wrap">
                 <p className="foot-text">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  {footer_content?.footer_description}
                 </p>
               </div>
               <ul className="footer-social-icons list-unstyled">
                 <li>
                   <a
-                    href="https://www.facebook.com/"
+                    href={footer_content?.facebook}
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -50,7 +58,7 @@ const Footer = () => {
                 </li>
                 <li>
                   <a
-                    href="https://www.instagram.com/"
+                    href={footer_content?.instagram}
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -82,7 +90,7 @@ const Footer = () => {
                           <li
                             key={index}
                             onClick={() => {
-                              navigate(category?.category_slug, {
+                              navigate(`/category/${category?.category_slug}`, {
                                 state: { id: category?.id },
                               });
                             }}
@@ -131,53 +139,71 @@ const Footer = () => {
               </h1>
               <div className="content-wrap-3">
                 <ul className="list-unstyled">
-                  <li>
-                    <span className="foot-text1">Address:</span>
-                    <a
-                      href="https://goo.gl/maps/62W99GLPgQkXDumLA"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="footer-link"
-                    >
-                      {" "}
-                      1429 Netus Rd, NY 48247
-                    </a>
-                  </li>
-                  <li>
-                    <span className="foot-text1">Email:</span>
-                    <a
-                      href="mailto:example123@gmail.com"
-                      className="footer-link"
-                    >
-                      {" "}
-                      example123@gmail.com
-                    </a>
-                  </li>
-                  <li>
-                    <span className="foot-text1">Phone:</span>
-                    <a href="tel:123-456-789" className="footer-link">
-                      {" "}
-                      123-456-789
-                    </a>
-                  </li>
+                  {footer_content?.address && (
+                    <li>
+                      <span className="foot-text1">Address:</span>
+                      <a
+                        href={`${footer_content?.map_url}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="footer-link"
+                      >
+                        {" "}
+                        {footer_content?.address}
+                      </a>
+                    </li>
+                  )}
+                  {footer_content?.email && (
+                    <li>
+                      <span className="foot-text1">Email:</span>
+                      <a
+                        href={`mailto:${footer_content?.email}`}
+                        className="footer-link"
+                      >
+                        {" "}
+                        {footer_content?.email}
+                      </a>
+                    </li>
+                  )}
+                  {footer_content?.phone_number && (
+                    <li>
+                      <span className="foot-text1">Phone:</span>
+                      <a
+                        href={`tel:${footer_content?.phone_number}`}
+                        className="footer-link"
+                      >
+                        {" "}
+                        {footer_content?.phone_number}
+                      </a>
+                    </li>
+                  )}
                 </ul>
                 <div className="payment-wrap">
                   <p className="payment-text">Payment Accepted</p>
                   <ul className="payment-list">
-                    <li>
-                      <a
-                        href="https://www.visa.co.in/pay-with-visa/click-to-pay-with-visa.html"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        <img
-                          src="assets/images/visa.png"
-                          className="img-fluid"
-                          alt="visa-card-payment"
-                        />
-                      </a>
-                    </li>
-                    <li>
+                    {footer_content?.paymethd_1 &&
+                      footer_content?.paymeht_method_image_1 && (
+                        <li>
+                          <a
+                            href={
+                              footer_content?.paymethd_1 &&
+                              footer_content?.paymethd_1
+                            }
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <img
+                              src={
+                                footer_content?.paymeht_method_image_1 &&
+                                `${ImageURL}payment/${footer_content?.paymeht_method_image_1}`
+                              }
+                              className="img-fluid"
+                              alt="visa-card-payment"
+                            />
+                          </a>
+                        </li>
+                      )}
+                    {/* <li>
                       <a
                         href="https://www.paymentmaster.co.uk/"
                         target="_blank"
@@ -215,7 +241,7 @@ const Footer = () => {
                           alt="paypal-card-payment"
                         />
                       </a>
-                    </li>
+                    </li> */}
                   </ul>
                 </div>
               </div>

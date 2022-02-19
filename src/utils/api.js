@@ -1,4 +1,9 @@
 export const register = "/create_account";
 export const login = "/loginProcessApi";
 export const banner = "/banner";
+export const web_setting = "/home_data";
 export const categories = "/view_category";
+export const categories_products = "/get_products";
+export const contact_us = "/add_contact_us";
+export const about_us = "/about_us";
+export const subscribe = "/subscribe";
