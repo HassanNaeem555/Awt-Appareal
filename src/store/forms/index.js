@@ -8,10 +8,10 @@ export const LoginUser = {
   password: "",
 };
 export const Subscribe = {
-  subscribe_email: "",
+  email: "",
 };
 export const Contact = {
   full_name: "",
-  mobile_number: "",
+  phone_number: "",
   message: "",
 };

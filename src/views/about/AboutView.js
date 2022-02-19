@@ -1,10 +1,22 @@
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import CommonBanner from "../../components/commonBanner";
 import Subscribe from "../../components/home/subscribe";
+import { getApi } from "../../utils/apiFunctions";
+import { about_us } from "../../utils/api";
+import { ImageURL } from "../../utils/custom";
+import ImageLoader from "./imageLoader";
 
 const About = () => {
+  const [aboutContent, setAboutContent] = useState({});
+  const getAboutContent = async () => {
+    const { data } = await getApi(about_us);
+    if (data) {
+      setAboutContent(data);
+    }
+  };
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
+    getAboutContent();
   }, []);
   return (
     <>
@@ -14,23 +26,27 @@ const About = () => {
           <div className="row align-items-center">
             <div className="col-12 col-md-6 col-lg-5">
               <div className="aboutSec-content">
-                <p className="black-heading mb-3">Our Mission</p>
-                <p className="paragraph">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor.
-                </p>
+                {aboutContent?.main_heading && (
+                  <p className="black-heading mb-3">
+                    {aboutContent?.main_heading}
+                  </p>
+                )}
+                {aboutContent?.main_description && (
+                  <p className="paragraph">{aboutContent?.main_description}</p>
+                )}
               </div>
             </div>
             <div className="col-12 col-md-6 col-lg-7">
               <div className="aboutSec2-image">
-                <img
-                  src="assets/images/about-img1.jpg"
-                  alt="img"
-                  className="img-fluid"
-                />
+                {aboutContent?.main_image ? (
+                  <img
+                    src={`${ImageURL}about/${aboutContent?.main_image}`}
+                    alt="img"
+                    className="img-fluid"
+                  />
+                ) : (
+                  <ImageLoader height={580} />
+                )}
               </div>
             </div>
           </div>
@@ -39,7 +55,12 @@ const About = () => {
 
       <section className="about-sec3">
         <div className="container">
-          <div className="about-videoBox">
+          <div
+            className="about-videoBox"
+            style={{
+              background: `url(${ImageURL}about/${aboutContent?.thumbnail}) no-repeat center center`,
+            }}
+          >
             <span>
               <i className="fa fa-play"></i>
             </span>
@@ -52,23 +73,25 @@ const About = () => {
           <div className="row align-items-center">
             <div className="col-12 col-md-6 col-lg-6">
               <div className="aboutSec4-image">
-                <img
-                  src="assets/images/aboutSec4-img.jpg"
-                  alt="img"
-                  className="img-fluid"
-                />
+                {aboutContent?.second_image ? (
+                  <img
+                    src={`${ImageURL}about/${aboutContent?.second_image}`}
+                    alt="img"
+                    className="img-fluid"
+                  />
+                ) : (
+                  <ImageLoader height={320} />
+                )}
               </div>
             </div>
             <div className="col-12 col-md-6 col-lg-6">
               <div className="aboutSec4-contentWrap">
                 <div className="aboutSec-content">
                   <p className="black-heading mb-3">
-                    Socks Tends to Consume Everything Else, it Has Become One’s
-                    Entire Life.”
+                    {aboutContent?.second_heading}
                   </p>
                   <p className="paragraph">
-                    Sed ut perspiciatis unde omnis iste natus error sit
-                    voluptatem accusantium doloremque laudantium.
+                    {aboutContent?.second_description}
                   </p>
                 </div>
               </div>
@@ -82,21 +105,23 @@ const About = () => {
           <div className="row align-items-center">
             <div className="col-12 col-md-5 col-lg-4">
               <div className="aboutSec-content">
-                <p className="black-heading mb-3">Our Vision</p>
-                <p className="paragraph">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam.
+                <p className="black-heading mb-3">
+                  {aboutContent?.third_heading}
                 </p>
+                <p className="paragraph">{aboutContent?.third_description}</p>
               </div>
             </div>
             <div className="col-12 col-md-7 col-lg-8">
               <div className="aboutSec5-image">
-                <img
-                  src="assets/images/aboutSec5-img.jpg"
-                  alt="img"
-                  className="img-fluid"
-                />
+                {aboutContent?.third_image ? (
+                  <img
+                    src={`${ImageURL}about/${aboutContent?.third_image}`}
+                    alt="img"
+                    className="img-fluid"
+                  />
+                ) : (
+                  <ImageLoader height={360} />
+                )}
               </div>
             </div>
           </div>
@@ -108,19 +133,20 @@ const About = () => {
           <div className="row align-items-center">
             <div className="col-12 col-md-6 col-lg-6">
               <div className="aboutSec2-image">
-                <img
-                  src="assets/images/aboutSec6-img.jpg"
-                  alt="img"
-                  className="img-fluid"
-                />
+                {aboutContent?.fourth_image ? (
+                  <img
+                    src={`${ImageURL}about/${aboutContent?.fourth_image}`}
+                    alt="img"
+                    className="img-fluid"
+                  />
+                ) : (
+                  <ImageLoader height={580} />
+                )}
               </div>
             </div>
             <div className="col-12 col-md-6 col-lg-6">
               <div className="aboutSec-content">
-                <p className="black-heading">
-                  Elegance is a Question of Personality More Than One's
-                  Clothing.
-                </p>
+                <p className="black-heading">{aboutContent?.fourth_heading}</p>
               </div>
             </div>
           </div>

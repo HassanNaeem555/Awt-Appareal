@@ -14,7 +14,7 @@ export const postApi = async (url, data, navigate_url, navigate) => {
         navigate(navigate_url);
         return;
       }
-      return response.data;
+      return response;
     }
   } catch (error) {
     if (error.response.data.length) {

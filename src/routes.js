@@ -20,7 +20,7 @@ export const RenderRoutes = () => (
       <Route path="/cart" element={<CartView />} />
       <Route path="/checkout" element={<CheckoutView />} />
       <Route path="/product-detail" element={<ProductDetail />} />
-      <Route path="/:id" element={<Category />} />
+      <Route path="/category/:id" element={<Category />} />
       <Route path="/contact" element={<ContactView />} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       <Route path="/user-profile" element={<ProfileView />} />

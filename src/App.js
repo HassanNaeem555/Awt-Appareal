@@ -5,8 +5,9 @@ import { useDispatch } from "react-redux";
 import MainLayout from "./layout/MainLayout";
 import RenderRoutes from "./routes";
 import { getApi } from "./utils/apiFunctions";
-import { categories } from "./utils/api";
+import { categories, web_setting } from "./utils/api";
 import { getCategories } from "./store/action/categoryAction";
+import { getWebSettings } from "./store/action/webSettingAction";
 import "./App.css";
 import "./responsive.css";
 
@@ -20,7 +21,9 @@ const App = () => {
   useEffect(() => {
     async function getCategory() {
       const result = await getApi(categories);
+      const { data } = await getApi(web_setting);
       dispatch(getCategories(result));
+      dispatch(getWebSettings(data));
     }
     getCategory();
     // if (header_categories.length !== 0) {
@@ -34,7 +37,6 @@ const App = () => {
       <MainLayout>
         <RenderRoutes />
         <ToastContainer
-          icon={false}
           position="top-right"
           autoClose={5000}
           hideProgressBar={false}
