@@ -2760,3 +2760,200 @@ PRODUCT QUANTITY CSS END
   margin: 0 auto;
 }
 /* Not Found View 404 Css End */
+
+/****CART SIDEBAR****/
+.cart-sidebar {
+  width: 400px;
+  height: 100%;
+  background: #0f0f0f;
+  position: fixed;
+  top: 0;
+  right: -450px;
+  box-shadow: -6px 0px 10px 0px rgba(0, 0, 0, 0.62);
+  transition: all 0.4s linear;
+  z-index: -100;
+}
+.cart-sidebar.active {
+  transform: translateX(-450px);
+  z-index: 99999;
+}
+.cart-sidebar-inner {
+  height: 100%;
+  padding: 5px 25px;
+  overflow-y: auto;
+  position: relative;
+}
+.cart-sidebar-inner #close-cart-sidebar {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  color: #fff;
+  cursor: pointer;
+}
+.cart-sidebar-inner::-webkit-scrollbar {
+  width: 8px;
+}
+.cart-sidebar-inner::-webkit-scrollbar-track {
+  background: #353535;
+}
+.cart-sidebar-inner::-webkit-scrollbar-thumb {
+  background: #000;
+}
+.cart-sidebar-inner::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+.cart-sidebar-inner .top {
+  text-align: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #3a3a3a;
+}
+.cart-sidebar-inner .top p {
+  font-size: 24px;
+  color: #9a9a9a;
+  font-weight: 500;
+}
+.cart-sidebar-inner .cart-item {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 15px 0;
+  border-bottom: 1px solid #3a3a3a;
+  align-items: center;
+}
+.cart-sidebar-inner .cart-item .cart-img {
+  width: 70px;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.cart-sidebar-inner .cart-item .cart-img img {
+  height: 100%;
+}
+.cart-sidebar-inner .cart-item .cart-desc {
+  width: calc(100% - 70px);
+  padding: 0 20px 0 15px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.cart-sidebar-inner .cart-item .cart-desc .name {
+  font-size: 16px;
+  font-weight: 500;
+  color: #9a9a9a;
+}
+.cart-sidebar-inner .cart-item .cart-desc .customized {
+  font-size: 9px;
+  font-weight: 700;
+  color: #28a745;
+  text-transform: uppercase;
+}
+.cart-sidebar-inner .cart-item .cart-desc .price {
+  font-size: 14px;
+  font-weight: 500;
+  color: #9a9a9a;
+}
+.cart-sidebar-inner .cart-item .cart-desc .delete {
+  position: absolute;
+  top: 0;
+  right: 5px;
+  color: #fff;
+  background: #9a9a9a;
+  width: 19px;
+  height: 19px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  font-size: 12px;
+}
+.cart-sidebar-inner .bottom .amount {
+  padding: 15px 0;
+  border-bottom: 1px solid #3a3a3a;
+}
+.cart-sidebar-inner .bottom .amount p {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.cart-sidebar-inner .bottom .amount p span {
+  font-size: 20px;
+  color: #fff;
+}
+.cart-sidebar-inner .bottom .amount p span:first-of-type {
+  font-weight: 500;
+}
+.cart-sidebar-inner .bottom .cart-button {
+  padding: 15px 0 5px 0;
+}
+.cart-sidebar-inner .bottom .cart-button span {
+  display: block;
+  margin-bottom: 10px;
+  color: #9a9a9a;
+  text-align: center;
+  border: 1px solid #9a9a9a;
+  padding: 10px;
+  transition: all 0.3s;
+}
+.cart-sidebar-inner .bottom .cart-button span:hover {
+  border-color: #000;
+  background: #000;
+  color: #fff;
+}
+.card-sidebar-overlay {
+  visibility: hidden;
+  transition: opacity 0.4s;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  z-index: -101;
+}
+.card-sidebar-overlay.active {
+  visibility: visible;
+  opacity: 1;
+  z-index: 99998;
+}
+.cart-sidebar-inner .quaitity-box {
+  border-color: #9a9a9a;
+  margin-top: 5px;
+  margin-right: 0;
+  padding: 5px 8px;
+  width: 180px;
+}
+.cart-sidebar-inner .quaitity-box .plus-minus span,
+.cart-sidebar-inner .quaitity-box .plus-minus label {
+  color: #9a9a9a;
+}
+.cart-sidebar-inner .quaitity-box .plus-minus label {
+  font-size: 13px;
+  top: 3px;
+  font-weight: 600;
+}
+.cart-sidebar-inner .quaitity-box .plus-minus .cart-quantity {
+  font-size: 12px;
+  width: 25px;
+  border-radius: 4px;
+}
+.quaitity-box .plus-minus .cart-quantity {
+  border: 0;
+  width: 2%;
+  background: #efefef !important;
+  font-size: 17px;
+  color: #191919;
+  font-weight: 600;
+  border-radius: 8px;
+  border: 1px solid #c2c2c2;
+  text-align: center;
+  width: 27px;
+  margin: 0 7px;
+}
+/*****CART PAGE END'S*****/
+.about-video-modal iframe {
+  width: 100%;
+  max-height: 400px;
+  min-height: 400px;
+}

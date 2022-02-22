@@ -3,6 +3,9 @@ import React from "react";
 import { ImageURL } from "../../utils/custom";
 
 const CommonProductCard = ({ products }) => {
+  const truncate = (str, n) => {
+    return str?.length > n ? str.substr(0, n - 1) + "..." : str;
+  };
   return (
     <>
       {products.map((item, index) => {
@@ -30,7 +33,7 @@ const CommonProductCard = ({ products }) => {
                 </div>
               </div>
               <div className="product-info">
-                <p>{item?.product_name}</p>
+                <p>{truncate(item?.product_name, 7)}</p>
                 <span>{item?.product_price}</span>
               </div>
             </div>
