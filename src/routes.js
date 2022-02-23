@@ -19,7 +19,7 @@ export const RenderRoutes = () => (
       <Route path="/about" element={<AboutView />} />
       <Route path="/cart" element={<CartView />} />
       <Route path="/checkout" element={<CheckoutView />} />
-      <Route path="/product-detail" element={<ProductDetail />} />
+      <Route path="/product-detail/:id" element={<ProductDetail />} />
       <Route path="/category/:id" element={<Category />} />
       <Route path="/contact" element={<ContactView />} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />

@@ -1,18 +1,24 @@
 import React, { useLayoutEffect, useState } from "react";
+import { Modal } from "react-bootstrap";
 import CommonBanner from "../../components/commonBanner";
 import Subscribe from "../../components/home/subscribe";
 import { getApi } from "../../utils/apiFunctions";
 import { about_us } from "../../utils/api";
 import { ImageURL } from "../../utils/custom";
 import ImageLoader from "./imageLoader";
+import TextLoader from "../../components/textLoader";
 
 const About = () => {
   const [aboutContent, setAboutContent] = useState({});
+  const [aboutContentVideo, setAboutContentVideo] = useState(false);
   const getAboutContent = async () => {
     const { data } = await getApi(about_us);
     if (data) {
       setAboutContent(data);
     }
+  };
+  const toggleAboutVideoModal = () => {
+    setAboutContentVideo(!aboutContentVideo);
   };
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
@@ -21,18 +27,29 @@ const About = () => {
   return (
     <>
       <CommonBanner img={"about-sec1"} name={"About Us"} />
+
       <section className="about-sec2">
         <div className="container">
           <div className="row align-items-center">
             <div className="col-12 col-md-6 col-lg-5">
               <div className="aboutSec-content">
-                {aboutContent?.main_heading && (
+                {aboutContent?.main_heading ? (
                   <p className="black-heading mb-3">
                     {aboutContent?.main_heading}
                   </p>
+                ) : (
+                  <TextLoader height={20} />
                 )}
-                {aboutContent?.main_description && (
+                {aboutContent?.main_description ? (
                   <p className="paragraph">{aboutContent?.main_description}</p>
+                ) : (
+                  <>
+                    <TextLoader height={20} />
+                    <TextLoader height={20} />
+                    <TextLoader height={20} />
+                    <TextLoader height={20} />
+                    <TextLoader height={20} />
+                  </>
                 )}
               </div>
             </div>
@@ -55,16 +72,23 @@ const About = () => {
 
       <section className="about-sec3">
         <div className="container">
-          <div
-            className="about-videoBox"
-            style={{
-              background: `url(${ImageURL}about/${aboutContent?.thumbnail}) no-repeat center center`,
-            }}
-          >
-            <span>
-              <i className="fa fa-play"></i>
-            </span>
-          </div>
+          {aboutContent?.thumbnail ? (
+            <div
+              className="about-videoBox"
+              style={{
+                background: `url(${ImageURL}about/${aboutContent?.thumbnail}) no-repeat center center`,
+              }}
+              onClick={() => {
+                aboutContent?.thumbnail_url && toggleAboutVideoModal();
+              }}
+            >
+              <span>
+                <i className="fa fa-play"></i>
+              </span>
+            </div>
+          ) : (
+            <ImageLoader height={530} />
+          )}
         </div>
       </section>
 
@@ -87,12 +111,24 @@ const About = () => {
             <div className="col-12 col-md-6 col-lg-6">
               <div className="aboutSec4-contentWrap">
                 <div className="aboutSec-content">
-                  <p className="black-heading mb-3">
-                    {aboutContent?.second_heading}
-                  </p>
-                  <p className="paragraph">
-                    {aboutContent?.second_description}
-                  </p>
+                  {aboutContent?.second_heading ? (
+                    <p className="black-heading mb-3">
+                      {aboutContent?.second_heading}
+                    </p>
+                  ) : (
+                    <TextLoader height={20} />
+                  )}
+                  {aboutContent?.second_description ? (
+                    <p className="paragraph">
+                      {aboutContent?.second_description}
+                    </p>
+                  ) : (
+                    <>
+                      <TextLoader height={20} />
+                      <TextLoader height={20} />
+                      <TextLoader height={20} />
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -105,10 +141,23 @@ const About = () => {
           <div className="row align-items-center">
             <div className="col-12 col-md-5 col-lg-4">
               <div className="aboutSec-content">
-                <p className="black-heading mb-3">
-                  {aboutContent?.third_heading}
-                </p>
-                <p className="paragraph">{aboutContent?.third_description}</p>
+                {aboutContent?.third_heading ? (
+                  <p className="black-heading mb-3">
+                    {aboutContent?.third_heading}
+                  </p>
+                ) : (
+                  <TextLoader height={20} />
+                )}
+                {aboutContent?.third_description ? (
+                  <p className="paragraph">{aboutContent?.third_description}</p>
+                ) : (
+                  <>
+                    <TextLoader height={20} />
+                    <TextLoader height={20} />
+                    <TextLoader height={20} />
+                    <TextLoader height={20} />
+                  </>
+                )}
               </div>
             </div>
             <div className="col-12 col-md-7 col-lg-8">
@@ -146,13 +195,46 @@ const About = () => {
             </div>
             <div className="col-12 col-md-6 col-lg-6">
               <div className="aboutSec-content">
-                <p className="black-heading">{aboutContent?.fourth_heading}</p>
+                {aboutContent?.fourth_heading ? (
+                  <p className="black-heading">
+                    {aboutContent?.fourth_heading}
+                  </p>
+                ) : (
+                  <>
+                    <TextLoader height={20} />
+                    <TextLoader height={20} />
+                    <TextLoader height={20} />
+                  </>
+                )}
               </div>
             </div>
           </div>
         </div>
       </section>
+
       <Subscribe />
+
+      <Modal
+        className="fade login-signup-modal user-modals about-video-modal"
+        centered={true}
+        onHide={toggleAboutVideoModal}
+        show={aboutContentVideo}
+      >
+        <Modal.Header>
+          <button className="close" onClick={toggleAboutVideoModal}>
+            <span>&times;</span>
+          </button>
+        </Modal.Header>
+        <Modal.Body>
+          <iframe
+            src={aboutContent?.thumbnail_url}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            title="Embedded youtube"
+            style={{ borderRadius: 15 }}
+          ></iframe>
+        </Modal.Body>
+      </Modal>
     </>
   );
 };

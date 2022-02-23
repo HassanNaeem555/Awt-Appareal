@@ -9,10 +9,11 @@ import Testimonials from "../../components/home/testimonials";
 import InstagramApparealPost from "../../components/home/instagramApparealPost";
 import Subscribe from "../../components/home/subscribe";
 import { getApi } from "../../utils/apiFunctions";
-import { banner } from "../../utils/api";
+import { banner, category_with_product } from "../../utils/api";
 
 const HomeView = () => {
   const [mainBanner, setMainBanner] = useState([]);
+  const [categoryWithProducts, setCategoryWithProducts] = useState([]);
   const [renderSelectedCategory, setRenderSelectedCategory] = useState([]);
   const header_categories = useSelector(({ user_categories }) => {
     return user_categories.categories;
@@ -29,12 +30,16 @@ const HomeView = () => {
         return e.category_slug === "youth";
       });
       const result = await getApi(banner);
+      const { data } = await getApi(category_with_product);
       setMainBanner(result);
       setRenderSelectedCategory([
         selectedYouthCategory,
         selectedMenCategory,
         selectedWomenCategory,
       ]);
+      if (data) {
+        setCategoryWithProducts(data);
+      }
     }
     if (mainBanner.length === 0) {
       getBanner();
@@ -47,7 +52,7 @@ const HomeView = () => {
     <>
       <HomeBanner bannerContent={mainBanner} />
       <ShopByCollection category={renderSelectedCategory} />
-      <NewArrival />
+      <NewArrival categoryContainProducts={categoryWithProducts} />
       <HomeCenterBanner />
       <BestSeller category={renderSelectedCategory} />
       <Testimonials />

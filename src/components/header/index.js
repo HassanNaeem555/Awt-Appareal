@@ -23,8 +23,12 @@ const Header = () => {
   const [current_path, setCurrent_path] = useState("");
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [responsiveNav, setResponsiveNav] = useState(false);
+  const [openCartModal, setOpenCartModal] = useState(false);
   const toggleNav = () => {
     setResponsiveNav(!responsiveNav);
+  };
+  const toggleCartNav = () => {
+    setOpenCartModal(!openCartModal);
   };
   const openSearch = () => {
     document.getElementById("myOverlay").style.display = "block";
@@ -91,7 +95,7 @@ const Header = () => {
                     <li>
                       <span className="p-0 search-btn" onClick={openSearch}>
                         <img
-                          src="assets/images/search-icon.png"
+                          src={`${window.location.origin}/assets/images/search-icon.png`}
                           alt="img"
                           className="img-fluid"
                         />
@@ -106,7 +110,7 @@ const Header = () => {
                         }}
                       >
                         <img
-                          src="assets/images/user-icon.png"
+                          src={`${window.location.origin}/assets/images/user-icon.png`}
                           alt="img"
                           className="img-fluid"
                         />
@@ -115,10 +119,12 @@ const Header = () => {
                     <li>
                       <span
                         className="cart-icon"
-                        onClick={() => [navigate("/cart")]}
+                        onClick={() => {
+                          toggleCartNav();
+                        }}
                       >
                         <img
-                          src="assets/images/cart-icon.png"
+                          src={`${window.location.origin}/assets/images/cart-icon.png`}
                           alt="img"
                           className="img-fluid"
                         />
@@ -241,6 +247,156 @@ const Header = () => {
           </div>
         </div>
       </header>
+
+      {/* <!--Add to cart--> */}
+      {openCartModal && (
+        <>
+          <div className="cart-sidebar active">
+            <div className="cart-sidebar-inner">
+              <span
+                onClick={() => {
+                  toggleCartNav();
+                }}
+              >
+                <i className="fa fa-times"></i>
+              </span>
+              <div className="top">
+                <p>Cart</p>
+              </div>
+              <div className="cart-items-wrap">
+                <div className="cart-item">
+                  <div className="cart-img">
+                    <img
+                      src="assets/images/p-product-01.jpg"
+                      className="img-fluid"
+                      alt="product-cart"
+                    />
+                  </div>
+                  <div className="cart-desc">
+                    <p className="name">Lorem ipsum</p>
+                    <p className="customized">CUSTOMIZED*</p>
+                    <p className="price">$5.00</p>
+                    <div className="quaitity-box">
+                      <div className="plus-minus">
+                        <label htmlFor="quantity-select">QUANTITY</label>
+                        <span className="minus">-</span>
+                        <input
+                          type="number"
+                          className="count cart-quantity"
+                          name="qty"
+                          // value="1"
+                          id="quantity-select"
+                          disabled=""
+                        />
+                        <span className="plus">+</span>
+                      </div>
+                    </div>
+                    <span className="delete">
+                      <i className="fa fa-times"></i>
+                    </span>
+                  </div>
+                </div>
+                <div className="cart-item">
+                  <div className="cart-img">
+                    <img
+                      src="assets/images/p-product-02.jpg"
+                      className="img-fluid"
+                      alt="product-cart"
+                    />
+                  </div>
+                  <div className="cart-desc">
+                    <p className="name">Lorem ipsum</p>
+                    <p className="price">$5.00</p>
+                    <div className="quaitity-box">
+                      <div className="plus-minus">
+                        <label htmlFor="quantity-select">QUANTITY</label>
+                        <span className="minus">-</span>
+                        <input
+                          type="number"
+                          className="count cart-quantity"
+                          name="qty"
+                          // value="1"
+                          id="quantity-select"
+                          disabled=""
+                        />
+                        <span className="plus">+</span>
+                      </div>
+                    </div>
+                    <span className="delete">
+                      <i className="fa fa-times"></i>
+                    </span>
+                  </div>
+                </div>
+                <div className="cart-item">
+                  <div className="cart-img">
+                    <img
+                      src="assets/images/p-product-03.jpg"
+                      className="img-fluid"
+                      alt="product-cart"
+                    />
+                  </div>
+                  <div className="cart-desc">
+                    <p className="name">Lorem ipsum</p>
+                    <p className="price">$5.00</p>
+                    <div className="quaitity-box">
+                      <div className="plus-minus">
+                        <label htmlFor="quantity-select">QUANTITY</label>
+                        <span className="minus">-</span>
+                        <input
+                          type="number"
+                          className="count cart-quantity"
+                          name="qty"
+                          // value="1"
+                          id="quantity-select"
+                          disabled=""
+                        />
+                        <span className="plus">+</span>
+                      </div>
+                    </div>
+                    <span className="delete">
+                      <i className="fa fa-times"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="bottom">
+                <div className="amount">
+                  <p>
+                    <span>Total:</span>
+                    <span>$500</span>
+                  </p>
+                </div>
+                <div className="cart-button">
+                  <span
+                    className="cursor-pointer"
+                    onClick={() => {
+                      toggleCartNav();
+                      navigate("/cart");
+                    }}
+                  >
+                    Go To Cart
+                  </span>
+                  <span
+                    className="cursor-pointer"
+                    onClick={() => {
+                      toggleCartNav();
+                      navigate("/checkout");
+                    }}
+                  >
+                    Checkout
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="card-sidebar-overlay active"
+            onClick={() => {
+              toggleCartNav();
+            }}
+          />
+        </>
+      )}
       <Modal
         className="fade login-signup-modal user-modals"
         centered={true}

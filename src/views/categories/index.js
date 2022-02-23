@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { Pagination } from "react-bootstrap";
 import Filter from "./filters";
@@ -7,7 +7,7 @@ import RecommendedProducts from "../../components/recommendedProducts";
 import CommonProductCard from "../../components/commonProductCard";
 import LazyLoader from "../../components/lazyLoader";
 import { getApi } from "../../utils/apiFunctions";
-import { categories_products } from "../../utils/api";
+import { categories_products, recommended_product } from "../../utils/api";
 
 const dummyCategory = [0, 1, 2, 3, 4, 5, 6, 7];
 
@@ -17,6 +17,7 @@ const Category = () => {
   const [pageNo, setPageNo] = useState(1);
   const [totalProducts, setTotalProducts] = useState(0);
   const [products, setProducts] = useState([]);
+  const [recommendedProducts, setRecommendedProducts] = useState([]);
   const [stopPagination, setStopPagination] = useState(false);
   const { pathname } = useLocation();
   // const addCart = () => {
@@ -119,6 +120,13 @@ const Category = () => {
     //   return;
     // }
   };
+  const getRecommendedProducts = async () => {
+    const { data } = await getApi(recommended_product);
+    console.log("recommended_product", data);
+    if (data) {
+      setRecommendedProducts(data);
+    }
+  };
   useEffect(() => {
     if (products.length > 0) {
       setProducts([]);
@@ -126,6 +134,7 @@ const Category = () => {
     scrollTop();
     setStopPagination(false);
     getProductsData();
+    getRecommendedProducts();
   }, [location.pathname]);
   return (
     <>
@@ -172,7 +181,10 @@ const Category = () => {
           </div>
         </div>
       </section>
-      <RecommendedProducts name={"Keep Trending Items"} />
+      <RecommendedProducts
+        name={"Keep Trending Items"}
+        products={recommendedProducts}
+      />
     </>
   );
 };
