@@ -24,6 +24,7 @@ const ProductDetail = (props) => {
           product_id: data?.id,
           image_name: product_image,
         };
+        console.log("gallery_images", gallery_images);
         gallery_images.push(featured_image);
         setGalleryImages(gallery_images);
       }
