@@ -1,6 +1,6 @@
 import React from "react";
 
-const ProfileHeader = () => {
+const ProfileHeader = ({ name, image }) => {
   return (
     <header>
       <div className="container-fluid">
@@ -72,7 +72,7 @@ const ProfileHeader = () => {
                   />
                 </li>
                 <li className="user-dropdown">
-                  <p>John Doe</p>
+                  <p>{name}</p>
                 </li>
               </ul>
             </div>

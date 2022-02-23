@@ -11,9 +11,10 @@ import "./profileresponsive.css";
 const ProfileView = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user_authenticate = useSelector(({ user_authenticate }) => {
-    return user_authenticate.user;
-  });
+  const { email, full_name, id, phone_number, user_status, address, profile } =
+    useSelector(({ user_authenticate }) => {
+      return user_authenticate.user;
+    });
   const [key, setKey] = useState("profile-tab-1");
   const [isUsernameChanged, setIsUsernameChanged] = useState(false);
   const [isAddressChanged, setIsAddressChanged] = useState(false);
@@ -109,10 +110,9 @@ const ProfileView = () => {
     togglePhoneNumberModal,
     togglePasswordChangedModal,
   };
-  console.log("user_authenticate", user_authenticate);
   return (
     <>
-      <ProfileHeader />
+      <ProfileHeader name={full_name} image={profile} />
       <section className="dashboard-sec">
         <div className="row">
           <div className="mobile-wrap">
@@ -141,7 +141,7 @@ const ProfileView = () => {
                   <p>
                     Hi,
                     <br />
-                    <strong>John Doe</strong>
+                    <strong>{full_name}</strong>
                   </p>
                 </div>
               </div>
@@ -202,8 +202,8 @@ const ProfileView = () => {
                     <div className="info-box">
                       <div className="user-detail-box">
                         <div className="details">
-                          <label>User Name</label>
-                          <p>John Doe</p>
+                          <label>Full Name</label>
+                          <p>{full_name}</p>
                         </div>
                         <div className="edit-btn">
                           <span onClick={toggleUsernameModal}>Edit</span>
@@ -212,19 +212,31 @@ const ProfileView = () => {
                       <div className="user-detail-box">
                         <div className="details">
                           <label>Address</label>
-                          <p>Lorem ipsum dolor sit</p>
+                          <p>
+                            {address
+                              ? address
+                              : "You haven’t added an address yet"}
+                          </p>
                         </div>
                         <div className="edit-btn">
-                          <span onClick={toggleAddressModal}>Edit</span>
+                          <span onClick={toggleAddressModal}>
+                            {address ? "Add" : "Edit"}
+                          </span>
                         </div>
                       </div>
                       <div className="user-detail-box">
                         <div className="details">
                           <label>Phone Number</label>
-                          <p>You haven’t added a phone number yet</p>
+                          <p>
+                            {phone_number
+                              ? phone_number
+                              : "You haven’t added a phone number yet"}
+                          </p>
                         </div>
                         <div className="edit-btn">
-                          <span onClick={togglePhoneNumberModal}>Add</span>
+                          <span onClick={togglePhoneNumberModal}>
+                            {phone_number ? "Add" : "Edit"}
+                          </span>
                         </div>
                       </div>
                     </div>
