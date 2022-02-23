@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userLogedOut } from "../../store/action/authAction";
 import DataTable from "react-data-table-component";
 import ProfileHeader from "./profileHeader";
@@ -11,6 +11,9 @@ import "./profileresponsive.css";
 const ProfileView = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const user_authenticate = useSelector(({ user_authenticate }) => {
+    return user_authenticate.user;
+  });
   const [key, setKey] = useState("profile-tab-1");
   const [isUsernameChanged, setIsUsernameChanged] = useState(false);
   const [isAddressChanged, setIsAddressChanged] = useState(false);
@@ -106,6 +109,7 @@ const ProfileView = () => {
     togglePhoneNumberModal,
     togglePasswordChangedModal,
   };
+  console.log("user_authenticate", user_authenticate);
   return (
     <>
       <ProfileHeader />

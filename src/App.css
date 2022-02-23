@@ -1829,8 +1829,8 @@ PRODUCT QUANTITY CSS END
 }
 .slide-thumbnail img {
   width: 100%;
-  min-height: 120px;
-  max-height: 120px;
+  min-height: 150px;
+  max-height: 150px;
   object-fit: cover;
   object-position: top center;
   filter: brightness(0.9);

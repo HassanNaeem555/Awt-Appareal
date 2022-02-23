@@ -4,8 +4,11 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { userAuth } from "../../store/action/authAction";
 import { ImageURL } from "../../utils/custom";
+import { postApi } from "../../utils/apiFunctions";
+import { register, login } from "../../utils/api";
 import { Control, Form, Errors, actions } from "react-redux-form";
 import { required, maxLength, minLength, validEmail } from "../../utils/custom";
+import { toast } from "react-toastify";
 
 const Header = () => {
   const location = useLocation();
@@ -52,17 +55,34 @@ const Header = () => {
       login_wrap.classList.add("right-panel-active");
     }
   };
-  const onSubmitLogin = (values) => {
-    dispatch(userAuth("login"));
-    dispatch(actions.reset("login"));
-    toggleLoginModal();
-  };
-  const handleSubmit = async (values) => {
+  const onSubmitLogin = async (values) => {
     const updatedUser = JSON.parse(JSON.stringify(values));
-    console.log("values", updatedUser);
-    dispatch(actions.reset("signup"));
-    // const response = await postApi(register, updatedUser);
-    // console.log("response Sign Up", response);
+    const { user, message, success } = await postApi(login, updatedUser);
+    if (success === true) {
+      dispatch(userAuth(user));
+      dispatch(actions.reset("login"));
+      toggleLoginModal();
+      toast.success("Login Successfully");
+      return;
+    }
+    if (success === false) {
+      toast.warn(message);
+      return;
+    }
+  };
+  const handleSignup = async (values) => {
+    const updatedUser = JSON.parse(JSON.stringify(values));
+    const { message, success } = await postApi(register, updatedUser);
+    if (success === true) {
+      dispatch(actions.reset("signup"));
+      toast.success(message);
+      signInClick();
+      return;
+    }
+    if (success === false) {
+      toast.warn(message[0]);
+      return;
+    }
   };
   useEffect(() => {
     setCurrent_path(location.pathname);
@@ -411,7 +431,7 @@ const Header = () => {
         <Modal.Body>
           <div className="login-modal" id="login-modal-wrap">
             <div className="form-container sign-up-container">
-              <Form model="signup" onSubmit={(values) => handleSubmit(values)}>
+              <Form model="signup" onSubmit={(values) => handleSignup(values)}>
                 <h1>Create Account</h1>
                 <div className="social-container">
                   <a
