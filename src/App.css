@@ -2527,6 +2527,7 @@ PRODUCT QUANTITY CSS END
 }
 .login-signup-modal .modal-body {
   padding: 0;
+  background: #000;
 }
 .login-signup-modal .modal-dialog {
   max-width: 768px;

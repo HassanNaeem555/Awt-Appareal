@@ -1,8 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 // import { categoryData } from "../../dummyData";
 import { ImageURL } from "../../utils/custom";
 
 const CommonProductCard = ({ products }) => {
+  const navigate = useNavigate();
   const truncate = (str, n) => {
     return str?.length > n ? str.substr(0, n - 1) + "..." : str;
   };
@@ -10,7 +12,15 @@ const CommonProductCard = ({ products }) => {
     <>
       {products.map((item, index) => {
         return (
-          <div className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4" key={index}>
+          <div
+            className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
+            key={index}
+            onClick={() => {
+              navigate(`/product-detail/${item.id}`, {
+                state: { id: item.id },
+              });
+            }}
+          >
             <div className="product-card">
               <div className="image">
                 <img

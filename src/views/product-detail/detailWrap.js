@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Tabs, Tab } from "react-bootstrap";
+import { ImageURL } from "../../utils/custom";
 
-const DetailWrap = () => {
+const DetailWrap = ({ product_data }) => {
   const [key, setKey] = useState("details-tab-1");
   return (
     <Tabs
@@ -16,22 +17,15 @@ const DetailWrap = () => {
             <div className="col-12 col-md-6 col-lg-5 mb-4">
               <div className="left-col">
                 <p className="black-heading mb-3">
-                  Description Sed ut Perspiciatis Unde Iste Natus Error Sit
-                  Voluptatem Accusantium Doloremque
+                  {product_data?.product_name}
                 </p>
-                <p className="paragraph">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor.
-                </p>
+                <p className="paragraph">{product_data?.product_description}</p>
               </div>
             </div>
             <div className="col-12 col-md-6 col-lg-7">
               <div className="right-col">
                 <img
-                  src="assets/images/productDetail-Sec3Img.jpg"
+                  src={`${ImageURL}product/${product_data?.product_image}`}
                   alt="img"
                   className="img-fluid"
                 />
@@ -61,7 +55,7 @@ const DetailWrap = () => {
             <div className="col-12 col-md-6 col-lg-7">
               <div className="right-col">
                 <img
-                  src="assets/images/productDetail-Sec3Img.jpg"
+                  src={`${window.location.origin}/assets/images/productDetail-Sec3Img.jpg`}
                   alt="img"
                   className="img-fluid"
                 />
@@ -91,7 +85,7 @@ const DetailWrap = () => {
             <div className="col-12 col-md-6 col-lg-7">
               <div className="right-col">
                 <img
-                  src="assets/images/productDetail-Sec3Img.jpg"
+                  src={`${window.location.origin}/assets/images/productDetail-Sec3Img.jpg`}
                   alt="img"
                   className="img-fluid"
                 />

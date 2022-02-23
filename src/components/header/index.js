@@ -95,7 +95,7 @@ const Header = () => {
                     <li>
                       <span className="p-0 search-btn" onClick={openSearch}>
                         <img
-                          src="assets/images/search-icon.png"
+                          src={`${window.location.origin}/assets/images/search-icon.png`}
                           alt="img"
                           className="img-fluid"
                         />
@@ -110,7 +110,7 @@ const Header = () => {
                         }}
                       >
                         <img
-                          src="assets/images/user-icon.png"
+                          src={`${window.location.origin}/assets/images/user-icon.png`}
                           alt="img"
                           className="img-fluid"
                         />
@@ -124,7 +124,7 @@ const Header = () => {
                         }}
                       >
                         <img
-                          src="assets/images/cart-icon.png"
+                          src={`${window.location.origin}/assets/images/cart-icon.png`}
                           alt="img"
                           className="img-fluid"
                         />
