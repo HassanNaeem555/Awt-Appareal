@@ -3,7 +3,7 @@ import { Modal } from "react-bootstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { userAuth } from "../../store/action/authAction";
-import { ImageURL } from "../../utils/custom";
+import { ImageURL, OwnImageURL } from "../../utils/custom";
 import { postApi } from "../../utils/apiFunctions";
 import { register, login } from "../../utils/api";
 import { Control, Form, Errors, actions } from "react-redux-form";
@@ -100,7 +100,7 @@ const Header = () => {
                     src={
                       header_content?.logo
                         ? `${ImageURL}payment/${header_content?.logo}`
-                        : "assets/images/logo.png"
+                        : `${OwnImageURL}/assets/images/logo.png`
                     }
                     alt="logo"
                     className="img-fluid"
@@ -115,7 +115,7 @@ const Header = () => {
                     <li>
                       <span className="p-0 search-btn" onClick={openSearch}>
                         <img
-                          src={`${window.location.origin}/assets/images/search-icon.png`}
+                          src={`${OwnImageURL}/assets/images/search-icon.png`}
                           alt="img"
                           className="img-fluid"
                         />
@@ -130,7 +130,7 @@ const Header = () => {
                         }}
                       >
                         <img
-                          src={`${window.location.origin}/assets/images/user-icon.png`}
+                          src={`${OwnImageURL}/assets/images/user-icon.png`}
                           alt="img"
                           className="img-fluid"
                         />
@@ -144,7 +144,7 @@ const Header = () => {
                         }}
                       >
                         <img
-                          src={`${window.location.origin}/assets/images/cart-icon.png`}
+                          src={`${OwnImageURL}/assets/images/cart-icon.png`}
                           alt="img"
                           className="img-fluid"
                         />
@@ -287,7 +287,7 @@ const Header = () => {
                 <div className="cart-item">
                   <div className="cart-img">
                     <img
-                      src="assets/images/p-product-01.jpg"
+                      src={`${OwnImageURL}/assets/images/p-product-01.jpg`}
                       className="img-fluid"
                       alt="product-cart"
                     />
@@ -319,7 +319,7 @@ const Header = () => {
                 <div className="cart-item">
                   <div className="cart-img">
                     <img
-                      src="assets/images/p-product-02.jpg"
+                      src={`${OwnImageURL}/assets/images/p-product-02.jpg`}
                       className="img-fluid"
                       alt="product-cart"
                     />
@@ -350,7 +350,7 @@ const Header = () => {
                 <div className="cart-item">
                   <div className="cart-img">
                     <img
-                      src="assets/images/p-product-03.jpg"
+                      src={`${OwnImageURL}/assets/images/p-product-03.jpg`}
                       className="img-fluid"
                       alt="product-cart"
                     />

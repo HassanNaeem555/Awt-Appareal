@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { ImageURL } from "../../utils/custom";
+import { ImageURL, OwnImageURL } from "../../utils/custom";
 
 const Footer = () => {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const Footer = () => {
           <div className="col-12 col-md-12 col-lg-12">
             <div className="footer-image-wrap">
               <img
-                src="assets/images/foot-cloud.jpg"
+                src={`${OwnImageURL}/assets/images/foot-cloud.jpg`}
                 className="img-fluid"
                 alt="footer-cloud-bg"
               />
@@ -34,7 +34,7 @@ const Footer = () => {
                     src={
                       footer_content?.footer_logo
                         ? `${ImageURL}payment/${footer_content?.footer_logo}`
-                        : "assets/images/foot-cloud.jpg"
+                        : `${OwnImageURL}/assets/images/foot-cloud.jpg`
                     }
                     className="img-fluid"
                     alt="footer-logo"
@@ -203,45 +203,6 @@ const Footer = () => {
                           </a>
                         </li>
                       )}
-                    {/* <li>
-                      <a
-                        href="https://www.paymentmaster.co.uk/"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        <img
-                          src="assets/images/mastter.png"
-                          className="img-fluid"
-                          alt="master-card-payment"
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="https://www.paymentmaster.co.uk/"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        <img
-                          src="assets/images/master-2.png"
-                          className="img-fluid"
-                          alt="master-card-payment"
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="https://www.paypal.com/pk/home"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        <img
-                          src="assets/images/paypal.png"
-                          className="img-fluid"
-                          alt="paypal-card-payment"
-                        />
-                      </a>
-                    </li> */}
                   </ul>
                 </div>
               </div>

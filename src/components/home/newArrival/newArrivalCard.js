@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { ImageURL } from "../../../utils/custom";
+import { ImageURL, OwnImageURL } from "../../../utils/custom";
 
 const NewArrivalCard = ({ item }) => {
   const navigate = useNavigate();
@@ -15,14 +15,14 @@ const NewArrivalCard = ({ item }) => {
         <div className="product-icons">
           <span>
             <img
-              src={`${window.location.origin}/assets/images/bag-icon.png`}
+              src={`${OwnImageURL}/assets/images/bag-icon.png`}
               alt="img"
               className="img-fluid"
             />
           </span>
           <span>
             <img
-              src={`${window.location.origin}/assets/images/heart-icon.png`}
+              src={`${OwnImageURL}/assets/images/heart-icon.png`}
               alt="img"
               className="img-fluid"
             />
@@ -35,7 +35,7 @@ const NewArrivalCard = ({ item }) => {
             }}
           >
             <img
-              src={`${window.location.origin}/assets/images/eye-icon.png`}
+              src={`${OwnImageURL}/assets/images/eye-icon.png`}
               alt="img"
               className="img-fluid"
             />

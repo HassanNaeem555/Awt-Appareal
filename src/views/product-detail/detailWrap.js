@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Tabs, Tab } from "react-bootstrap";
-import { ImageURL } from "../../utils/custom";
+import { ImageURL, OwnImageURL } from "../../utils/custom";
 
 const DetailWrap = ({ product_data }) => {
   const [key, setKey] = useState("details-tab-1");
@@ -55,7 +55,7 @@ const DetailWrap = ({ product_data }) => {
             <div className="col-12 col-md-6 col-lg-7">
               <div className="right-col">
                 <img
-                  src={`${window.location.origin}/assets/images/productDetail-Sec3Img.jpg`}
+                  src={`${OwnImageURL}/assets/images/productDetail-Sec3Img.jpg`}
                   alt="img"
                   className="img-fluid"
                 />
@@ -85,7 +85,7 @@ const DetailWrap = ({ product_data }) => {
             <div className="col-12 col-md-6 col-lg-7">
               <div className="right-col">
                 <img
-                  src={`${window.location.origin}/assets/images/productDetail-Sec3Img.jpg`}
+                  src={`${OwnImageURL}/assets/images/productDetail-Sec3Img.jpg`}
                   alt="img"
                   className="img-fluid"
                 />
