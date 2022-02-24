@@ -9,11 +9,10 @@ import { toast } from "react-toastify";
 const Subscribe = () => {
   const dispatch = useDispatch();
   const handleSubscribe = async (values) => {
-    console.log("values", values);
-    const { status, data } = await postApi(subscribe, values);
-    if (status === 200) {
+    const { message } = await postApi(subscribe, values);
+    if (message) {
       dispatch(actions.reset("subscribe"));
-      toast.success(data?.message);
+      toast.success(message);
     } else {
       toast.error("Something Went Wrong");
     }

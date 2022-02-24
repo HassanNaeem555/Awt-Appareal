@@ -12,8 +12,9 @@ const ProductDetail = (props) => {
   let id = 0;
   const [productData, setProductData] = useState({});
   const [galleryImages, setGalleryImages] = useState([]);
-  const [proeductsVarients, setProductsVarients] = useState([]);
+  const [productsVarients, setProductsVarients] = useState([]);
   const [recommendedProducts, setRecommendedProducts] = useState([]);
+  const [selectedVariant, setSelectedVariant] = useState("");
   const getProductsDetail = async () => {
     const { data } = await getApi(`${single_products}?product_id=${id}`);
     if (data) {
@@ -44,6 +45,7 @@ const ProductDetail = (props) => {
   const scrollTop = () => {
     window.scrollTo(0, 0);
   };
+  const addToCart = (e) => {};
   useEffect(() => {
     if (recommendedProducts.length > 0) {
       setRecommendedProducts([]);
@@ -103,15 +105,40 @@ const ProductDetail = (props) => {
                   ${productData?.product_price}.00
                 </span>
                 <div className="stockBar">
-                  <label htmlFor="stock-bar" className="paragraph">
-                    Hurry! Only {productData?.availability} left in stock
-                  </label>
-                  <progress
-                    id="stock-bar"
-                    value={productData?.availability}
-                    max="100"
-                  ></progress>
-                  <span>16 sold in last 24 hours</span>
+                  {productData?.availability < 100 && (
+                    <>
+                      <label htmlFor="stock-bar" className="paragraph">
+                        Hurry! Only {productData?.availability} left in stock
+                      </label>
+                      <progress
+                        id="stock-bar"
+                        value={productData?.availability}
+                        max="100"
+                      ></progress>
+                    </>
+                  )}
+                  {/* <span>16 sold in last 24 hours</span> */}
+                </div>
+
+                <div className="productVariant-butotns">
+                  {productsVarients.length &&
+                    productsVarients.map((variant, index) => {
+                      return (
+                        <button
+                          className={
+                            selectedVariant === variant?.verient_name
+                              ? `bg-selected-variant cta-btn my-1`
+                              : `cta-btn my-1`
+                          }
+                          key={index}
+                          onClick={() => {
+                            setSelectedVariant(variant?.verient_name);
+                          }}
+                        >
+                          {variant?.verient_name}
+                        </button>
+                      );
+                    })}
                 </div>
                 <div className="productDetails-butotns">
                   <div className="quntity-counter">
@@ -129,7 +156,12 @@ const ProductDetail = (props) => {
                       <i className="fa fa-plus"></i>
                     </span>
                   </div>
-                  <button className="cta-btn">
+                  <button
+                    className="cta-btn"
+                    onClick={(e) => {
+                      addToCart(e);
+                    }}
+                  >
                     <i className="fa fa-cart-plus"></i> Add To Cart
                   </button>
                 </div>

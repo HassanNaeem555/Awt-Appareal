@@ -30,7 +30,13 @@ const CommonProductCard = ({ products }) => {
                 />
                 <div className="abs-box">
                   <button className="add-to-cart">
-                    <div className="default">Add to cart</div>
+                    <div className="default">
+                      {" "}
+                      <span>
+                        <i class="fa fa-eye"></i>
+                      </span>{" "}
+                      View Product
+                    </div>
                     <div className="success">Added</div>
                     <div className="cart">
                       <div>

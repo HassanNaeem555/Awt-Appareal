@@ -12,10 +12,10 @@ const ContactView = () => {
     return user_settings.web_setting;
   });
   const handleSubmit = async (values) => {
-    const { status, data } = await postApi(contact_us, values);
-    if (status === 200) {
+    const { message } = await postApi(contact_us, values);
+    if (message) {
       dispatch(actions.reset("contact"));
-      toast.success(data?.message);
+      toast.success(message);
     } else {
       toast.error("Something Went Wrong");
     }

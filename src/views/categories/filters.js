@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Accordion, useAccordionButton } from "react-bootstrap";
 
 const Filters = ({ name }) => {
-  const [renderParentCategory, setRenderParentCategory] = useState("");
   const ParentCategoryToggle = ({ eventKey }) => {
     const decoratedOnClick = useAccordionButton(eventKey, () =>
       console.log("totally custom!")
@@ -72,9 +71,6 @@ const Filters = ({ name }) => {
       </p>
     );
   };
-  useEffect(() => {
-    setRenderParentCategory(name());
-  }, []);
   return (
     <aside className="filter-aside">
       <div className="filter-box">
@@ -83,28 +79,88 @@ const Filters = ({ name }) => {
           <Accordion.Collapse eventKey="0">
             <div className="filter-items">
               <ul>
-                {renderParentCategory === "Mens" ? (
+                {name() === "Mens" ? (
                   <ul className="dropdownTwo">
                     <li>
-                      <span className="filter-item">T- Shirts</span>
+                      <div className="productVariation">
+                        <input
+                          type="checkbox"
+                          id="tshirt"
+                          name="tshirt"
+                          value="tshirt"
+                        />
+                        <label htmlFor="tshirt" className="filter-item">
+                          T- Shirts
+                        </label>
+                      </div>
                     </li>
                     <li>
-                      <span className="filter-item">Hoodies</span>
+                      <div className="productVariation">
+                        <input
+                          type="checkbox"
+                          id="Hoodies"
+                          name="Hoodies"
+                          value="Hoodies"
+                        />
+                        <label htmlFor="Hoodies" className="filter-item">
+                          Hoodies
+                        </label>
+                      </div>
                     </li>
                     <li>
-                      <span className="filter-item">Shorts</span>
+                      <div className="productVariation">
+                        <input
+                          type="checkbox"
+                          id="Shorts"
+                          name="Shorts"
+                          value="Shorts"
+                        />
+                        <label htmlFor="Shorts" className="filter-item">
+                          Shorts
+                        </label>
+                      </div>
                     </li>
                     <li>
-                      <span className="filter-item">Hats</span>
+                      <div className="productVariation">
+                        <input
+                          type="checkbox"
+                          id="Hats"
+                          name="Hats"
+                          value="Hats"
+                        />
+                        <label htmlFor="Hats" className="filter-item">
+                          Hats
+                        </label>
+                      </div>
                     </li>
                     <li>
-                      <span className="filter-item">Bags</span>
+                      <div className="productVariation">
+                        <input
+                          type="checkbox"
+                          id="Bags"
+                          name="Bags"
+                          value="Bags"
+                        />
+                        <label htmlFor="Bags" className="filter-item">
+                          Bags
+                        </label>
+                      </div>
                     </li>
                     <li>
-                      <span className="filter-item">Shoes</span>
+                      <div className="productVariation">
+                        <input
+                          type="checkbox"
+                          id="Shoes"
+                          name="Shoes"
+                          value="Shoes"
+                        />
+                        <label htmlFor="Shoes" className="filter-item">
+                          Shoes
+                        </label>
+                      </div>
                     </li>
                   </ul>
-                ) : renderParentCategory === "Womens" ? (
+                ) : name() === "Womens" ? (
                   <ul className="dropdownTwo">
                     <li>
                       <span className="filter-item">T- Shirts</span>

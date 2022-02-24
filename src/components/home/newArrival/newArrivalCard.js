@@ -13,13 +13,13 @@ const NewArrivalCard = ({ item }) => {
           className="img-fluid"
         />
         <div className="product-icons">
-          <span>
+          {/* <span>
             <img
               src={`${OwnImageURL}/assets/images/bag-icon.png`}
               alt="img"
               className="img-fluid"
             />
-          </span>
+          </span> */}
           <span>
             <img
               src={`${OwnImageURL}/assets/images/heart-icon.png`}
