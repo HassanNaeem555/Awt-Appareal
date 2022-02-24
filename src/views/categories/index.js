@@ -19,7 +19,6 @@ const Category = () => {
   const [products, setProducts] = useState([]);
   const [recommendedProducts, setRecommendedProducts] = useState([]);
   const [stopPagination, setStopPagination] = useState(false);
-  const { pathname } = useLocation();
   // const addCart = () => {
   //   let btn = document.getElementById("cart_add");
   //   if (btn) {
@@ -45,51 +44,51 @@ const Category = () => {
     setActive(activeVal);
   };
   const getImage = () => {
-    if (pathname === "/category/new-arrival") {
+    if (location.pathname === "/category/new-arrival") {
       return "arrivals-sec1";
-    } else if (pathname === "/category/mens") {
+    } else if (location.pathname === "/category/mens") {
       return "mens-sec1";
-    } else if (pathname === "/category/women") {
+    } else if (location.pathname === "/category/women") {
       return "womens-sec1";
-    } else if (pathname === "/category/youth") {
+    } else if (location.pathname === "/category/youth") {
       return "youth-sec1";
-    } else if (pathname === "/category/hats") {
+    } else if (location.pathname === "/category/hats") {
       return "hats-sec1";
-    } else if (pathname === "/category/accessories") {
+    } else if (location.pathname === "/category/accessories") {
       return "accessories-sec1";
     } else {
       return "";
     }
   };
   const getName = () => {
-    if (pathname === "/category/new-arrival") {
+    if (location.pathname === "/category/new-arrival") {
       return "New Arrivals";
-    } else if (pathname === "/category/mens") {
+    } else if (location.pathname === "/category/mens") {
       return "Mens";
-    } else if (pathname === "/category/women") {
+    } else if (location.pathname === "/category/women") {
       return "Womens";
-    } else if (pathname === "/category/youth") {
+    } else if (location.pathname === "/category/youth") {
       return "Youth";
-    } else if (pathname === "/category/hats") {
+    } else if (location.pathname === "/category/hats") {
       return "Hats";
-    } else if (pathname === "/category/accessories") {
+    } else if (location.pathname === "/category/accessories") {
       return "Accessories";
     } else {
       return "";
     }
   };
   const renderFilters = () => {
-    if (pathname === "/category/new-arrival") {
+    if (location.pathname === "/category/new-arrival") {
       return <Filter name={getName} />;
-    } else if (pathname === "/category/mens") {
+    } else if (location.pathname === "/category/mens") {
       return <Filter name={getName} />;
-    } else if (pathname === "/category/women") {
+    } else if (location.pathname === "/category/women") {
       return <Filter name={getName} />;
-    } else if (pathname === "/category/youth") {
+    } else if (location.pathname === "/category/youth") {
       return null;
-    } else if (pathname === "/category/hats") {
+    } else if (location.pathname === "/category/hats") {
       return null;
-    } else if (pathname === "/category/accessories") {
+    } else if (location.pathname === "/category/accessories") {
       return <Filter name={getName} />;
     }
   };
