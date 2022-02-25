@@ -1,4 +1,5 @@
 import React from "react";
+import { OwnImageURL } from "../../utils/custom";
 
 const CommonBanner = ({ img, name }) => {
   return (
@@ -7,7 +8,7 @@ const CommonBanner = ({ img, name }) => {
         <p className="banner-heading">{name}</p>
       </div>
       <img
-        src={"assets/images/innerSec1-vector1.png"}
+        src={`${OwnImageURL}/assets/images/innerSec1-vector1.png`}
         alt="img"
         className="img-fluid innerSec1-vector1"
       />

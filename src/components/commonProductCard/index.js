@@ -33,7 +33,7 @@ const CommonProductCard = ({ products }) => {
                     <div className="default">
                       {" "}
                       <span>
-                        <i class="fa fa-eye"></i>
+                        <i className="fa fa-eye"></i>
                       </span>{" "}
                       View Product
                     </div>

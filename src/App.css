@@ -1431,8 +1431,8 @@ header {
 }
 .productVariant-butotns {
   display: flex;
-  justify-content: space-between;
   flex-wrap: wrap;
+  gap: 15px;
 }
 .bg-selected-variant {
   background: #282828;
@@ -2401,6 +2401,26 @@ PRODUCT QUANTITY CSS END
 .order-summary-card .gen-btn {
   width: 100%;
 }
+.cart-list {
+  max-height: 350px;
+  min-height: 350px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding-right: 15px;
+}
+.cart-list::-webkit-scrollbar {
+  width: 3px;
+}
+
+/* Track */
+.cart-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+.cart-list::-webkit-scrollbar-thumb {
+  background: #006eb7;
+}
 .cart-list-item {
   border-bottom: 1px solid #ddd;
   padding: 15px 0;
@@ -2957,7 +2977,7 @@ PRODUCT QUANTITY CSS END
 }
 .cart-sidebar-inner .quaitity-box .plus-minus .cart-quantity {
   font-size: 12px;
-  width: 25px;
+  width: 30px;
   border-radius: 4px;
 }
 .quaitity-box .plus-minus .cart-quantity {
