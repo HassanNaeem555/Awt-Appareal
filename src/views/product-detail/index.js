@@ -1,20 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
 import CommonBanner from "../../components/commonBanner";
 import DetailWrap from "./detailWrap";
+import { addInCart, updateCart } from "../../store/action/cartAction";
 import { getApi } from "../../utils/apiFunctions";
+import TextLoader from "../../components/textLoader";
 import { recommended_product, single_products } from "../../utils/api";
+import {
+  procedureToUpdateIncrementInCart,
+  procedureToUpdateDecrementInCart,
+} from "../../utils/genericFunction";
 import RecommendedProducts from "../../components/recommendedProducts";
 import SlickSlider from "./slider";
 
-const ProductDetail = (props) => {
+const ProductDetail = () => {
+  const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
+  const user_cart = useSelector(({ user_cart }) => {
+    return user_cart.cart;
+  });
   let id = 0;
   const [productData, setProductData] = useState({});
   const [galleryImages, setGalleryImages] = useState([]);
   const [productsVarients, setProductsVarients] = useState([]);
   const [recommendedProducts, setRecommendedProducts] = useState([]);
   const [selectedVariant, setSelectedVariant] = useState("");
+  const [currentQuantityOfProduct, setcurrentQuantityOfProduct] = useState(0);
   const getProductsDetail = async () => {
     const { data } = await getApi(`${single_products}?product_id=${id}`);
     if (data) {
@@ -25,15 +39,22 @@ const ProductDetail = (props) => {
           product_id: data?.id,
           image_name: product_image,
         };
-        console.log("gallery_images", gallery_images);
         gallery_images.push(featured_image);
         setGalleryImages(gallery_images);
       }
       if (verients) {
         setProductsVarients(verients);
       }
+      let getQuantity =
+        user_cart.length > 0 &&
+        user_cart.filter((e) => e.id === data?.id)[0]?.quantity;
+      let getSelectedVariant =
+        user_cart.length > 0 &&
+        user_cart.filter((e) => e.id === data?.id)[0]?.selectedVarient;
+      if (getQuantity && typeof getQuantity === "number") {
+        setSelectedVariant(getSelectedVariant);
+      }
       setProductData(data);
-      console.log("single_products", data);
     }
   };
   const getRecommendedProducts = async () => {
@@ -45,13 +66,78 @@ const ProductDetail = (props) => {
   const scrollTop = () => {
     window.scrollTo(0, 0);
   };
-  const addToCart = (e) => {};
+  const addToCart = (e) => {
+    e.preventDefault();
+    if (
+      productsVarients &&
+      productsVarients.length > 0 &&
+      selectedVariant === ""
+    ) {
+      toast.warn("Please Select A Size...");
+      return;
+    }
+    if (
+      productsVarients &&
+      productsVarients.length > 0 &&
+      selectedVariant !== ""
+    ) {
+      let pre_send_cart_data = productData;
+      pre_send_cart_data.selectedVarient = selectedVariant;
+      pre_send_cart_data.quantity = 1;
+      pre_send_cart_data.total_price = pre_send_cart_data.product_price;
+      console.log("pre_send_cart_data", pre_send_cart_data);
+      dispatch(addInCart(pre_send_cart_data));
+      toast.success("Added To Cart Successfully");
+      return;
+    }
+  };
+  const updateMaxExistingCart = (e) => {
+    e.preventDefault();
+    const cartData = procedureToUpdateIncrementInCart(
+      user_cart,
+      productData?.id
+    );
+    dispatch(updateCart(cartData));
+  };
+  const updateMinExistingCart = (e) => {
+    e.preventDefault();
+    const cartData = procedureToUpdateDecrementInCart(
+      user_cart,
+      productData?.id
+    );
+    dispatch(updateCart(cartData));
+  };
+  const settleSelectedVariant = (e, variant_name) => {
+    e.preventDefault();
+    let getCartVariantName =
+      user_cart.length > 0 &&
+      user_cart.filter((e) => e.id === productData?.id)[0]?.selectedVarient;
+    if (getCartVariantName === variant_name) return;
+    if (getCartVariantName && getCartVariantName !== variant_name) {
+      toast.warn("Can't Take More Than One Size");
+      return;
+    }
+    setSelectedVariant(variant_name);
+  };
+  const buyProduct = (e) => {
+    e.preventDefault();
+    let getCurrentItemFromCart =
+      user_cart.length > 0 &&
+      user_cart.filter((e) => e?.id === productData?.id);
+    if (getCurrentItemFromCart && getCurrentItemFromCart.length > 0) {
+      navigate("/cart");
+    } else {
+      toast.warn("Please Add This Item To Cart");
+    }
+  };
   useEffect(() => {
     if (recommendedProducts.length > 0) {
       setRecommendedProducts([]);
       setGalleryImages([]);
       setProductsVarients([]);
       setProductData({});
+      setcurrentQuantityOfProduct(0);
+      setSelectedVariant("");
     }
     id = location.pathname.substring(16);
     scrollTop();
@@ -65,11 +151,29 @@ const ProductDetail = (props) => {
         <div className="container">
           <div className="row align-items-center m-0">
             <div className="col-12 col-md-7 col-lg-7 product-img-col mb-4">
-              <SlickSlider images={galleryImages} />
+              {galleryImages.length ? (
+                <SlickSlider images={galleryImages} />
+              ) : (
+                <div className="row">
+                  <div className="col-12 col-md-3 col-lg-3">
+                    <TextLoader height={110} width={"100%"} />
+                    <TextLoader height={110} width={"100%"} />
+                    <TextLoader height={110} width={"100%"} />
+                    <TextLoader height={110} width={"100%"} />
+                  </div>
+                  <div className="col-12 col-md-9 col-lg-9">
+                    <TextLoader height={500} width={"100%"} />
+                  </div>
+                </div>
+              )}
             </div>
             <div className="col-12 col-md-5 col-lg-5">
               <div className="productDetail-content">
-                <p className="black-heading">{productData?.product_name}</p>
+                {productData?.product_name ? (
+                  <p className="black-heading">{productData?.product_name}</p>
+                ) : productData?.product_name === null ? null : (
+                  <TextLoader height={"5%"} width={"80%"} />
+                )}
                 <div className="reviewwrap">
                   <div className="product-rating mb-2">
                     <span>
@@ -90,20 +194,42 @@ const ProductDetail = (props) => {
                   </div>
                   <span className="paragraph">3 Reviews</span>
                 </div>
-                <div className="product-info mb-3">
-                  <span className="paragraph mb-2">Product code</span>
-                  <span className="paragraph mb-2">
-                    {productData?.product_code}
-                  </span>{" "}
+                <div
+                  className={
+                    productData?.product_code &&
+                    productData?.availability &&
+                    "product-info mb-3"
+                  }
+                >
+                  {productData?.product_code ? (
+                    <>
+                      <span className="paragraph mb-2">Product code</span>
+                      <span className="paragraph mb-2">
+                        {productData?.product_code}
+                      </span>
+                    </>
+                  ) : productData?.product_name === null ? null : (
+                    <TextLoader height={"5%"} width={"80%"} />
+                  )}
                   <br />
-                  <span className="paragraph mb-2">Availability</span>
-                  <span className="paragraph mb-2">
-                    {productData?.availability} in stock
-                  </span>
+                  {productData?.availability ? (
+                    <>
+                      <span className="paragraph mb-2">Availability</span>
+                      <span className="paragraph mb-2">
+                        {productData?.availability} in stock
+                      </span>
+                    </>
+                  ) : productData?.product_name === null ? null : (
+                    <TextLoader height={"5%"} width={"80%"} />
+                  )}
                 </div>
-                <span className="black-heading">
-                  ${productData?.product_price}.00
-                </span>
+                {productData?.product_price ? (
+                  <span className="black-heading">
+                    ${productData?.product_price}.00
+                  </span>
+                ) : productData?.product_name === null ? null : (
+                  <TextLoader height={"5%"} width={"80%"} />
+                )}
                 <div className="stockBar">
                   {productData?.availability < 100 && (
                     <>
@@ -121,51 +247,103 @@ const ProductDetail = (props) => {
                 </div>
 
                 <div className="productVariant-butotns">
-                  {productsVarients.length &&
-                    productsVarients.map((variant, index) => {
-                      return (
-                        <button
-                          className={
-                            selectedVariant === variant?.verient_name
-                              ? `bg-selected-variant cta-btn my-1`
-                              : `cta-btn my-1`
-                          }
-                          key={index}
-                          onClick={() => {
-                            setSelectedVariant(variant?.verient_name);
-                          }}
-                        >
-                          {variant?.verient_name}
-                        </button>
-                      );
-                    })}
+                  {productsVarients.length
+                    ? productsVarients.map((variant, index) => {
+                        return (
+                          <button
+                            className={
+                              selectedVariant === variant?.verient_name
+                                ? `bg-selected-variant cta-btn my-1`
+                                : user_cart.length > 0 &&
+                                  user_cart.filter(
+                                    (e) => e?.id === productData?.id
+                                  )[0]?.selectedVarient ===
+                                    variant?.verient_name
+                                ? `bg-selected-variant cta-btn my-1`
+                                : `cta-btn my-1`
+                            }
+                            key={index}
+                            onClick={(e) => {
+                              settleSelectedVariant(e, variant?.verient_name);
+                            }}
+                          >
+                            {variant?.verient_name}
+                          </button>
+                        );
+                      })
+                    : null}
                 </div>
                 <div className="productDetails-butotns">
                   <div className="quntity-counter">
-                    <span className="minus">
-                      <i className="fa fa-minus"></i>
-                    </span>
+                    {user_cart.filter((e) => e?.id === productData?.id) &&
+                      user_cart.filter((e) => e?.id === productData?.id)[0]
+                        ?.quantity > 1 && (
+                        <span
+                          className="minus"
+                          onClick={(e) => {
+                            updateMinExistingCart(e);
+                          }}
+                        >
+                          <i className="fa fa-minus"></i>
+                        </span>
+                      )}
                     <input
                       type="tel"
                       className="count"
-                      value="1"
-                      maxLength="1"
+                      value={
+                        user_cart.length > 0 &&
+                        user_cart.filter((e) => e?.id === productData?.id)
+                          .length > 0
+                          ? user_cart.filter(
+                              (e) => e?.id === productData?.id
+                            )[0]?.quantity
+                          : currentQuantityOfProduct
+                      }
+                      maxLength="100"
                       disabled="disabled"
                     />
-                    <span className="plus">
-                      <i className="fa fa-plus"></i>
-                    </span>
+                    {user_cart.length > 0 &&
+                      user_cart.filter((e) => e?.id === productData?.id)
+                        .length > 0 && (
+                        <span
+                          className="plus"
+                          onClick={(e) => {
+                            updateMaxExistingCart(e);
+                          }}
+                        >
+                          <i className="fa fa-plus"></i>
+                        </span>
+                      )}
                   </div>
                   <button
                     className="cta-btn"
                     onClick={(e) => {
                       addToCart(e);
                     }}
+                    disabled={
+                      user_cart.length > 0 &&
+                      user_cart.filter((e) => e?.id === productData?.id)
+                        .length > 0
+                        ? true
+                        : false
+                    }
                   >
-                    <i className="fa fa-cart-plus"></i> Add To Cart
+                    <i className="fa fa-cart-plus"></i>{" "}
+                    {user_cart.length > 0 &&
+                    user_cart.filter((e) => e?.id === productData?.id).length >
+                      0
+                      ? "Added In Cart"
+                      : "Add To Cart"}
                   </button>
                 </div>
-                <button className="dashed-btn">Buy It Now</button>
+                <button
+                  className="dashed-btn"
+                  onClick={(e) => {
+                    buyProduct(e);
+                  }}
+                >
+                  Buy It Now
+                </button>
               </div>
             </div>
           </div>

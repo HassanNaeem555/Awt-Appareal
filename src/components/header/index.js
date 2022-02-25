@@ -2,13 +2,21 @@ import React, { useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import { userAuth } from "../../store/action/authAction";
+import {
+  updateCart,
+  deleteProductFromCart,
+} from "../../store/action/cartAction";
+import {
+  procedureToUpdateIncrementInCart,
+  procedureToUpdateDecrementInCart,
+} from "../../utils/genericFunction";
 import { ImageURL, OwnImageURL } from "../../utils/custom";
 import { postApi } from "../../utils/apiFunctions";
 import { register, login } from "../../utils/api";
 import { Control, Form, Errors, actions } from "react-redux-form";
 import { required, maxLength, minLength, validEmail } from "../../utils/custom";
-import { toast } from "react-toastify";
 
 const Header = () => {
   const location = useLocation();
@@ -23,7 +31,11 @@ const Header = () => {
   const header_content = useSelector(({ user_settings }) => {
     return user_settings.web_setting;
   });
+  const user_cart = useSelector(({ user_cart }) => {
+    return user_cart.cart;
+  });
   const [current_path, setCurrent_path] = useState("");
+  const [sub_total, setSub_total] = useState(0);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [responsiveNav, setResponsiveNav] = useState(false);
   const [openCartModal, setOpenCartModal] = useState(false);
@@ -36,7 +48,6 @@ const Header = () => {
   const openSearch = () => {
     document.getElementById("myOverlay").style.display = "block";
   };
-
   const closeSearch = () => {
     document.getElementById("myOverlay").style.display = "none";
   };
@@ -84,10 +95,33 @@ const Header = () => {
       return;
     }
   };
+  const updateMaxExistingCart = (e, product) => {
+    e.preventDefault();
+    const cartData = procedureToUpdateIncrementInCart(user_cart, product?.id);
+    dispatch(updateCart(cartData));
+  };
+  const updateMinExistingCart = (e, product) => {
+    e.preventDefault();
+    const cartData = procedureToUpdateDecrementInCart(user_cart, product?.id);
+    dispatch(updateCart(cartData));
+  };
+  const deleteFromCart = (e, id) => {
+    e.preventDefault();
+    dispatch(deleteProductFromCart(id));
+    if (user_cart.length <= 0) {
+      toggleCartNav();
+    }
+  };
   useEffect(() => {
     setCurrent_path(location.pathname);
   }, [location.pathname]);
-  console.log("header_categories", header_categories);
+  // useEffect(() => {
+  //   const getTotal = sub_total;
+  //   user_cart.map((item) => {
+  //     return getTotal + item.total_price;
+  //   });
+  //   setSub_total(getTotal);
+  // }, [user_cart]);
   return (
     <>
       <header>
@@ -140,7 +174,9 @@ const Header = () => {
                       <span
                         className="cart-icon"
                         onClick={() => {
-                          toggleCartNav();
+                          user_cart?.length > 0
+                            ? toggleCartNav()
+                            : toast.warn("Add Product In Cart To View");
                         }}
                       >
                         <img
@@ -148,7 +184,7 @@ const Header = () => {
                           alt="img"
                           className="img-fluid"
                         />
-                        <span>01</span>
+                        <span>{user_cart?.length}</span>
                       </span>
                     </li>
                   </ul>
@@ -283,102 +319,71 @@ const Header = () => {
               <div className="top">
                 <p>Cart</p>
               </div>
-              <div className="cart-items-wrap">
-                <div className="cart-item">
-                  <div className="cart-img">
-                    <img
-                      src={`${OwnImageURL}/assets/images/p-product-01.jpg`}
-                      className="img-fluid"
-                      alt="product-cart"
-                    />
-                  </div>
-                  <div className="cart-desc">
-                    <p className="name">Lorem ipsum</p>
-                    <p className="customized">CUSTOMIZED*</p>
-                    <p className="price">$5.00</p>
-                    <div className="quaitity-box">
-                      <div className="plus-minus">
-                        <label htmlFor="quantity-select">QUANTITY</label>
-                        <span className="minus">-</span>
-                        <input
-                          type="number"
-                          className="count cart-quantity"
-                          name="qty"
-                          // value="1"
-                          id="quantity-select"
-                          disabled=""
-                        />
-                        <span className="plus">+</span>
+              {user_cart.length > 0 &&
+                user_cart.map((item, index) => {
+                  return (
+                    <div className="cart-items-wrap" key={index}>
+                      <div className="cart-item">
+                        <div className="cart-img">
+                          <img
+                            src={`${ImageURL}product/${item?.product_image}`}
+                            className="img-fluid"
+                            alt="product-cart"
+                          />
+                        </div>
+                        <div className="cart-desc">
+                          <p className="name">{item?.product_name}</p>
+                          <p className="customized">{item?.selectedVarient}</p>
+                          <p className="price">${item?.total_price}.00</p>
+                          <div className="quaitity-box">
+                            <div className="plus-minus">
+                              <label htmlFor="quantity-select">QUANTITY </label>
+                              {user_cart.filter((e) => e?.id === item?.id) &&
+                                user_cart.filter((e) => e?.id === item?.id)[0]
+                                  ?.quantity > 1 && (
+                                  <span
+                                    className="minus"
+                                    onClick={(e) => {
+                                      updateMinExistingCart(e, item);
+                                    }}
+                                  >
+                                    <i className="fa fa-minus"></i>
+                                  </span>
+                                )}
+                              <input
+                                type="tel"
+                                className="count cart-quantity"
+                                name="qty"
+                                value={item?.quantity}
+                                id="quantity-select"
+                                disabled={true}
+                              />
+                              {user_cart.length > 0 &&
+                                user_cart.filter((e) => e?.id === item?.id) && (
+                                  <span
+                                    className="plus"
+                                    onClick={(e) => {
+                                      updateMaxExistingCart(e, item);
+                                    }}
+                                  >
+                                    <i className="fa fa-plus"></i>
+                                  </span>
+                                )}
+                            </div>
+                          </div>
+                          <span
+                            className="delete cursor-pointer"
+                            onClick={(e) => {
+                              deleteFromCart(e, item?.id);
+                            }}
+                          >
+                            <i className="fa fa-times"></i>
+                          </span>
+                        </div>
                       </div>
                     </div>
-                    <span className="delete">
-                      <i className="fa fa-times"></i>
-                    </span>
-                  </div>
-                </div>
-                <div className="cart-item">
-                  <div className="cart-img">
-                    <img
-                      src={`${OwnImageURL}/assets/images/p-product-02.jpg`}
-                      className="img-fluid"
-                      alt="product-cart"
-                    />
-                  </div>
-                  <div className="cart-desc">
-                    <p className="name">Lorem ipsum</p>
-                    <p className="price">$5.00</p>
-                    <div className="quaitity-box">
-                      <div className="plus-minus">
-                        <label htmlFor="quantity-select">QUANTITY</label>
-                        <span className="minus">-</span>
-                        <input
-                          type="number"
-                          className="count cart-quantity"
-                          name="qty"
-                          // value="1"
-                          id="quantity-select"
-                          disabled=""
-                        />
-                        <span className="plus">+</span>
-                      </div>
-                    </div>
-                    <span className="delete">
-                      <i className="fa fa-times"></i>
-                    </span>
-                  </div>
-                </div>
-                <div className="cart-item">
-                  <div className="cart-img">
-                    <img
-                      src={`${OwnImageURL}/assets/images/p-product-03.jpg`}
-                      className="img-fluid"
-                      alt="product-cart"
-                    />
-                  </div>
-                  <div className="cart-desc">
-                    <p className="name">Lorem ipsum</p>
-                    <p className="price">$5.00</p>
-                    <div className="quaitity-box">
-                      <div className="plus-minus">
-                        <label htmlFor="quantity-select">QUANTITY</label>
-                        <span className="minus">-</span>
-                        <input
-                          type="number"
-                          className="count cart-quantity"
-                          name="qty"
-                          // value="1"
-                          id="quantity-select"
-                          disabled=""
-                        />
-                        <span className="plus">+</span>
-                      </div>
-                    </div>
-                    <span className="delete">
-                      <i className="fa fa-times"></i>
-                    </span>
-                  </div>
-                </div>
-              </div>
+                  );
+                })}
               <div className="bottom">
                 <div className="amount">
                   <p>
