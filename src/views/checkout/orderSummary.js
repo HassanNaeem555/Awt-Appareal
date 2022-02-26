@@ -1,6 +1,6 @@
 import React from "react";
 
-const OrderSummary = () => {
+const OrderSummary = ({ total }) => {
   return (
     <div className="order-summary-card">
       <div className="summary-group">
@@ -10,7 +10,7 @@ const OrderSummary = () => {
         <ul>
           <li>
             <span>Subtotal</span>
-            <span>$1,399.00</span>
+            <span>${total}.00</span>
           </li>
           <li>
             <span>Delivery</span>
@@ -24,7 +24,7 @@ const OrderSummary = () => {
             <span>
               <b>Total (incl VAT)</b>
             </span>
-            <span>$1,399.00</span>
+            <span>${total}.00</span>
           </li>
         </ul>
       </div>

@@ -32,6 +32,9 @@ const Cart = () => {
     e.preventDefault();
     dispatch(deleteProductFromCart(id));
   };
+  const total = user_cart.reduce(function (previousValue, currentValue) {
+    return previousValue + currentValue.quantity * currentValue.product_price;
+  }, 0);
   return (
     <>
       <CommonBanner img={"cart-sec1"} name={"CART"} />
@@ -45,11 +48,11 @@ const Cart = () => {
                   : "col-lg-12 col-md-12 col-sm-12 mb-4"
               }
             >
-              {user_cart.length > 0 ? (
-                user_cart.map((item, index) => {
-                  return (
-                    <div className="cart-list" key={index}>
-                      <div className="cart-list-item">
+              <div className="cart-list">
+                {user_cart.length > 0 ? (
+                  user_cart.map((item, index) => {
+                    return (
+                      <div className="cart-list-item" key={index}>
                         <div className="product-img">
                           <img
                             src={`${ImageURL}product/${item?.product_image}`}
@@ -78,7 +81,7 @@ const Cart = () => {
                                     </span>
                                   )}
                                 <input
-                                  type="number"
+                                  type="tel"
                                   className="count"
                                   name="qty"
                                   value={item?.quantity}
@@ -113,11 +116,9 @@ const Cart = () => {
                           </button>
                         </div>
                       </div>
-                    </div>
-                  );
-                })
-              ) : (
-                <div className="cart-list">
+                    );
+                  })
+                ) : (
                   <section className="section_not_found">
                     <div className="not_fount_content">
                       <h2>We can't find anything</h2>
@@ -135,8 +136,8 @@ const Cart = () => {
                       BACK TO HOME
                     </button>
                   </section>
-                </div>
-              )}
+                )}
+              </div>
             </div>
             {user_cart.length > 0 ? (
               <div className="col-lg-4 col-md-12 col-sm-12">
@@ -148,7 +149,7 @@ const Cart = () => {
                     <ul>
                       <li>
                         <span>Subtotal</span>
-                        <span>$15.00</span>
+                        <span>${total}.00</span>
                       </li>
                       <li>
                         <span>Delivery</span>
@@ -160,7 +161,7 @@ const Cart = () => {
                     <ul>
                       <li>
                         <span className="total">Total (incl VAT)</span>
-                        <span>$20.00</span>
+                        <span>${total}.00</span>
                       </li>
                     </ul>
                     <button
