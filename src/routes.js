@@ -16,14 +16,21 @@ export const RenderRoutes = () => {
   const user_authenticate = useSelector(({ user_authenticate }) => {
     return user_authenticate.userLogin;
   });
+  const user_cart = useSelector(({ user_cart }) => {
+    return user_cart.cart;
+  });
   return (
     // <Suspense fallback={<LoadingScreen />}>
     <Suspense>
       <Routes>
         <Route path="/" element={<HomeView />} />
         <Route path="/about" element={<AboutView />} />
-        <Route path="/cart" element={<CartView />} />
-        <Route path="/checkout" element={<CheckoutView />} />
+        {user_cart.length > 0 && (
+          <>
+            <Route path="/cart" element={<CartView />} />
+            <Route path="/checkout" element={<CheckoutView />} />
+          </>
+        )}
         <Route path="/product-detail/:id" element={<ProductDetail />} />
         <Route path="/category/:id" element={<Category />} />
         <Route path="/contact" element={<ContactView />} />

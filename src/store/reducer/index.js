@@ -4,7 +4,13 @@ import Cart from "./cartReducer";
 import Categories from "./categoryReducer";
 import WebSettings from "./webSettingReducer";
 import { createForms } from "react-redux-form";
-import { SignupUser, LoginUser, Subscribe, Contact } from "../forms";
+import {
+  SignupUser,
+  LoginUser,
+  Subscribe,
+  Contact,
+  UserDetailForPay,
+} from "../forms";
 
 export default combineReducers({
   user_authenticate: Authenticate,
@@ -16,5 +22,6 @@ export default combineReducers({
     login: LoginUser,
     subscribe: Subscribe,
     contact: Contact,
+    detailtopay: UserDetailForPay,
   }),
 });

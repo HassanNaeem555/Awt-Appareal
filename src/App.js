@@ -15,9 +15,6 @@ console.clear();
 
 const App = () => {
   const dispatch = useDispatch();
-  // const header_categories = useSelector(({ user_categories }) => {
-  //   return user_categories.categories;
-  // });
   useEffect(() => {
     async function getCategory() {
       const result = await getApi(categories);
@@ -26,11 +23,6 @@ const App = () => {
       dispatch(getWebSettings(data));
     }
     getCategory();
-    // if (header_categories.length !== 0) {
-    //   console.log("api hit for categories");
-    // } else {
-    //   console.log("api not hit for categories", header_categories.length);
-    // }
   }, [dispatch]);
   return (
     <Router>
