@@ -6,6 +6,7 @@ import CartView from "./views/cart/CartView";
 import CheckoutView from "./views/checkout/CheckoutView";
 import ProductDetail from "./views/product-detail";
 import Category from "./views/categories";
+import Search from "./views/search";
 import AboutView from "./views/about/AboutView";
 import PrivacyPolicy from "./views/cms/privacyPolicy";
 import ProfileView from "./views/profile/ProfileView";
@@ -33,6 +34,7 @@ export const RenderRoutes = () => {
         )}
         <Route path="/product-detail/:id" element={<ProductDetail />} />
         <Route path="/category/:id" element={<Category />} />
+        <Route path="/search/:id" element={<Search />} />
         <Route path="/contact" element={<ContactView />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         {user_authenticate && (

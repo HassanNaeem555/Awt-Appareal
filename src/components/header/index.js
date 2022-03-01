@@ -19,9 +19,16 @@ import { Control, Form, Errors, actions } from "react-redux-form";
 import { required, maxLength, minLength, validEmail } from "../../utils/custom";
 
 const Header = () => {
+  const [current_path, setCurrent_path] = useState("");
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [responsiveNav, setResponsiveNav] = useState(false);
+  const [openCartModal, setOpenCartModal] = useState(false);
+
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const user_authenticate = useSelector(({ user_authenticate }) => {
     return user_authenticate.userLogin;
   });
@@ -34,11 +41,10 @@ const Header = () => {
   const user_cart = useSelector(({ user_cart }) => {
     return user_cart.cart;
   });
-  const [current_path, setCurrent_path] = useState("");
-  const [sub_total, setSub_total] = useState(0);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [responsiveNav, setResponsiveNav] = useState(false);
-  const [openCartModal, setOpenCartModal] = useState(false);
+  const total = user_cart.reduce(function (previousValue, currentValue) {
+    return previousValue + currentValue.quantity * currentValue.product_price;
+  }, 0);
+
   const toggleNav = () => {
     setResponsiveNav(!responsiveNav);
   };
@@ -112,16 +118,16 @@ const Header = () => {
       toggleCartNav();
     }
   };
+  const searchForProducts = (e) => {
+    e.preventDefault();
+    if (searchKeyword !== "") {
+      navigate(`/search/${searchKeyword}`);
+      closeSearch();
+    }
+  };
   useEffect(() => {
     setCurrent_path(location.pathname);
   }, [location.pathname]);
-  // useEffect(() => {
-  //   const getTotal = sub_total;
-  //   user_cart.map((item) => {
-  //     return getTotal + item.total_price;
-  //   });
-  //   setSub_total(getTotal);
-  // }, [user_cart]);
   return (
     <>
       <header>
@@ -294,8 +300,20 @@ const Header = () => {
             <i className="fa fa-times"></i>
           </span>
           <div className="overlay-content">
-            <form>
-              <input type="text" placeholder="Search.." name="search" />
+            <form
+              onSubmit={(e) => {
+                searchForProducts(e);
+              }}
+            >
+              <input
+                type="text"
+                placeholder="Search.."
+                name="search"
+                value={searchKeyword}
+                onChange={(e) => {
+                  setSearchKeyword(e.target.value);
+                }}
+              />
               <button type="submit">
                 <i className="fa fa-search"></i>
               </button>
@@ -385,12 +403,14 @@ const Header = () => {
                   );
                 })}
               <div className="bottom">
-                <div className="amount">
-                  <p>
-                    <span>Total:</span>
-                    <span>$500</span>
-                  </p>
-                </div>
+                {total && (
+                  <div className="amount">
+                    <p>
+                      <span>Total:</span>
+                      <span>{`$ ${total}`}</span>
+                    </p>
+                  </div>
+                )}
                 <div className="cart-button">
                   <span
                     className="cursor-pointer"

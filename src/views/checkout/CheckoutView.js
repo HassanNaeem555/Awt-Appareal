@@ -7,10 +7,7 @@ import Review from "./review";
 import Payment from "./payment";
 import OrderSummary from "./orderSummary";
 import { deleteProductFromCart } from "../../store/action/cartAction";
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
 import { toast } from "react-toastify";
-const stripePromise = loadStripe("STRIPE_PUBLISHABLE_API_KEY");
 
 const CheckoutView = () => {
   const dispatch = useDispatch();
@@ -143,9 +140,7 @@ const CheckoutView = () => {
                   >
                     <div className="tab-pane fade show active">
                       <div className="checkout-form payment-card">
-                        <Elements stripe={stripePromise}>
-                          <Payment changeTab={changeTab} />
-                        </Elements>
+                        <Payment changeTab={changeTab} />
                       </div>
                     </div>
                   </Tab>
