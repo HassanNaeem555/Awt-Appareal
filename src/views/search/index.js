@@ -1,105 +1,69 @@
-import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Pagination } from "react-bootstrap";
-import Filter from "./filters";
 import CommonBanner from "../../components/commonBanner";
 import RecommendedProducts from "../../components/recommendedProducts";
 import CommonProductCard from "../../components/commonProductCard";
 import LazyLoader from "../../components/lazyLoader";
 import { getApi } from "../../utils/apiFunctions";
-import { categories_products, recommended_product } from "../../utils/api";
+import { search_products, recommended_product } from "../../utils/api";
 
 const dummyCategory = [0, 1, 2, 3, 4, 5, 6, 7];
-
-const Category = () => {
-  const location = useLocation();
+const Search = () => {
   const [active, setActive] = useState(1);
   const [pageNo, setPageNo] = useState(1);
   const [totalProducts, setTotalProducts] = useState(0);
   const [products, setProducts] = useState([]);
   const [recommendedProducts, setRecommendedProducts] = useState([]);
   const [stopPagination, setStopPagination] = useState(false);
+
+  let [pageSize, setPageSize] = useState(10);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pagesCount, setPagesCount] = useState(10);
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
   let items = [];
+
   for (let number = 1; number <= totalProducts; number++) {
     items.push(
       <Pagination.Item
         key={number}
         active={number === active}
-        onClick={() => {
-          changeActive(number);
+        onClick={(e) => {
+          changeActive(e, number);
         }}
       >
         {number <= 9 ? `0${number}` : number}
       </Pagination.Item>
     );
   }
-  const changeActive = (activeVal) => {
+  const changeActive = (event, activeVal) => {
+    console.log("running event", event);
     console.log("running active", active);
     setActive(activeVal);
   };
   const getImage = () => {
-    if (location.pathname === "/category/new-arrival") {
-      return "arrivals-sec1";
-    } else if (location.pathname === "/category/mens") {
-      return "mens-sec1";
-    } else if (location.pathname === "/category/women") {
-      return "womens-sec1";
-    } else if (location.pathname === "/category/youth") {
-      return "youth-sec1";
-    } else if (location.pathname === "/category/hats") {
-      return "hats-sec1";
-    } else if (location.pathname === "/category/accessories") {
-      return "accessories-sec1";
-    } else {
-      return "";
-    }
+    return "womens-sec1";
   };
   const getName = () => {
-    if (location.pathname === "/category/new-arrival") {
-      return "New Arrivals";
-    } else if (location.pathname === "/category/mens") {
-      return "Mens";
-    } else if (location.pathname === "/category/women") {
-      return "Womens";
-    } else if (location.pathname === "/category/youth") {
-      return "Youth";
-    } else if (location.pathname === "/category/hats") {
-      return "Hats";
-    } else if (location.pathname === "/category/accessories") {
-      return "Accessories";
-    } else {
-      return "";
-    }
-  };
-  const renderFilters = () => {
-    if (location.pathname === "/category/new-arrival") {
-      return <Filter name={getName} />;
-    } else if (location.pathname === "/category/mens") {
-      return <Filter name={getName} />;
-    } else if (location.pathname === "/category/women") {
-      return <Filter name={getName} />;
-    } else if (location.pathname === "/category/youth") {
-      return null;
-    } else if (location.pathname === "/category/hats") {
-      return null;
-    } else if (location.pathname === "/category/accessories") {
-      return <Filter name={getName} />;
-    }
+    return "Search";
   };
   const scrollTop = () => {
     window.scrollTo(0, 0);
   };
-  const getProductsData = async () => {
+  const getProductsData = async (search_keyword) => {
     // if (!stopPagination) {
     const result = await getApi(
-      `${categories_products}?category_id=${location.state.id}&limit=10&page=${pageNo}`
+      `${search_products}?product_name=${search_keyword}`
     );
-    if (result && result?.products) {
+    if (result) {
       const { data, total, current_page, prev_page_url, next_page_url } =
-        result?.products;
+        result;
       setProducts(data);
       setPageNo(current_page);
-      const makeTotal = Math.floor(total / 10);
+      const makeTotal = Math.ceil(total / 10);
       setTotalProducts(makeTotal);
       if (next_page_url == null) {
         setStopPagination(true);
@@ -120,13 +84,34 @@ const Category = () => {
       setRecommendedProducts(data);
     }
   };
-  useEffect(() => {
-    if (products.length > 0) {
-      setProducts([]);
+  const handleClick = async (e, index) => {
+    e.persist();
+    console.log("e index", e);
+    console.log("index", index);
+    let limit = Number(e.target.innerText) - 1;
+    if (currentPage < index) {
+      //   let ord = await getOrders(props.auth.user.data._id, e.target.innerText);
+      //   if (ord && ord.data && ord.data.length) {
+      //     setOrders(ord.data);
+      //     setId(limit * 10);
+      //   }
+    } else {
+      //   let ord = await getOrders(props.auth.user.data._id, e.target.innerText);
+      //   if (ord && ord.data && ord.data.length) {
+      //     setOrders(ord.data);
+      //     setId(ord.data.length - pageSize);
+      //   }
     }
+    e.preventDefault();
+    setCurrentPage(index);
+  };
+  useEffect(() => {
+    console.log("location.pathname", location.pathname);
+    console.log("location.pathname", location.pathname.substring(8));
+    const searchKeyword = location.pathname.substring(8);
     scrollTop();
     setStopPagination(false);
-    getProductsData();
+    getProductsData(searchKeyword);
     getRecommendedProducts();
   }, [location.pathname]);
   return (
@@ -134,14 +119,8 @@ const Category = () => {
       <CommonBanner img={getImage()} name={getName()} />
       <section className="inner-sec2">
         <div className="innerSec2-wrap">
-          {renderFilters()}
           <div className="container">
             <div className="right-col">
-              <div className="filter-button">
-                <button type="button" className="filter-btn">
-                  Filters <i className="fa fa-filter"></i>
-                </button>
-              </div>
               <div className="row m-0">
                 {products.length > 0 ? (
                   <CommonProductCard products={products} />
@@ -165,7 +144,15 @@ const Category = () => {
                       className="product-pagination pagination justify-content-center"
                       size="lg"
                     >
+                      <Pagination.Prev
+                        disabled={currentPage <= 0}
+                        onClick={(e) => handleClick(e, currentPage - 1)}
+                      />
                       {items}
+                      <Pagination.Next
+                        disabled={currentPage >= pagesCount - 1}
+                        onClick={(e) => handleClick(e, currentPage + 1)}
+                      />
                     </Pagination>
                   </nav>
                 </div>
@@ -182,4 +169,4 @@ const Category = () => {
   );
 };
 
-export default Category;
+export default Search;
