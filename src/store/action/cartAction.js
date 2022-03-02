@@ -1,4 +1,9 @@
-import { ADD_TO_CART, UPDATE_CART, DELETE_FROM_CART } from "../constants";
+import {
+  ADD_TO_CART,
+  UPDATE_CART,
+  DELETE_FROM_CART,
+  EMPTY_CART,
+} from "../constants";
 
 export function addInCart(item_to_add) {
   return async (dispatch) => {
@@ -21,6 +26,13 @@ export function deleteProductFromCart(cart_item_id) {
     dispatch({
       type: DELETE_FROM_CART,
       payload: cart_item_id,
+    });
+  };
+}
+export function emptyCart() {
+  return async (dispatch) => {
+    dispatch({
+      type: EMPTY_CART,
     });
   };
 }

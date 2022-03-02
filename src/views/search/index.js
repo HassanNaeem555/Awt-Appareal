@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Pagination } from "react-bootstrap";
+import { getApi } from "../../utils/apiFunctions";
+import { search_products, recommended_product } from "../../utils/api";
 import CommonBanner from "../../components/commonBanner";
 import RecommendedProducts from "../../components/recommendedProducts";
 import CommonProductCard from "../../components/commonProductCard";
 import LazyLoader from "../../components/lazyLoader";
-import { getApi } from "../../utils/apiFunctions";
-import { search_products, recommended_product } from "../../utils/api";
 
 const dummyCategory = [0, 1, 2, 3, 4, 5, 6, 7];
+
 const Search = () => {
   const [active, setActive] = useState(1);
   const [pageNo, setPageNo] = useState(1);
@@ -17,13 +18,9 @@ const Search = () => {
   const [recommendedProducts, setRecommendedProducts] = useState([]);
   const [stopPagination, setStopPagination] = useState(false);
 
-  let [pageSize, setPageSize] = useState(10);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [pagesCount, setPagesCount] = useState(10);
-
   const location = useLocation();
   const navigate = useNavigate();
-
+  const searchKeyword = location.pathname.substring(8);
   let items = [];
 
   for (let number = 1; number <= totalProducts; number++) {
@@ -41,8 +38,21 @@ const Search = () => {
   }
   const changeActive = (event, activeVal) => {
     console.log("running event", event);
-    console.log("running active", active);
+    console.log("running active", activeVal);
+    // getProductsData(searchKeyword, activeVal);
     setActive(activeVal);
+    if (stopPagination && activeVal < active) {
+      scrollTop();
+      setProducts([]);
+      getProductsData(searchKeyword, activeVal);
+      return;
+    }
+    if (stopPagination && activeVal > active) {
+      scrollTop();
+      setProducts([]);
+      getProductsData(searchKeyword, activeVal);
+      return;
+    }
   };
   const getImage = () => {
     return "womens-sec1";
@@ -53,10 +63,9 @@ const Search = () => {
   const scrollTop = () => {
     window.scrollTo(0, 0);
   };
-  const getProductsData = async (search_keyword) => {
-    // if (!stopPagination) {
+  const getProductsData = async (search_keyword, page) => {
     const result = await getApi(
-      `${search_products}?product_name=${search_keyword}`
+      `${search_products}?product_name=${search_keyword}&page=${page}`
     );
     if (result) {
       const { data, total, current_page, prev_page_url, next_page_url } =
@@ -68,14 +77,10 @@ const Search = () => {
       if (next_page_url == null) {
         setStopPagination(true);
       }
-      if (prev_page_url == null && next_page_url !== null) {
+      if (prev_page_url == null) {
         setStopPagination(true);
       }
     }
-    console.log("category result", result);
-    // } else {
-    //   return;
-    // }
   };
   const getRecommendedProducts = async () => {
     const { data } = await getApi(recommended_product);
@@ -84,34 +89,15 @@ const Search = () => {
       setRecommendedProducts(data);
     }
   };
-  const handleClick = async (e, index) => {
-    e.persist();
-    console.log("e index", e);
-    console.log("index", index);
-    let limit = Number(e.target.innerText) - 1;
-    if (currentPage < index) {
-      //   let ord = await getOrders(props.auth.user.data._id, e.target.innerText);
-      //   if (ord && ord.data && ord.data.length) {
-      //     setOrders(ord.data);
-      //     setId(limit * 10);
-      //   }
-    } else {
-      //   let ord = await getOrders(props.auth.user.data._id, e.target.innerText);
-      //   if (ord && ord.data && ord.data.length) {
-      //     setOrders(ord.data);
-      //     setId(ord.data.length - pageSize);
-      //   }
-    }
-    e.preventDefault();
-    setCurrentPage(index);
-  };
   useEffect(() => {
-    console.log("location.pathname", location.pathname);
-    console.log("location.pathname", location.pathname.substring(8));
-    const searchKeyword = location.pathname.substring(8);
     scrollTop();
     setStopPagination(false);
-    getProductsData(searchKeyword);
+    setProducts([]);
+    setRecommendedProducts([]);
+    setActive(1);
+    setPageNo(1);
+    setTotalProducts(0);
+    getProductsData(searchKeyword, 1);
     getRecommendedProducts();
   }, [location.pathname]);
   return (
@@ -144,15 +130,7 @@ const Search = () => {
                       className="product-pagination pagination justify-content-center"
                       size="lg"
                     >
-                      <Pagination.Prev
-                        disabled={currentPage <= 0}
-                        onClick={(e) => handleClick(e, currentPage - 1)}
-                      />
                       {items}
-                      <Pagination.Next
-                        disabled={currentPage >= pagesCount - 1}
-                        onClick={(e) => handleClick(e, currentPage + 1)}
-                      />
                     </Pagination>
                   </nav>
                 </div>

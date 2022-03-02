@@ -26,21 +26,20 @@ export const RenderRoutes = () => {
       <Routes>
         <Route path="/" element={<HomeView />} />
         <Route path="/about" element={<AboutView />} />
-        {user_cart.length > 0 && (
-          <>
-            <Route path="/cart" element={<CartView />} />
-            <Route path="/checkout" element={<CheckoutView />} />
-          </>
-        )}
         <Route path="/product-detail/:id" element={<ProductDetail />} />
         <Route path="/category/:id" element={<Category />} />
         <Route path="/search/:id" element={<Search />} />
         <Route path="/contact" element={<ContactView />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="*" element={<NotFoundView />} />
+        <Route path="/cart" element={<CartView />} />
+        {user_cart.length > 0 && user_authenticate && (
+          <Route path="/checkout" element={<CheckoutView />} />
+        )}
         {user_authenticate && (
           <Route path="/user-profile" element={<ProfileView />} />
         )}
-        <Route path="*" element={<NotFoundView />} />
+        {/* {user_cart.length > 0 && <Route path="/cart" element={<CartView />} />} */}
       </Routes>
     </Suspense>
   );

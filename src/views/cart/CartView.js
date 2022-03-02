@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import {
   procedureToUpdateIncrementInCart,
   procedureToUpdateDecrementInCart,
@@ -15,6 +16,9 @@ import { ImageURL } from "../../utils/custom";
 const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const user_authenticate = useSelector(({ user_authenticate }) => {
+    return user_authenticate.userLogin;
+  });
   const user_cart = useSelector(({ user_cart }) => {
     return user_cart.cart;
   });
@@ -167,7 +171,11 @@ const Cart = () => {
                     <button
                       className="cta-btn text-center mt-3 w-100"
                       onClick={() => {
-                        navigate("/checkout");
+                        user_authenticate
+                          ? navigate("/checkout")
+                          : toast.warn(
+                              "Please Login First To Proceed Checkout"
+                            );
                       }}
                     >
                       Checkout<i className="ms-3 fa fa-chevron-right"></i>

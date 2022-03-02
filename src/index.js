@@ -16,7 +16,10 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import "./index.css";
 
-const stripePromise = loadStripe("pk_test_35p114pH8oNuHX72SmrvsFqh00Azv3ZaIA");
+const stripePromise = loadStripe(
+  "pk_test_51JUed2HunsRRB5CfTroEB34d9nTzUT8cwYa9HKCChJYfEKPUb3aZ4scBw1TDWJxGuy6cKtarZ2xebtocbTqvEKjM00t3k8M23G"
+);
+
 ReactDOM.render(
   <Provider store={store}>
     <PersistGate persistor={persistor}>

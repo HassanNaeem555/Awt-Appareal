@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogedOut } from "../../store/action/authAction";
+import { getApi } from "../../utils/apiFunctions";
+import { user_order_detail } from "../../utils/api";
 import DataTable from "react-data-table-component";
 import ProfileHeader from "./profileHeader";
 import ProfileFooter from "./profileFooter";
@@ -20,6 +22,7 @@ const ProfileView = () => {
   const [isAddressChanged, setIsAddressChanged] = useState(false);
   const [isPhoneNumberChanged, setIsPhoneNumberChanged] = useState(false);
   const [isPasswordChanged, setIsPasswordChanged] = useState(false);
+  const [ordersData, setOrdersData] = useState([]);
   const toggleUsernameModal = () => {
     setIsUsernameChanged(!isUsernameChanged);
   };
@@ -37,68 +40,29 @@ const ProfileView = () => {
   };
   const columns = [
     {
-      name: "ORDER#",
-      selector: (row) => row.order_no,
+      name: "ORDER ID",
+      selector: (row) => row.random_order_id,
     },
     {
       name: "ORDER DATE",
-      selector: (row) => row.order_date,
+      selector: (row) => new Date(row.created_at).toLocaleString(),
     },
     {
       name: "STATUS",
-      selector: (row) => row.status,
+      selector: (row) => row.order_status,
     },
     {
       name: "PRICE",
-      selector: (row) => row.price,
+      selector: (row) => "$" + row.total,
     },
     {
-      name: "LAST UPDATED",
-      selector: (row) => row.last_updated,
+      name: "CITY",
+      selector: (row) => row.shipping_city,
     },
-  ];
-
-  const data = [
-    {
-      id: 1,
-      order_no: "002145789",
-      order_date: "10:50PM",
-      status: "Confimed",
-      price: "$198",
-      last_updated: "Today",
-    },
-    {
-      id: 2,
-      order_no: "002145789",
-      order_date: "10:50PM",
-      status: "Shipped",
-      price: "$198",
-      last_updated: "Dec 12 2021",
-    },
-    {
-      id: 3,
-      order_no: "002145789",
-      order_date: "10:50PM",
-      status: "Confimed",
-      price: "$198",
-      last_updated: "Nov 15 2021",
-    },
-    {
-      id: 4,
-      order_no: "002145789",
-      order_date: "10:50PM",
-      status: "Shipped",
-      price: "$198",
-      last_updated: "Oct 10 2021",
-    },
-    {
-      id: 5,
-      order_no: "002145789",
-      order_date: "10:50PM",
-      status: "Confimed",
-      price: "$198",
-      last_updated: "Oct 5 2021",
-    },
+    // {
+    //   name: "ACTION",
+    //   selector: (row) => row.total,
+    // },
   ];
   const sendingPrefabs = {
     isUsernameChanged,
@@ -110,6 +74,20 @@ const ProfileView = () => {
     togglePhoneNumberModal,
     togglePasswordChangedModal,
   };
+  const getOrders = async () => {
+    const { data, success } = await getApi(
+      `${user_order_detail}?user_id=${id}`
+    );
+    if (success) {
+      setOrdersData(data?.data);
+      console.log("data?.data", data?.data);
+    } else {
+      console.log("result", success);
+    }
+  };
+  useEffect(() => {
+    getOrders();
+  }, []);
   return (
     <>
       <ProfileHeader name={full_name} image={profile} />
@@ -268,7 +246,7 @@ const ProfileView = () => {
                     <DataTable
                       className="display nowrap"
                       columns={columns}
-                      data={data}
+                      data={ordersData}
                       pagination
                     />
                   </div>
