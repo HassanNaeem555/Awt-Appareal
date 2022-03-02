@@ -1,49 +1,16 @@
-import React, { useState } from "react";
-import {
-  ElementsConsumer,
-  useStripe,
-  useElements,
-} from "@stripe/react-stripe-js";
+import React from "react";
+import { Spinner } from "react-bootstrap";
 import Cards from "react-credit-cards";
+import { CardNumberElement, CardExpiryElement } from "@stripe/react-stripe-js";
 import "react-credit-cards/es/styles-compiled.css";
 
-const Payment = ({ changeTab, stripe, elements }) => {
-  // const stripe = useStripe();
-  // const elements = useElements();
-  const [data, setData] = useState({
-    cvc: "",
-    expiry: "",
-    name: "",
-    number: "",
-  });
-  const handleInputChange = (e) => {
-    setData({
-      ...data,
-      [e.target.name]: e.target.value,
-    });
-  };
-  const handlePaymentWithCard = async (e) => {
-    e.preventDefault();
-    if (!stripe || !elements) {
-      return;
-    }
-    console.log("stripe", stripe);
-    console.log("elements", elements);
-    const result = await stripe.createToken("account", {
-      card: {
-        number: "4242424242424242",
-        exp_month: 2,
-        exp_year: 2023,
-        cvc: "314",
-      },
-    });
-    if (result.error) {
-      console.log(result.error.message);
-    } else {
-      console.log(result.token);
-      // pass the token to your backend API
-    }
-  };
+const Payment = ({
+  changeTab,
+  handleInputChange,
+  data,
+  loading,
+  submitCheckoutData,
+}) => {
   return (
     <>
       <button
@@ -54,7 +21,6 @@ const Payment = ({ changeTab, stripe, elements }) => {
       >
         <i className="fa fa-long-arrow-left"></i>
       </button>
-      {/* <div id="PaymentForm"> */}
       <Cards
         cvc={data.cvc}
         expiry={data.expiry}
@@ -65,7 +31,7 @@ const Payment = ({ changeTab, stripe, elements }) => {
       <form
         className="form-container row mt-5"
         onSubmit={(e) => {
-          handlePaymentWithCard(e);
+          submitCheckoutData(e);
         }}
       >
         <div className="field-container payment-input-col col-lg-12">
@@ -78,7 +44,7 @@ const Payment = ({ changeTab, stripe, elements }) => {
             />
           </div>
         </div>
-        <div className="field-container payment-input-col col-lg-12">
+        <div className="field-container payment-input-col col-lg-6">
           <div className="form-group">
             <input
               type="number"
@@ -91,6 +57,29 @@ const Payment = ({ changeTab, stripe, elements }) => {
         </div>
         <div className="field-container payment-input-col col-lg-6">
           <div className="form-group">
+            <div className="stripe-payment-input">
+              <CardNumberElement
+                options={{
+                  showIcon: true,
+                  placeholder: "Re-enter Card Number",
+                }}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="field-container payment-input-col col-lg-6">
+          <div className="form-group">
+            <div className="stripe-payment-input">
+              <CardExpiryElement
+                options={{
+                  placeholder: "MM / YY",
+                }}
+              />
+            </div>
+          </div>
+        </div>
+        {/* <div className="field-container payment-input-col col-lg-6">
+          <div className="form-group">
             <input
               type="date"
               name="expiry"
@@ -99,7 +88,7 @@ const Payment = ({ changeTab, stripe, elements }) => {
               id="card-expiry"
             />
           </div>
-        </div>
+        </div> */}
         <div className="field-container payment-input-col col-lg-6">
           <div className="form-group">
             <input
@@ -114,22 +103,17 @@ const Payment = ({ changeTab, stripe, elements }) => {
         <div className="field-container payment-input-col col-12">
           <div className="form-group mb-0">
             <button type="submit" className="submit">
-              SUBMIT
+              {loading ? (
+                <Spinner animation="border" variant="light" />
+              ) : (
+                "SUBMIT"
+              )}
             </button>
           </div>
         </div>
       </form>
-      {/* </div> */}
     </>
   );
 };
 
-export default function InjectedCheckoutForm() {
-  return (
-    <ElementsConsumer>
-      {({ stripe, elements }) => (
-        <Payment stripe={stripe} elements={elements} />
-      )}
-    </ElementsConsumer>
-  );
-}
+export default Payment;

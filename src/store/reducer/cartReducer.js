@@ -1,4 +1,9 @@
-import { ADD_TO_CART, UPDATE_CART, DELETE_FROM_CART } from "../constants";
+import {
+  ADD_TO_CART,
+  UPDATE_CART,
+  DELETE_FROM_CART,
+  EMPTY_CART,
+} from "../constants";
 const INIT_STATE = {
   cart: [],
 };
@@ -30,6 +35,11 @@ export default (state = INIT_STATE, action) => {
       return {
         ...state,
         cart: updated_cart,
+      };
+    case EMPTY_CART:
+      return {
+        ...state,
+        cart: [],
       };
     default:
       return state;

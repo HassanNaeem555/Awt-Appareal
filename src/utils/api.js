@@ -12,3 +12,6 @@ export const category_with_product = "/category_with_product";
 export const recommended_product = "/random_product";
 export const single_products = "/single_products";
 export const search_products = "/search_product";
+export const user_checkout = "/stripePost";
+export const user_order_detail = "/user_product";
+export const update_profile = "/UpdateProfile";

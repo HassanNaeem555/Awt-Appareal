@@ -3044,3 +3044,13 @@ PRODUCT QUANTITY CSS END
 .back-btn i {
   font-size: 25px;
 }
+.stripe-payment-input {
+  width: 100%;
+  height: 42px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  font-size: 16px;
+  background: #efefef;
+  border-radius: 10px;
+  outline: none;
+}

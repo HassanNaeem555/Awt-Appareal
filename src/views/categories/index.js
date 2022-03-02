@@ -13,12 +13,14 @@ const dummyCategory = [0, 1, 2, 3, 4, 5, 6, 7];
 
 const Category = () => {
   const location = useLocation();
+  const category_name = location.state.id;
   const [active, setActive] = useState(1);
   const [pageNo, setPageNo] = useState(1);
   const [totalProducts, setTotalProducts] = useState(0);
   const [products, setProducts] = useState([]);
   const [recommendedProducts, setRecommendedProducts] = useState([]);
   const [stopPagination, setStopPagination] = useState(false);
+
   let items = [];
   for (let number = 1; number <= totalProducts; number++) {
     items.push(
@@ -35,7 +37,20 @@ const Category = () => {
   }
   const changeActive = (activeVal) => {
     console.log("running active", active);
+    // getProductsData(searchKeyword, activeVal);
     setActive(activeVal);
+    if (stopPagination && activeVal < active) {
+      scrollTop();
+      setProducts([]);
+      getProductsData(category_name, activeVal);
+      return;
+    }
+    if (stopPagination && activeVal > active) {
+      scrollTop();
+      setProducts([]);
+      getProductsData(category_name, activeVal);
+      return;
+    }
   };
   const getImage = () => {
     if (location.pathname === "/category/new-arrival") {
@@ -89,10 +104,9 @@ const Category = () => {
   const scrollTop = () => {
     window.scrollTo(0, 0);
   };
-  const getProductsData = async () => {
-    // if (!stopPagination) {
+  const getProductsData = async (cat_name, page) => {
     const result = await getApi(
-      `${categories_products}?category_id=${location.state.id}&limit=10&page=${pageNo}`
+      `${categories_products}?category_id=${cat_name}&limit=10&page=${page}`
     );
     if (result && result?.products) {
       const { data, total, current_page, prev_page_url, next_page_url } =
@@ -104,14 +118,10 @@ const Category = () => {
       if (next_page_url == null) {
         setStopPagination(true);
       }
-      if (prev_page_url == null && next_page_url !== null) {
+      if (prev_page_url == null) {
         setStopPagination(true);
       }
     }
-    console.log("category result", result);
-    // } else {
-    //   return;
-    // }
   };
   const getRecommendedProducts = async () => {
     const { data } = await getApi(recommended_product);
@@ -121,12 +131,14 @@ const Category = () => {
     }
   };
   useEffect(() => {
-    if (products.length > 0) {
-      setProducts([]);
-    }
     scrollTop();
     setStopPagination(false);
-    getProductsData();
+    setProducts([]);
+    setRecommendedProducts([]);
+    setActive(1);
+    setPageNo(1);
+    setTotalProducts(0);
+    getProductsData(category_name, 1);
     getRecommendedProducts();
   }, [location.pathname]);
   return (

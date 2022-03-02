@@ -1,21 +1,55 @@
 import React, { useState } from "react";
 import { Tabs, Tab } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { actions } from "react-redux-form";
+import {
+  deleteProductFromCart,
+  emptyCart,
+} from "../../store/action/cartAction";
+import {
+  useStripe,
+  useElements,
+  CardNumberElement,
+} from "@stripe/react-stripe-js";
+import { postApi } from "../../utils/apiFunctions";
+import { user_checkout } from "../../utils/api";
 import CommonBanner from "../../components/commonBanner";
 import Shipping from "./shipping";
 import Review from "./review";
 import Payment from "./payment";
 import OrderSummary from "./orderSummary";
-import { deleteProductFromCart } from "../../store/action/cartAction";
-import { toast } from "react-toastify";
 
 const CheckoutView = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const stripe = useStripe();
+  const elements = useElements();
   const [key, setKey] = useState("checkout-tab-1");
+  const [loading, setLoading] = useState(false);
   const [userCheckoutData, setUserCheckoutData] = useState({});
   const user_cart = useSelector(({ user_cart }) => {
     return user_cart.cart;
   });
+  const { id } = useSelector(({ user_authenticate }) => {
+    return user_authenticate.user;
+  });
+  const [data, setData] = useState({
+    cvc: "",
+    expiry: "",
+    name: "",
+    number: "",
+  });
+  const total = user_cart.reduce(function (previousValue, currentValue) {
+    return previousValue + currentValue.quantity * currentValue.product_price;
+  }, 0);
+  const handleInputChange = (e) => {
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
+    });
+  };
   const changeTab = (value) => {
     if (value === 1) {
       setKey("checkout-tab-1");
@@ -55,9 +89,71 @@ const CheckoutView = () => {
       toast.warn("Please Fill The Required Fields");
     }
   };
-  const total = user_cart.reduce(function (previousValue, currentValue) {
-    return previousValue + currentValue.quantity * currentValue.product_price;
-  }, 0);
+  const submitCheckoutData = async (e) => {
+    e.preventDefault();
+    setLoading(!loading);
+    const cardElement = elements.getElement(CardNumberElement);
+    toast.warn("Checkout Is In Progress");
+    const { token, error } = await stripe.createToken(cardElement);
+    if (token?.id) {
+      const {
+        email_shipping,
+        phone_number_shipping,
+        shipping_address_one,
+        shipping_address_second,
+        shipping_city,
+        shipping_zip_code,
+        email_billing,
+        phone_number_billing,
+        billing_address_one,
+        billing_address_second,
+        billing_city,
+        billing_zip_code,
+      } = userCheckoutData;
+      const data = {
+        user_id: id,
+        email_shipping,
+        shipping_address_one,
+        shipping_address_second,
+        shipping_city,
+        shipping_zipcode: shipping_zip_code,
+        shipping_phone_number: phone_number_shipping,
+        email_billing,
+        billing_phone_number: phone_number_billing,
+        billing_address_one,
+        billing_address_second,
+        billing_city,
+        billing_zip_code,
+        stripeToken: token?.id,
+        total,
+        cartItems: user_cart,
+      };
+      const { message, order_id, success } = await postApi(user_checkout, data);
+      if (success) {
+        toast.success(message);
+        setData({
+          cvc: "",
+          expiry: "",
+          name: "",
+          number: "",
+        });
+        setLoading(false);
+        dispatch(emptyCart());
+        dispatch(actions.reset("detailtopay"));
+        setTimeout(() => {
+          navigate("/user-profile");
+        }, 1200);
+      } else {
+        setLoading(false);
+        toast.success(message);
+      }
+    }
+    if (error) {
+      toast.error("Error ! Payment Unsuccessfull");
+      setLoading(false);
+      return;
+    }
+  };
   return (
     <>
       <CommonBanner img={"cart-sec1"} name={"Checkout"} />
@@ -140,7 +236,13 @@ const CheckoutView = () => {
                   >
                     <div className="tab-pane fade show active">
                       <div className="checkout-form payment-card">
-                        <Payment changeTab={changeTab} />
+                        <Payment
+                          changeTab={changeTab}
+                          handleInputChange={handleInputChange}
+                          data={data}
+                          loading={loading}
+                          submitCheckoutData={submitCheckoutData}
+                        />
                       </div>
                     </div>
                   </Tab>

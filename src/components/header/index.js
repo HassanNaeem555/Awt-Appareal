@@ -424,8 +424,18 @@ const Header = () => {
                   <span
                     className="cursor-pointer"
                     onClick={() => {
-                      toggleCartNav();
-                      navigate("/checkout");
+                      user_authenticate ? (
+                        <>{(toggleCartNav(), navigate("/checkout"))}</>
+                      ) : (
+                        <>
+                          {
+                            (toggleCartNav(),
+                            toast.warn(
+                              "Please Login First To Proceed Checkout"
+                            ))
+                          }
+                        </>
+                      );
                     }}
                   >
                     Checkout
