@@ -6,7 +6,7 @@ import HomeCenterBanner from "../../components/home/homeCenterBanner";
 import BestSeller from "../../components/home/bestSellers";
 import NewArrival from "../../components/home/newArrival";
 import Testimonials from "../../components/home/testimonials";
-import InstagramApparealPost from "../../components/home/instagramApparealPost";
+// import InstagramApparealPost from "../../components/home/instagramApparealPost";
 import Subscribe from "../../components/home/subscribe";
 import { getApi } from "../../utils/apiFunctions";
 import { banner, category_with_product } from "../../utils/api";
