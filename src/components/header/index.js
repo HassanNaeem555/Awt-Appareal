@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal } from "react-bootstrap";
+import { Spinner, Modal } from "react-bootstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
@@ -26,6 +26,8 @@ const Header = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [responsiveNav, setResponsiveNav] = useState(false);
   const [openCartModal, setOpenCartModal] = useState(false);
+  const [loginLoading, setLoginLoading] = useState(false);
+  const [signupLoading, setSignupLoading] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -75,30 +77,36 @@ const Header = () => {
     }
   };
   const onSubmitLogin = async (values) => {
+    setLoginLoading(!loginLoading);
     const updatedUser = JSON.parse(JSON.stringify(values));
     const { user, message, success } = await postApi(login, updatedUser);
     if (success === true) {
       dispatch(userAuth(user));
+      setLoginLoading(false);
       dispatch(actions.reset("login"));
       dispatch(toggleAuthModal());
       toast.success("Login Successfully");
       return;
     }
     if (success === false) {
+      setLoginLoading(false);
       toast.warn(message);
       return;
     }
   };
   const handleSignup = async (values) => {
+    setSignupLoading(!signupLoading);
     const updatedUser = JSON.parse(JSON.stringify(values));
     const { message, success } = await postApi(register, updatedUser);
     if (success === true) {
+      setSignupLoading(false);
       dispatch(actions.reset("signup"));
       toast.success(message);
       signInClick();
       return;
     }
     if (success === false) {
+      setSignupLoading(false);
       toast.warn(message[0]);
       return;
     }
@@ -602,7 +610,11 @@ const Header = () => {
                   }}
                 />
                 <button className="submit" type="submit">
-                  Sign Up
+                  {signupLoading ? (
+                    <Spinner animation="border" variant="light" size="sm" />
+                  ) : (
+                    "Sign Up"
+                  )}
                 </button>
               </Form>
             </div>
@@ -678,7 +690,11 @@ const Header = () => {
                 />
                 <a href="/#">Forgot your password?</a>
                 <button className="submit" type="submit">
-                  Sign In
+                  {loginLoading ? (
+                    <Spinner animation="border" variant="light" size="sm" />
+                  ) : (
+                    "Sign In"
+                  )}
                 </button>
               </Form>
             </div>
