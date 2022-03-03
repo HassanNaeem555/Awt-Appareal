@@ -155,7 +155,7 @@ const Header = () => {
   };
   const localFbLogin = async (json) => {
     let data = {
-      facebookId: json?.id,
+      social_id: json?.id,
       full_name: json?.name,
       email: json?.email ? json?.email : "example@example.com",
       profile: [json?.picture.data.url],
@@ -510,7 +510,7 @@ const Header = () => {
             <div className="form-container sign-up-container">
               <Form model="signup" onSubmit={(values) => handleSignup(values)}>
                 <h1>Create Account</h1>
-                <div className="social-container">
+                {/* <div className="social-container">
                   <FacebookLogin
                     appId="926405051562879"
                     autoLoad={false}
@@ -531,8 +531,9 @@ const Header = () => {
                   >
                     <i className="fa fa-instagram" />
                   </InstagramLogin>
-                </div>
-                <span>or use your email for registration</span>
+                </div> */}
+                {/* <span>or use your email for registration</span> */}
+                <span>with your email for registration</span>
                 <Control
                   type="text"
                   model=".full_name"
@@ -608,7 +609,7 @@ const Header = () => {
             <div className="form-container sign-in-container">
               <Form model="login" onSubmit={(values) => onSubmitLogin(values)}>
                 <h1>Sign in</h1>
-                <div className="social-container">
+                {/* <div className="social-container">
                   <FacebookLogin
                     appId="926405051562879"
                     autoLoad={false}
@@ -629,8 +630,8 @@ const Header = () => {
                   >
                     <i className="fa fa-instagram" />
                   </InstagramLogin>
-                </div>
-                <span>or use your account</span>
+                </div> */}
+                {/* <span>or use your account</span> */}
                 <Control
                   type="email"
                   model=".email"

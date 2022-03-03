@@ -56,7 +56,7 @@ const HomeView = () => {
       <HomeCenterBanner />
       <BestSeller category={renderSelectedCategory} />
       <Testimonials />
-      <InstagramApparealPost />
+      {/* <InstagramApparealPost /> */}
       <Subscribe />
     </>
   );
