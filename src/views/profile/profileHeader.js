@@ -1,6 +1,6 @@
 import React from "react";
 
-const ProfileHeader = ({ name, image }) => {
+const ProfileHeader = ({ name, image, url }) => {
   return (
     <header>
       <div className="container-fluid">
@@ -66,7 +66,11 @@ const ProfileHeader = ({ name, image }) => {
                 {/* <!-- <li><a href="javascript:void(0)"><i className="far fa-bell"></i></a></li> --> */}
                 <li className="head-image">
                   <img
-                    src="assets/images/admin/user-image.jpg"
+                    src={
+                      image
+                        ? `${url}/profile/${image}`
+                        : "assets/images/admin/user-image.jpg"
+                    }
                     className="img-fluid"
                     alt="user-inage"
                   />

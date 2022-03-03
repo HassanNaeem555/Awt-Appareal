@@ -225,7 +225,7 @@ const ProductDetail = () => {
                 </div>
                 {productData?.product_price ? (
                   <span className="black-heading">
-                    ${productData?.product_price}.00
+                    ${productData?.product_price}
                   </span>
                 ) : productData?.product_name === null ? null : (
                   <TextLoader height={"5%"} width={"80%"} />

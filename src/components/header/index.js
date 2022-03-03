@@ -4,6 +4,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { userAuth } from "../../store/action/authAction";
+import FacebookLogin from "react-facebook-login";
+import InstagramLogin from "react-instagram-login";
 import {
   updateCart,
   deleteProductFromCart,
@@ -124,6 +126,32 @@ const Header = () => {
       navigate(`/search/${searchKeyword}`);
       closeSearch();
     }
+  };
+  const responseFacebook = async (response) => {
+    if (response.accessToken) {
+      console.log("response", response);
+      fetch(
+        "https://graph.facebook.com/me?fields=email,name,picture.type(large),first_name,last_name&access_token=" +
+          response.accessToken
+      )
+        .then((response) => response.json())
+        .then((json) => {
+          console.log("use profile..........", json);
+          console.log("use profile..........", json.name);
+          console.log("use profile..........", json.id);
+          console.log("use profile..........", json.email);
+          console.log("use profile..........", json.picture.data.url);
+          toast.success("Facebook Login Successfull");
+          // localFbLogin(json);
+        })
+        .catch((error) => {
+          console.error(error);
+          toast.warn("Facebook Login Unsuccessfull");
+        });
+    }
+  };
+  const responseInstagram = (response) => {
+    console.log(response);
   };
   useEffect(() => {
     setCurrent_path(location.pathname);
@@ -469,22 +497,26 @@ const Header = () => {
               <Form model="signup" onSubmit={(values) => handleSignup(values)}>
                 <h1>Create Account</h1>
                 <div className="social-container">
-                  <a
-                    href="https://www.facebook.com/"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="social"
+                  <FacebookLogin
+                    appId="926405051562879"
+                    autoLoad={false}
+                    fields="name,email,picture"
+                    scope="public_profile,user_friends,user_actions.books"
+                    callback={responseFacebook}
+                    isSignedIn={true}
+                    textButton=""
+                    icon="fab fa-facebook-f"
+                    cssClass="social social_common"
+                  />
+                  <InstagramLogin
+                    clientId="5fd2f11482844c5eba963747a5f34556"
+                    buttonText=""
+                    onSuccess={responseInstagram}
+                    onFailure={responseInstagram}
+                    cssClass="social social_common"
                   >
-                    <i className="fa fa-facebook-f"></i>
-                  </a>
-                  <a
-                    href="https://www.instagram.com/"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="social"
-                  >
-                    <i className="fa fa-instagram"></i>
-                  </a>
+                    <i className="fa fa-instagram" />
+                  </InstagramLogin>
                 </div>
                 <span>or use your email for registration</span>
                 <Control
@@ -563,22 +595,26 @@ const Header = () => {
               <Form model="login" onSubmit={(values) => onSubmitLogin(values)}>
                 <h1>Sign in</h1>
                 <div className="social-container">
-                  <a
-                    href="https://www.facebook.com/"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="social"
+                  <FacebookLogin
+                    appId="926405051562879"
+                    autoLoad={false}
+                    fields="name,email,picture"
+                    scope="public_profile,user_friends,user_actions.books"
+                    callback={responseFacebook}
+                    isSignedIn={true}
+                    textButton=""
+                    icon="fab fa-facebook-f"
+                    cssClass="social social_common"
+                  />
+                  <InstagramLogin
+                    clientId="5fd2f11482844c5eba963747a5f34556"
+                    buttonText=""
+                    onSuccess={responseInstagram}
+                    onFailure={responseInstagram}
+                    cssClass="social social_common"
                   >
-                    <i className="fa fa-facebook-f"></i>
-                  </a>
-                  <a
-                    href="https://www.instagram.com/"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="social"
-                  >
-                    <i className="fa fa-instagram"></i>
-                  </a>
+                    <i className="fa fa-instagram" />
+                  </InstagramLogin>
                 </div>
                 <span>or use your account</span>
                 <Control

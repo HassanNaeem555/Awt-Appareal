@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal } from "react-bootstrap";
+import { Modal, Spinner } from "react-bootstrap";
 
 const ProfileFooter = ({ sendingPrefabs }) => {
   const {
@@ -11,6 +11,26 @@ const ProfileFooter = ({ sendingPrefabs }) => {
     toggleAddressModal,
     togglePhoneNumberModal,
     togglePasswordChangedModal,
+    changeUserName,
+    setChangeUserName,
+    changeUserAddress,
+    setChangeUserAddress,
+    changeUserPhno,
+    setChangeUserPhno,
+    changeCurrentUserName,
+    changeCurrentUserAddress,
+    changeCurrentUserPhno,
+    changeCurrentPassword,
+    changeNameLoading,
+    changeAddressLoading,
+    changeUserPhnoLoading,
+    newPasswordUser,
+    confirmPasswordUser,
+    changePasswordLoading,
+    setNewPasswordUser,
+    setConfirmPasswordUser,
+    phone_number,
+    address,
   } = sendingPrefabs;
   return (
     <>
@@ -31,23 +51,25 @@ const ProfileFooter = ({ sendingPrefabs }) => {
             </button>
           </div>
           <div className="credit-card-info">
-            <form>
+            <form onSubmit={changeCurrentUserName}>
               <input
                 type="text"
-                name=""
-                maxLength="20"
+                name="user_name"
+                maxLength="30"
                 placeholder="User Name"
                 className="card-input"
-              />
-              <input
-                type="password"
-                name=""
-                maxLength="15"
-                placeholder="Current Password"
-                className="card-input"
+                value={changeUserName}
+                onChange={(e) => {
+                  setChangeUserName(e.target.value);
+                }}
+                required
               />
               <button type="submit" className="card-btn">
-                Submit
+                {changeNameLoading ? (
+                  <Spinner animation="border" variant="dark" />
+                ) : (
+                  "Submit"
+                )}
               </button>
             </form>
           </div>
@@ -63,37 +85,32 @@ const ProfileFooter = ({ sendingPrefabs }) => {
           <div className="popup-head">
             <h6>Change Your Address</h6>
             <p>
-              <span>Enter a new address and your existing password.</span>{" "}
+              <span>{address ? "Enter A New Address." : "Add A Address."}</span>{" "}
             </p>
-            <button onClick={toggleUsernameModal} className="close close-btn">
+            <button onClick={toggleAddressModal} className="close close-btn">
               <span>&times;</span>
             </button>
           </div>
           <div className="credit-card-info">
-            <form>
+            <form onSubmit={changeCurrentUserAddress}>
               <input
                 type="text"
-                name=""
+                name="user_address"
                 maxLength="30"
                 placeholder="New Address"
                 className="card-input"
-              />
-              <input
-                type="text"
-                name=""
-                maxLength="30"
-                placeholder="Address 2"
-                className="card-input"
-              />
-              <input
-                type="password"
-                name=""
-                maxLength="15"
-                placeholder="Current Password"
-                className="card-input"
+                value={changeUserAddress}
+                onChange={(e) => {
+                  setChangeUserAddress(e.target.value);
+                }}
+                required
               />
               <button type="submit" className="card-btn">
-                Submit
+                {changeAddressLoading ? (
+                  <Spinner animation="border" variant="dark" />
+                ) : (
+                  "Submit"
+                )}
               </button>
             </form>
           </div>
@@ -107,32 +124,41 @@ const ProfileFooter = ({ sendingPrefabs }) => {
       >
         <Modal.Body>
           <div className="popup-head">
-            <h6>Change Your Phone Number</h6>
+            <h6>
+              {phone_number ? "Change Your Phone Number" : "Add A Phone Number"}
+            </h6>
             <p>
-              <span>Enter a new number and your existing password.</span>{" "}
+              <span>
+                {phone_number ? "Enter A New Number." : "Add A Number."}
+              </span>{" "}
             </p>
-            <button className="close close-btn">
+            <button
+              className="close close-btn"
+              onClick={togglePhoneNumberModal}
+            >
               <span>&times;</span>
             </button>
           </div>
           <div className="credit-card-info">
-            <form>
+            <form onSubmit={changeCurrentUserPhno}>
               <input
                 type="tel"
-                name=""
+                name="user_phone_number"
                 maxLength="15"
                 placeholder="New Phone Number"
                 className="card-input"
-              />
-              <input
-                type="password"
-                name=""
-                maxLength="15"
-                placeholder="Current Password"
-                className="card-input"
+                value={changeUserPhno}
+                onChange={(e) => {
+                  setChangeUserPhno(e.target.value);
+                }}
+                required
               />
               <button type="submit" className="card-btn">
-                Submit
+                {changeUserPhnoLoading ? (
+                  <Spinner animation="border" variant="dark" />
+                ) : (
+                  "Submit"
+                )}
               </button>
             </form>
           </div>
@@ -158,23 +184,37 @@ const ProfileFooter = ({ sendingPrefabs }) => {
             </button>
           </div>
           <div className="credit-card-info">
-            <form>
+            <form onSubmit={changeCurrentPassword}>
               <input
                 type="password"
-                name=""
+                name="new_password"
                 maxLength="30"
                 placeholder="New Password"
                 className="card-input"
+                value={newPasswordUser}
+                onChange={(e) => {
+                  setNewPasswordUser(e.target.value);
+                }}
+                required
               />
               <input
                 type="password"
-                name=""
+                name="confirm_password"
                 maxLength="15"
                 placeholder="Confirm Password"
                 className="card-input"
+                value={confirmPasswordUser}
+                onChange={(e) => {
+                  setConfirmPasswordUser(e.target.value);
+                }}
+                required
               />
               <button type="submit" className="card-btn">
-                Submit
+                {changePasswordLoading ? (
+                  <Spinner animation="border" variant="dark" />
+                ) : (
+                  "Submit"
+                )}
               </button>
             </form>
           </div>
