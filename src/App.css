@@ -2796,7 +2796,25 @@ PRODUCT QUANTITY CSS END
   transition: all 0.25s;
   color: #1b1a1a;
 }
+.login-modal .social-container .social_common {
+  background: #fff;
+  border: 1px solid #006eb7;
+  border-radius: 50%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 5px;
+  height: 40px;
+  width: 40px;
+  transition: all 0.25s;
+  color: #1b1a1a;
+}
 .login-modal .social-container a:hover {
+  background: #006eb7;
+  border-color: #006eb7;
+  color: #fff;
+}
+.login-modal .social-container .social_common:hover {
   background: #006eb7;
   border-color: #006eb7;
   color: #fff;
@@ -3130,3 +3148,15 @@ PRODUCT QUANTITY CSS END
 }
 /*** ORDER DETAIL POPUP CSS END
 ************************************/
+.kep-login-facebook {
+  font-size: 21px !important;
+  border-radius: 50px !important;
+  width: 50px !important;
+  box-shadow: 0 0 10px rgb(0 0 0 / 20%) !important;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+.fbBtnRound {
+  border-radius: 50px !important;
+  color: rgb(24, 119, 241);
+}

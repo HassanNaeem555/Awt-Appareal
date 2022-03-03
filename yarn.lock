@@ -7366,6 +7366,11 @@ react-error-overlay@^6.0.10:
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.10.tgz#0fe26db4fa85d9dbb8624729580e90e7159a59a6"
   integrity sha512-mKR90fX7Pm5seCOfz8q9F+66VCc1PGsWSBxKbITjfKVQHMNF2zudxHnMdJiB1fRCb+XsbQV9sO9DCkgsMQgBIA==
 
+react-facebook-login@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/react-facebook-login/-/react-facebook-login-4.1.1.tgz#005121236a6ac0dee02099976fb1a3265f9d633e"
+  integrity sha512-COnHEHlYGTKipz4963safFAK9PaNTcCiXfPXMS/yxo8El+/AJL5ye8kMJf23lKSSGGPgqFQuInskIHVqGqTvSw==
+
 react-imask@^6.4.2:
   version "6.4.2"
   resolved "https://registry.yarnpkg.com/react-imask/-/react-imask-6.4.2.tgz#0bd1a4c6cc8838abfbbc340eab9f311831a57c37"
@@ -7373,6 +7378,11 @@ react-imask@^6.4.2:
   dependencies:
     imask "^6.4.2"
     prop-types "^15.7.2"
+
+react-instagram-login@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/react-instagram-login/-/react-instagram-login-1.4.0.tgz#c2419d1569a0144f0220de17e0fc3294545218ae"
+  integrity sha512-iXVYm7bvHdVsjNOmCvHDbf3DIegYg/wH2khL8nA1LGAd5WoTcauOwaZNzMtQkRm4jkfbmbUORPV4fa7kEL4bnw==
 
 react-is@^16.13.1, react-is@^16.3.2, react-is@^16.7.0:
   version "16.13.1"

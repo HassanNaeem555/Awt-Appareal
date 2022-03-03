@@ -93,7 +93,6 @@ const CheckoutView = () => {
     e.preventDefault();
     setLoading(!loading);
     const cardElement = elements.getElement(CardNumberElement);
-    toast.warn("Checkout Is In Progress");
     const { token, error } = await stripe.createToken(cardElement);
     if (token?.id) {
       const {
@@ -140,9 +139,7 @@ const CheckoutView = () => {
         setLoading(false);
         dispatch(emptyCart());
         dispatch(actions.reset("detailtopay"));
-        setTimeout(() => {
-          navigate("/user-profile");
-        }, 1200);
+        navigate("/thankyou");
       } else {
         setLoading(false);
         toast.success(message);

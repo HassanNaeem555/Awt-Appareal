@@ -65,6 +65,7 @@ const ProfileView = () => {
   };
   const signOut = () => {
     dispatch(userLogedOut(navigate));
+    toast.success("Logged Out Successful");
   };
   const changeCurrentUserName = async (e) => {
     e.preventDefault();

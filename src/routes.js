@@ -7,6 +7,7 @@ import CheckoutView from "./views/checkout/CheckoutView";
 import ProductDetail from "./views/product-detail";
 import Category from "./views/categories";
 import Search from "./views/search";
+import ThankYou from "./views/thankyou";
 import AboutView from "./views/about/AboutView";
 import PrivacyPolicy from "./views/cms/privacyPolicy";
 import ProfileView from "./views/profile/ProfileView";
@@ -33,6 +34,7 @@ export const RenderRoutes = () => {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="*" element={<NotFoundView />} />
         <Route path="/cart" element={<CartView />} />
+        <Route path="/thankyou" element={<ThankYou />} />
         {user_cart.length > 0 && user_authenticate && (
           <Route path="/checkout" element={<CheckoutView />} />
         )}
