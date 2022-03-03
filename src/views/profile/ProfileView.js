@@ -4,6 +4,7 @@ import { Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { userAuth, userLogedOut } from "../../store/action/authAction";
+import { toggleAuthModal } from "../../store/action/webSettingAction";
 import { getApi, postApi } from "../../utils/apiFunctions";
 import {
   user_order_detail,
@@ -139,6 +140,7 @@ const ProfileView = () => {
     if (success) {
       setChangePasswordLoading(false);
       dispatch(userLogedOut(navigate));
+      dispatch(toggleAuthModal());
       toast.success(message);
     } else {
       toast.warn(message);

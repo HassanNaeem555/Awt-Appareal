@@ -318,7 +318,11 @@ const ProductDetail = () => {
                   <button
                     className="cta-btn"
                     onClick={(e) => {
-                      addToCart(e);
+                      productData?.availability > 0
+                        ? addToCart(e)
+                        : toast.warn(
+                            "Product Stock Not Available For Purchasing"
+                          );
                     }}
                     disabled={
                       user_cart.length > 0 &&

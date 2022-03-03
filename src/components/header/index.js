@@ -10,6 +10,7 @@ import {
   updateCart,
   deleteProductFromCart,
 } from "../../store/action/cartAction";
+import { toggleAuthModal } from "../../store/action/webSettingAction";
 import {
   procedureToUpdateIncrementInCart,
   procedureToUpdateDecrementInCart,
@@ -23,7 +24,6 @@ import { required, maxLength, minLength, validEmail } from "../../utils/custom";
 const Header = () => {
   const [current_path, setCurrent_path] = useState("");
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [responsiveNav, setResponsiveNav] = useState(false);
   const [openCartModal, setOpenCartModal] = useState(false);
 
@@ -39,6 +39,9 @@ const Header = () => {
   });
   const header_content = useSelector(({ user_settings }) => {
     return user_settings.web_setting;
+  });
+  const header_modal = useSelector(({ user_settings }) => {
+    return user_settings.auth_modal;
   });
   const user_cart = useSelector(({ user_cart }) => {
     return user_cart.cart;
@@ -59,9 +62,6 @@ const Header = () => {
   const closeSearch = () => {
     document.getElementById("myOverlay").style.display = "none";
   };
-  const toggleLoginModal = () => {
-    setIsLoginModalOpen(!isLoginModalOpen);
-  };
   const signInClick = () => {
     let login_wrap = document.getElementById("login-modal-wrap");
     if (login_wrap) {
@@ -80,7 +80,7 @@ const Header = () => {
     if (success === true) {
       dispatch(userAuth(user));
       dispatch(actions.reset("login"));
-      toggleLoginModal();
+      dispatch(toggleAuthModal());
       toast.success("Login Successfully");
       return;
     }
@@ -142,7 +142,7 @@ const Header = () => {
           console.log("use profile..........", json.email);
           console.log("use profile..........", json.picture.data.url);
           toast.success("Facebook Login Successfull");
-          // localFbLogin(json);
+          localFbLogin(json);
         })
         .catch((error) => {
           console.error(error);
@@ -152,6 +152,29 @@ const Header = () => {
   };
   const responseInstagram = (response) => {
     console.log(response);
+  };
+  const localFbLogin = async (json) => {
+    let data = {
+      facebookId: json?.id,
+      full_name: json?.name,
+      email: json?.email ? json?.email : "example@example.com",
+      profile: [json?.picture.data.url],
+    };
+    const result = await postApi(register, data);
+  };
+  const toggleModalAuth = () => {
+    dispatch(toggleAuthModal());
+  };
+  const checkoutAuthHandle = (value) => {
+    if (value === 1) {
+      toggleCartNav();
+      navigate("/checkout");
+    }
+    if (value === 2) {
+      toggleCartNav();
+      toast.warn("Please Login First To Proceed Checkout");
+      toggleModalAuth();
+    }
   };
   useEffect(() => {
     setCurrent_path(location.pathname);
@@ -194,7 +217,7 @@ const Header = () => {
                         onClick={() => {
                           user_authenticate
                             ? navigate("/user-profile")
-                            : toggleLoginModal();
+                            : dispatch(toggleAuthModal());
                         }}
                       >
                         <img
@@ -350,7 +373,6 @@ const Header = () => {
         </div>
       </header>
 
-      {/* <!--Add to cart--> */}
       {openCartModal && (
         <>
           <div className="cart-sidebar active">
@@ -452,18 +474,9 @@ const Header = () => {
                   <span
                     className="cursor-pointer"
                     onClick={() => {
-                      user_authenticate ? (
-                        <>{(toggleCartNav(), navigate("/checkout"))}</>
-                      ) : (
-                        <>
-                          {
-                            (toggleCartNav(),
-                            toast.warn(
-                              "Please Login First To Proceed Checkout"
-                            ))
-                          }
-                        </>
-                      );
+                      user_authenticate
+                        ? checkoutAuthHandle(1)
+                        : checkoutAuthHandle(2);
                     }}
                   >
                     Checkout
@@ -480,14 +493,15 @@ const Header = () => {
           />
         </>
       )}
+
       <Modal
         className="fade login-signup-modal user-modals"
         centered={true}
-        onHide={toggleLoginModal}
-        show={isLoginModalOpen}
+        onHide={toggleModalAuth}
+        show={header_modal}
       >
         <Modal.Header>
-          <button className="close" onClick={toggleLoginModal}>
+          <button className="close" onClick={toggleModalAuth}>
             <span>&times;</span>
           </button>
         </Modal.Header>

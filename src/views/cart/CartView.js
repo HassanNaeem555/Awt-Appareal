@@ -6,6 +6,7 @@ import {
   procedureToUpdateIncrementInCart,
   procedureToUpdateDecrementInCart,
 } from "../../utils/genericFunction";
+import { toggleAuthModal } from "../../store/action/webSettingAction";
 import CommonBanner from "../../components/commonBanner";
 import {
   updateCart,
@@ -35,6 +36,10 @@ const Cart = () => {
   const deleteFromCart = (e, id) => {
     e.preventDefault();
     dispatch(deleteProductFromCart(id));
+  };
+  const toggleLogin = () => {
+    toast.warn("Please Login First To Proceed Checkout");
+    dispatch(toggleAuthModal());
   };
   const total = user_cart.reduce(function (previousValue, currentValue) {
     return previousValue + currentValue.quantity * currentValue.product_price;
@@ -173,9 +178,7 @@ const Cart = () => {
                       onClick={() => {
                         user_authenticate
                           ? navigate("/checkout")
-                          : toast.warn(
-                              "Please Login First To Proceed Checkout"
-                            );
+                          : toggleLogin();
                       }}
                     >
                       Checkout<i className="ms-3 fa fa-chevron-right"></i>
