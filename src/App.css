@@ -3054,3 +3054,79 @@ PRODUCT QUANTITY CSS END
   border-radius: 10px;
   outline: none;
 }
+.font-20 {
+  font-size: 20px !important;
+}
+.color-primary {
+  color: #006eb7;
+}
+
+/*** ORDER DETAIL POPUP CSS START
+************************************/
+.orderDetail-popup .modal-body {
+  padding: 0 !important;
+}
+.order-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 15px 10px;
+  background: #006eb7;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+.orderDetail-popup .close {
+  background: transparent;
+  outline: none;
+  position: absolute;
+  top: -7%;
+  right: -1%;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-size: 26px;
+  line-height: 1;
+  color: #fff;
+}
+.orderListing-wrap {
+  max-height: 400px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.orderDetail-popup .cart-list-item {
+  padding: 15px 10px;
+}
+.orderDetail-popup .cart-list-item .product-img {
+  max-width: 80px;
+  max-height: 100px;
+  width: 100%;
+  overflow: hidden;
+}
+.orderDetail-popup .cart-list-item .product-img img {
+  max-width: 80px;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.orderDetail-popup .plus-minus {
+  border-radius: 10px;
+}
+.orderDetail-popup .cart-list-item .product-quantity-wrap {
+  width: 70px;
+}
+.orderDetail-popup .cart-list-item .product-name p.name {
+  font-size: 18px;
+}
+.orderDetail-popup .cart-list-item .product-action-price {
+  width: calc(50% - 150px);
+  padding-left: 0;
+  justify-content: flex-end;
+}
+/*** ORDER DETAIL POPUP CSS END
+************************************/
