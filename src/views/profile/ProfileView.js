@@ -515,7 +515,7 @@ const ProfileView = () => {
                   </div>
                   <div className="product-name">
                     <p className="name">{item?.product_name}</p>
-                    <p className="price">${item?.product?.product_price}.00</p>
+                    <p className="price">{item?.product?.product_code}</p>
                   </div>
                   <div className="product-quantity-wrap y-center">
                     <div className="quaitity-box d-flex">
