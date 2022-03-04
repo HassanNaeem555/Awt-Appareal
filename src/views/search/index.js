@@ -99,7 +99,7 @@ const Search = () => {
     setTotalProducts(0);
     getProductsData(searchKeyword, 1);
     getRecommendedProducts();
-  }, [location.pathname]);
+  }, [searchKeyword]);
   return (
     <>
       <CommonBanner img={getImage()} name={getName()} />
