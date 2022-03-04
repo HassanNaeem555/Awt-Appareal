@@ -46,7 +46,8 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 225px;
+  max-width: 250px;
+  width: 100%;
   margin: 0 0 0 auto;
 }
 .headerRight-Top ul {
@@ -426,6 +427,9 @@ header {
 }
 .product-icons span:hover {
   background: #006db7;
+}
+.product-icons span:hover i {
+  color: #fff;
 }
 .product-icons span:hover img {
   filter: invert(1);

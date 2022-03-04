@@ -235,6 +235,17 @@ const Header = () => {
                         />
                       </span>
                     </li>
+                    <li className="mt-2">
+                      <span
+                        onClick={() => {
+                          user_authenticate
+                            ? navigate("/wishlist")
+                            : toast.warn("Login First To Proceed");
+                        }}
+                      >
+                        <i className="fa fa-heart-o font-20" />
+                      </span>
+                    </li>
                     <li>
                       <span
                         className="cart-icon"

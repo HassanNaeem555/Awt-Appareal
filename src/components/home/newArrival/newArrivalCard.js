@@ -1,9 +1,33 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import { ImageURL, OwnImageURL } from "../../../utils/custom";
+import {
+  addToWishList,
+  removeFromWishlist,
+} from "../../../store/action/wishListAction";
 
 const NewArrivalCard = ({ item }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const user_authenticate = useSelector(({ user_authenticate }) => {
+    return user_authenticate.userLogin;
+  });
+  const user_wishlist = useSelector(({ user_wishlist }) => {
+    return user_wishlist.wislist;
+  });
+  const wishlist = (product) => {
+    const foundProduct = user_wishlist.filter((e) => e?.id === product?.id);
+    if (foundProduct && foundProduct.length > 0) {
+      dispatch(removeFromWishlist(product?.id));
+      toast.warn("Remove From Wishlist");
+    } else {
+      dispatch(addToWishList(product));
+      toast.success("Added To Wishlist");
+    }
+  };
+  console.log("user_wishlist", user_wishlist);
   return (
     <div className="arrival-card">
       <div className="image">
@@ -13,19 +37,25 @@ const NewArrivalCard = ({ item }) => {
           className="img-fluid"
         />
         <div className="product-icons">
-          {/* <span>
-            <img
-              src={`${OwnImageURL}/assets/images/bag-icon.png`}
-              alt="img"
-              className="img-fluid"
-            />
-          </span> */}
-          <span>
-            <img
-              src={`${OwnImageURL}/assets/images/heart-icon.png`}
-              alt="img"
-              className="img-fluid"
-            />
+          <span
+            onClick={() => {
+              user_authenticate
+                ? wishlist(item)
+                : toast.warn("Login First To Proceed");
+            }}
+          >
+            <i
+              className={
+                user_wishlist.filter((e) => e?.id === item?.id).length > 0
+                  ? "fa fa-heart color-primary"
+                  : "fa fa-heart-o color-primary"
+              }
+              title={
+                user_wishlist.filter((e) => e?.id === item?.id).length > 0
+                  ? "Remove From Wishlist"
+                  : "Add To Wishlist"
+              }
+            ></i>
           </span>
           <span
             onClick={() => {
@@ -38,6 +68,7 @@ const NewArrivalCard = ({ item }) => {
               src={`${OwnImageURL}/assets/images/eye-icon.png`}
               alt="img"
               className="img-fluid"
+              title="View Product"
             />
           </span>
         </div>
@@ -70,7 +101,16 @@ const NewArrivalCard = ({ item }) => {
         </span>
       </div>
       <div className="arrivalCard-button">
-        <button className="cta-btn">Quick View</button>
+        <button
+          className="cta-btn"
+          onClick={() => {
+            navigate(`/product-detail/${item.id}`, {
+              state: { id: item.id },
+            });
+          }}
+        >
+          Quick View
+        </button>
       </div>
     </div>
   );
