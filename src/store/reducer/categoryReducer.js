@@ -3,7 +3,7 @@ const INIT_STATE = {
   categories: [],
 };
 
-export default (state = INIT_STATE, action) => {
+const Categories = (state = INIT_STATE, action) => {
   switch (action.type) {
     case GET_CATEGORIES:
       return {
@@ -14,3 +14,4 @@ export default (state = INIT_STATE, action) => {
       return state;
   }
 };
+export default Categories;

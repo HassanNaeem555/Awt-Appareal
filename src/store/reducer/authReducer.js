@@ -4,7 +4,7 @@ const INIT_STATE = {
   user: null,
 };
 
-export default (state = INIT_STATE, action) => {
+const Authenticate = (state = INIT_STATE, action) => {
   switch (action.type) {
     case USER_AUTH:
       return {
@@ -22,3 +22,4 @@ export default (state = INIT_STATE, action) => {
       return state;
   }
 };
+export default Authenticate;

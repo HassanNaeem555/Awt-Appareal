@@ -1,7 +1,7 @@
 import React from "react";
 import { Accordion, useAccordionButton } from "react-bootstrap";
 
-const Filters = ({ name, categories, color, variants }) => {
+const Filters = ({ categories, color, variants }) => {
   const ParentCategoryToggle = ({ children, eventKey }) => {
     const decoratedOnClick = useAccordionButton(eventKey, () =>
       console.log("totally custom!")

@@ -8,7 +8,7 @@ const INIT_STATE = {
   cart: [],
 };
 
-export default (state = INIT_STATE, action) => {
+const Cart = (state = INIT_STATE, action) => {
   switch (action.type) {
     case ADD_TO_CART:
       const cartClone = state.cart.slice(0);
@@ -45,3 +45,5 @@ export default (state = INIT_STATE, action) => {
       return state;
   }
 };
+
+export default Cart;

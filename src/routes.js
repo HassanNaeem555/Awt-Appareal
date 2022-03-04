@@ -7,6 +7,7 @@ import CheckoutView from "./views/checkout/CheckoutView";
 import ProductDetail from "./views/product-detail";
 import Category from "./views/categories";
 import Search from "./views/search";
+import WishList from "./views/wishlist";
 import ThankYou from "./views/thankyou";
 import AboutView from "./views/about/AboutView";
 import PrivacyPolicy from "./views/cms/privacyPolicy";
@@ -31,6 +32,7 @@ export const RenderRoutes = () => {
         <Route path="/category/:id" element={<Category />} />
         <Route path="/search/:id" element={<Search />} />
         <Route path="/contact" element={<ContactView />} />
+        <Route path="/wishlist" element={<WishList />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="*" element={<NotFoundView />} />
         <Route path="/cart" element={<CartView />} />
