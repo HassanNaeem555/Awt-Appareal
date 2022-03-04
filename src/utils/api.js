@@ -16,3 +16,4 @@ export const user_checkout = "/stripePost";
 export const user_order_detail = "/user_product";
 export const update_profile = "/UpdateProfile";
 export const confirm_profile = "/ConfrimPassword";
+export const category_filters = "/get_category_products";

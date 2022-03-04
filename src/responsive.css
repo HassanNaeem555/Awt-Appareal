@@ -22,15 +22,15 @@
     max-width: 1200px;
   }
   .filter-aside {
-    left: -100%;
+    left: -100% !important;
     background: #fff;
-    padding: 30px 20px;
-    max-width: 240px;
+    padding: 30px 20px !important;
+    max-width: 240px !important;
     box-shadow: 0 0 15px 0 #333333;
     height: auto !important;
   }
   .filter-aside.show {
-    left: 0;
+    left: 0 !important;
     transition: all 0.6s ease-in-out;
   }
   .filter-btn {

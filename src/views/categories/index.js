@@ -7,7 +7,11 @@ import RecommendedProducts from "../../components/recommendedProducts";
 import CommonProductCard from "../../components/commonProductCard";
 import LazyLoader from "../../components/lazyLoader";
 import { getApi } from "../../utils/apiFunctions";
-import { categories_products, recommended_product } from "../../utils/api";
+import {
+  categories_products,
+  recommended_product,
+  category_filters,
+} from "../../utils/api";
 
 const dummyCategory = [0, 1, 2, 3, 4, 5, 6, 7];
 
@@ -18,6 +22,9 @@ const Category = () => {
   const [pageNo, setPageNo] = useState(1);
   const [totalProducts, setTotalProducts] = useState(0);
   const [products, setProducts] = useState([]);
+  const [filtersCategories, setFiltersCategories] = useState(null);
+  const [filterColors, setFilterColors] = useState([]);
+  const [filterVariants, setFilterVariants] = useState([]);
   const [recommendedProducts, setRecommendedProducts] = useState([]);
   const [stopPagination, setStopPagination] = useState(false);
 
@@ -50,6 +57,14 @@ const Category = () => {
       setProducts([]);
       getProductsData(category_name, activeVal);
       return;
+    }
+  };
+  const toggleFilterMobile = () => {
+    const getFilterMobile = document.getElementsByClassName("filter-aside");
+    if (getFilterMobile[0].classList.contains("show")) {
+      getFilterMobile[0].classList.remove("show");
+    } else {
+      getFilterMobile[0].classList.add("show");
     }
   };
   const getImage = () => {
@@ -88,17 +103,84 @@ const Category = () => {
   };
   const renderFilters = () => {
     if (location.pathname === "/category/new-arrival") {
-      return <Filter name={getName} />;
+      return (
+        <Filter
+          name={getName}
+          categories={filtersCategories}
+          color={filterColors}
+          variants={filterVariants}
+        />
+      );
     } else if (location.pathname === "/category/mens") {
-      return <Filter name={getName} />;
+      return (
+        <Filter
+          name={getName}
+          categories={filtersCategories}
+          color={filterColors}
+          variants={filterVariants}
+        />
+      );
     } else if (location.pathname === "/category/women") {
-      return <Filter name={getName} />;
+      return (
+        <Filter
+          name={getName}
+          categories={filtersCategories}
+          color={filterColors}
+          variants={filterVariants}
+        />
+      );
     } else if (location.pathname === "/category/youth") {
       return null;
     } else if (location.pathname === "/category/hats") {
       return null;
     } else if (location.pathname === "/category/accessories") {
-      return <Filter name={getName} />;
+      return (
+        <Filter
+          name={getName}
+          categories={filtersCategories}
+          color={filterColors}
+          variants={filterVariants}
+        />
+      );
+    }
+  };
+  const renderMobileFilters = () => {
+    if (location.pathname === "/category/new-arrival") {
+      return (
+        <div className="filter-button">
+          <button className="filter-btn" onClick={toggleFilterMobile}>
+            Filters <i className="fa fa-filter"></i>
+          </button>
+        </div>
+      );
+    } else if (location.pathname === "/category/mens") {
+      return (
+        <div className="filter-button">
+          <button className="filter-btn" onClick={toggleFilterMobile}>
+            Filters <i className="fa fa-filter"></i>
+          </button>
+        </div>
+      );
+    } else if (location.pathname === "/category/women") {
+      return (
+        <div className="filter-button">
+          <button className="filter-btn" onClick={toggleFilterMobile}>
+            Filters <i className="fa fa-filter"></i>
+          </button>
+        </div>
+      );
+    } else if (location.pathname === "/category/youth") {
+      return null;
+    } else if (location.pathname === "/category/hats") {
+      return null;
+    } else if (location.pathname === "/category/accessories") {
+      return (
+        <div className="filter-button">
+          <button className="filter-btn" onClick={toggleFilterMobile}>
+            Filters <i className="fa fa-filter"></i>
+          </button>
+        </div>
+      );
     }
   };
   const scrollTop = () => {
@@ -123,6 +205,16 @@ const Category = () => {
       }
     }
   };
+  const getFilters = async (cat_name) => {
+    const { categories, colors, success, variants } = await getApi(
+      `${category_filters}?category_id=${cat_name}`
+    );
+    if (success) {
+      setFiltersCategories(categories);
+      setFilterColors(colors);
+      setFilterVariants(variants);
+    }
+  };
   const getRecommendedProducts = async () => {
     const { data } = await getApi(recommended_product);
     console.log("recommended_product", data);
@@ -135,12 +227,16 @@ const Category = () => {
     setStopPagination(false);
     setProducts([]);
     setRecommendedProducts([]);
+    setFiltersCategories(null);
+    setFilterColors([]);
+    setFilterVariants([]);
     setActive(1);
     setPageNo(1);
     setTotalProducts(0);
     getProductsData(category_name, 1);
+    getFilters(category_name);
     getRecommendedProducts();
-  }, [location.pathname]);
+  }, [category_name]);
   return (
     <>
       <CommonBanner img={getImage()} name={getName()} />
@@ -149,11 +245,7 @@ const Category = () => {
           {renderFilters()}
           <div className="container">
             <div className="right-col">
-              <div className="filter-button">
-                <button type="button" className="filter-btn">
-                  Filters <i className="fa fa-filter"></i>
-                </button>
-              </div>
+              {renderMobileFilters()}
               <div className="row m-0">
                 {products.length > 0 ? (
                   <CommonProductCard products={products} />

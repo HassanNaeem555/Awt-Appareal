@@ -4,8 +4,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { userAuth } from "../../store/action/authAction";
-import FacebookLogin from "react-facebook-login";
-import InstagramLogin from "react-instagram-login";
+// import FacebookLogin from "react-facebook-login";
+// import InstagramLogin from "react-instagram-login";
 import {
   updateCart,
   deleteProductFromCart,
