@@ -17,3 +17,5 @@ export const user_order_detail = "/user_product";
 export const update_profile = "/UpdateProfile";
 export const confirm_profile = "/ConfrimPassword";
 export const category_filters = "/get_category_products";
+// https://dev73.myprojectstaging.com/AwtbAppareal/public/api/feed_back
+// https://awt-appareal.myprojectstaging.com/
