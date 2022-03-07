@@ -27,7 +27,6 @@ const NewArrivalCard = ({ item }) => {
       toast.success("Added To Wishlist");
     }
   };
-  console.log("user_wishlist", user_wishlist);
   return (
     <div className="arrival-card">
       <div className="image">

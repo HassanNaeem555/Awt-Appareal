@@ -9,12 +9,13 @@ import Testimonials from "../../components/home/testimonials";
 // import InstagramApparealPost from "../../components/home/instagramApparealPost";
 import Subscribe from "../../components/home/subscribe";
 import { getApi } from "../../utils/apiFunctions";
-import { banner, category_with_product } from "../../utils/api";
+import { banner, category_with_product, feed_back } from "../../utils/api";
 
 const HomeView = () => {
   const [mainBanner, setMainBanner] = useState([]);
   const [categoryWithProducts, setCategoryWithProducts] = useState([]);
   const [renderSelectedCategory, setRenderSelectedCategory] = useState([]);
+  const [feedBack, setFeedBack] = useState([]);
   const header_categories = useSelector(({ user_categories }) => {
     return user_categories.categories;
   });
@@ -31,7 +32,9 @@ const HomeView = () => {
       });
       const result = await getApi(banner);
       const { data } = await getApi(category_with_product);
+      const { Feed_back } = await getApi(feed_back);
       setMainBanner(result);
+      setFeedBack(Feed_back);
       setRenderSelectedCategory([
         selectedYouthCategory,
         selectedMenCategory,
@@ -55,7 +58,7 @@ const HomeView = () => {
       <NewArrival categoryContainProducts={categoryWithProducts} />
       <HomeCenterBanner />
       <BestSeller category={renderSelectedCategory} />
-      <Testimonials />
+      <Testimonials feedBack={feedBack} />
       {/* <InstagramApparealPost /> */}
       <Subscribe />
     </>

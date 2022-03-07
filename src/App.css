@@ -3166,3 +3166,11 @@ PRODUCT QUANTITY CSS END
   border-radius: 50px !important;
   color: rgb(24, 119, 241);
 }
+.reset-password {
+  align-items: center;
+  justify-content: center;
+  min-height: 350px;
+}
+.w-80 {
+  width: 80%;
+}

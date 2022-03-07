@@ -11,6 +11,8 @@ import {
   Subscribe,
   Contact,
   UserDetailForPay,
+  ResetPassword,
+  ForgotPassword,
 } from "../forms";
 
 export default combineReducers({
@@ -25,5 +27,7 @@ export default combineReducers({
     subscribe: Subscribe,
     contact: Contact,
     detailtopay: UserDetailForPay,
+    resetpassword: ResetPassword,
+    forgotpassword: ForgotPassword,
   }),
 });

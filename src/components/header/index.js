@@ -17,7 +17,7 @@ import {
 } from "../../utils/genericFunction";
 import { ImageURL, OwnImageURL } from "../../utils/custom";
 import { postApi } from "../../utils/apiFunctions";
-import { register, login } from "../../utils/api";
+import { register, login, forgotPassword } from "../../utils/api";
 import { Control, Form, Errors, actions } from "react-redux-form";
 import { required, maxLength, minLength, validEmail } from "../../utils/custom";
 
@@ -28,6 +28,8 @@ const Header = () => {
   const [openCartModal, setOpenCartModal] = useState(false);
   const [loginLoading, setLoginLoading] = useState(false);
   const [signupLoading, setSignupLoading] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [forgotPasswordLoading, setForgotPasswordLoading] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -182,6 +184,25 @@ const Header = () => {
       toggleCartNav();
       toast.warn("Please Login First To Proceed Checkout");
       toggleModalAuth();
+    }
+  };
+  const toggleForgotPassword = (e) => {
+    setShowForgotPassword(!showForgotPassword);
+  };
+  const onSubmitForgotPassword = async (values) => {
+    setForgotPasswordLoading(!forgotPasswordLoading);
+    const getEmail = JSON.parse(JSON.stringify(values));
+    const { email } = getEmail;
+    let data = { email };
+    const { message, success } = await postApi(forgotPassword, data);
+    if (success) {
+      dispatch(actions.reset("forgotpassword"));
+      setForgotPasswordLoading(false);
+      toast.success(message);
+      toggleForgotPassword();
+    } else {
+      setForgotPasswordLoading(false);
+      toast.warn(message);
     }
   };
   useEffect(() => {
@@ -630,84 +651,134 @@ const Header = () => {
               </Form>
             </div>
             <div className="form-container sign-in-container">
-              <Form model="login" onSubmit={(values) => onSubmitLogin(values)}>
-                <h1>Sign in</h1>
-                {/* <div className="social-container">
-                  <FacebookLogin
-                    appId="926405051562879"
-                    autoLoad={false}
-                    fields="name,email,picture"
-                    scope="public_profile,user_friends,user_actions.books"
-                    callback={responseFacebook}
-                    isSignedIn={true}
-                    textButton=""
-                    icon="fab fa-facebook-f"
-                    cssClass="social social_common"
+              {showForgotPassword ? (
+                <Form
+                  model="forgotpassword"
+                  onSubmit={(values) => onSubmitForgotPassword(values)}
+                >
+                  <h1>Forgot Password</h1>
+                  <Control
+                    type="email"
+                    model=".email"
+                    name="email"
+                    placeholder="Email"
+                    className="form-control"
+                    validators={{
+                      required,
+                      validEmail,
+                    }}
                   />
-                  <InstagramLogin
-                    clientId="5fd2f11482844c5eba963747a5f34556"
-                    buttonText=""
-                    onSuccess={responseInstagram}
-                    onFailure={responseInstagram}
-                    cssClass="social social_common"
+                  <Errors
+                    className="text-danger"
+                    model=".email"
+                    show="touched"
+                    messages={{
+                      required: "Required! ",
+                      validEmail: "Invalid Email Address",
+                    }}
+                  />
+                  <span
+                    className="cursor-pointer my-3"
+                    onClick={toggleForgotPassword}
                   >
-                    <i className="fa fa-instagram" />
-                  </InstagramLogin>
-                </div> */}
-                {/* <span>or use your account</span> */}
-                <Control
-                  type="email"
-                  model=".email"
-                  id="loginEmail"
-                  name="email"
-                  placeholder="Email"
-                  className="form-control"
-                  validators={{
-                    required,
-                    validEmail,
-                  }}
-                />
-                <Errors
-                  className="text-danger"
-                  model=".email"
-                  show="touched"
-                  messages={{
-                    required: "Required! ",
-                    validEmail: "Invalid Email Address",
-                  }}
-                />
-                <Control
-                  type="password"
-                  model=".password"
-                  id="password"
-                  name="password"
-                  placeholder="Password"
-                  className="form-control"
-                  validators={{
-                    required,
-                    minLength: minLength(3),
-                    maxLength: maxLength(15),
-                  }}
-                />
-                <Errors
-                  className="text-danger"
-                  model=".password"
-                  show="touched"
-                  messages={{
-                    required: "Required! ",
-                    minLength: "Must be greater than 3 characters",
-                    maxLength: "Must be 15 characters or less",
-                  }}
-                />
-                <a href="/#">Forgot your password?</a>
-                <button className="submit" type="submit">
-                  {loginLoading ? (
-                    <Spinner animation="border" variant="light" size="sm" />
-                  ) : (
-                    "Sign In"
-                  )}
-                </button>
-              </Form>
+                    Back To Login
+                  </span>
+                  <button className="submit" type="submit">
+                    {forgotPasswordLoading ? (
+                      <Spinner animation="border" variant="light" size="sm" />
+                    ) : (
+                      "Forgot Password"
+                    )}
+                  </button>
+                </Form>
+              ) : (
+                <Form
+                  model="login"
+                  onSubmit={(values) => onSubmitLogin(values)}
+                >
+                  <h1>Sign in</h1>
+                  {/* <div className="social-container">
+                      <FacebookLogin
+                        appId="926405051562879"
+                        autoLoad={false}
+                        fields="name,email,picture"
+                        scope="public_profile,user_friends,user_actions.books"
+                        callback={responseFacebook}
+                        isSignedIn={true}
+                        textButton=""
+                        icon="fab fa-facebook-f"
+                        cssClass="social social_common"
+                      />
+                      <InstagramLogin
+                        clientId="5fd2f11482844c5eba963747a5f34556"
+                        buttonText=""
+                        onSuccess={responseInstagram}
+                        onFailure={responseInstagram}
+                        cssClass="social social_common"
+                      >
+                        <i className="fa fa-instagram" />
+                      </InstagramLogin>
+                    </div> */}
+                  {/* <span>or use your account</span> */}
+                  <Control
+                    type="email"
+                    model=".email"
+                    id="loginEmail"
+                    name="email"
+                    placeholder="Email"
+                    className="form-control"
+                    validators={{
+                      required,
+                      validEmail,
+                    }}
+                  />
+                  <Errors
+                    className="text-danger"
+                    model=".email"
+                    show="touched"
+                    messages={{
+                      required: "Required! ",
+                      validEmail: "Invalid Email Address",
+                    }}
+                  />
+                  <Control
+                    type="password"
+                    model=".password"
+                    id="password"
+                    name="password"
+                    placeholder="Password"
+                    className="form-control"
+                    validators={{
+                      required,
+                      minLength: minLength(3),
+                      maxLength: maxLength(15),
+                    }}
+                  />
+                  <Errors
+                    className="text-danger"
+                    model=".password"
+                    show="touched"
+                    messages={{
+                      required: "Required! ",
+                      minLength: "Must be greater than 3 characters",
+                      maxLength: "Must be 15 characters or less",
+                    }}
+                  />
+                  <span
+                    className="cursor-pointer my-3"
+                    onClick={toggleForgotPassword}
+                  >
+                    Forgot your password?
+                  </span>
+                  <button className="submit" type="submit">
+                    {loginLoading ? (
+                      <Spinner animation="border" variant="light" size="sm" />
+                    ) : (
+                      "Sign In"
+                    )}
+                  </button>
+                </Form>
+              )}
             </div>
             <div className="overlay-container">
               <div className="overlay">
