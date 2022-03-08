@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Pagination } from "react-bootstrap";
-import { toast } from "react-toastify";
 import Filter from "./filters";
 import CommonBanner from "../../components/commonBanner";
 import RecommendedProducts from "../../components/recommendedProducts";
@@ -19,6 +18,7 @@ const dummyCategory = [0, 1, 2, 3, 4, 5, 6, 7];
 
 const Category = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const category_name = location.state.id;
   const [active, setActive] = useState(1);
   const [pageNo, setPageNo] = useState(1);
@@ -33,6 +33,8 @@ const Category = () => {
   const [colorChecked, setColorChecked] = useState([]);
   const [variantChecked, setVariantChecked] = useState([]);
   const [isFiltering, setIsFiltering] = useState(false);
+  const [isFilteringData, setIsFilteringData] = useState(false);
+  const [isDataArrived, setIsDataArrived] = useState(false);
 
   let items = [];
   for (let number = 1; number <= totalProducts; number++) {
@@ -55,12 +57,22 @@ const Category = () => {
     if (stopPagination && activeVal < active) {
       scrollTop();
       setProducts([]);
+      if (isFilteringData) {
+        setIsFilteringData(false);
+        filterQuery(activeVal);
+        return;
+      }
       getProductsData(category_name, activeVal);
       return;
     }
     if (stopPagination && activeVal > active) {
       scrollTop();
       setProducts([]);
+      if (isFilteringData) {
+        setIsFilteringData(false);
+        filterQuery(activeVal);
+        return;
+      }
       getProductsData(category_name, activeVal);
       return;
     }
@@ -139,13 +151,17 @@ const Category = () => {
       setVariantChecked(cloneVariantChecked);
     }
   };
-  const filterQuery = async (e, page) => {
+  const filterQuery = async (page) => {
     // if (categoryChecked || colorChecked || variantChecked) {
     //   toast.warn("Please Select Any Filter");
     //   return;
     // } else {
     // }
+    if (isDataArrived) {
+      setIsDataArrived(false);
+    }
     let payload = {
+      category_id: category_name,
       attribute_id: categoryChecked,
       color_id: colorChecked,
       variant_id: variantChecked,
@@ -158,27 +174,36 @@ const Category = () => {
     setTotalProducts(0);
     setIsFiltering(true);
     const result = await postApi(filterProducts, payload);
-    const { data, total, current_page, prev_page_url, next_page_url } =
-      result?.products;
-    if (result?.success) {
-      setIsFiltering(false);
-      console.log("result if", result?.success);
-      setProducts(data);
-      setPageNo(current_page);
-      setCategoryChecked([]);
-      setColorChecked([]);
-      setVariantChecked([]);
-      const makeTotal = Math.floor(total / 10);
-      setTotalProducts(makeTotal);
-      if (next_page_url == null) {
-        setStopPagination(true);
-      }
-      if (prev_page_url == null) {
-        setStopPagination(true);
+    if (result?.products !== undefined) {
+      console.log("result?.products", result?.products);
+      const { data, total, current_page, prev_page_url, next_page_url } =
+        result?.products;
+      if (result?.success) {
+        setIsFiltering(false);
+        console.log("result if", result?.success);
+        setProducts(data);
+        setPageNo(current_page);
+        setCategoryChecked([]);
+        setColorChecked([]);
+        setVariantChecked([]);
+        setIsFilteringData(true);
+        if (data.length <= 0) {
+          setIsDataArrived(true);
+        }
+        const makeTotal = Math.floor(total / 10);
+        setTotalProducts(makeTotal);
+        if (next_page_url == null) {
+          setStopPagination(true);
+        }
+        if (prev_page_url == null) {
+          setStopPagination(true);
+        }
+      } else {
+        setIsFiltering(false);
+        console.log("result else", result?.success);
       }
     } else {
-      setIsFiltering(false);
-      console.log("result else", result?.success);
+      setIsDataArrived(true);
     }
   };
   const renderFilters = () => {
@@ -301,6 +326,9 @@ const Category = () => {
       setPageNo(current_page);
       const makeTotal = Math.floor(total / 10);
       setTotalProducts(makeTotal);
+      if (data.length <= 0) {
+        setIsDataArrived(true);
+      }
       if (next_page_url == null) {
         setStopPagination(true);
       }
@@ -329,6 +357,7 @@ const Category = () => {
   useEffect(() => {
     scrollTop();
     setStopPagination(false);
+    setIsDataArrived(false);
     setProducts([]);
     setRecommendedProducts([]);
     setFiltersCategories(null);
@@ -353,6 +382,25 @@ const Category = () => {
               <div className="row m-0">
                 {products.length > 0 ? (
                   <CommonProductCard products={products} />
+                ) : isDataArrived ? (
+                  <section className="section_not_found">
+                    <div className="not_fount_content">
+                      <h1 className="black-heading mb-3">EMPTY</h1>
+                      <h2>We can't any data requested</h2>
+                      <p className="paragraph mb-4">
+                        We're fairly sure that page used to be here, but seems
+                        to have gone missing. We do apologise on it's behalf.
+                      </p>
+                    </div>
+                    <button
+                      className="cta-btn"
+                      onClick={() => {
+                        navigate("/");
+                      }}
+                    >
+                      Back To Home
+                    </button>
+                  </section>
                 ) : (
                   <>
                     {dummyCategory.map((item, index) => {

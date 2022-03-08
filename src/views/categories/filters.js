@@ -60,7 +60,7 @@ const Filters = ({
   };
   const checkFilter = (e) => {
     if (isFiltering) return null;
-    else return filterQuery(e, 1);
+    else return filterQuery(1);
   };
   return (
     <aside className="filter-aside">
