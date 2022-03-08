@@ -386,7 +386,7 @@ const Category = () => {
                   <section className="section_not_found">
                     <div className="not_fount_content">
                       <h1 className="black-heading mb-3">EMPTY</h1>
-                      <h2>We can't any data requested</h2>
+                      <h2>We can't have data requested</h2>
                       <p className="paragraph mb-4">
                         We're fairly sure that page used to be here, but seems
                         to have gone missing. We do apologise on it's behalf.
