@@ -34,3 +34,11 @@ export const UserDetailForPay = {
   billing_city: "",
   billing_zip_code: "",
 };
+
+export const ResetPassword = {
+  new_password: "",
+  resetpassword: "",
+};
+export const ForgotPassword = {
+  email: "",
+};

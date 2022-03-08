@@ -221,6 +221,7 @@ const ProfileView = () => {
       setTotalRows(data?.total);
       setLoading(false);
     } else {
+      setLoading(false);
       console.log("result", success);
     }
   };

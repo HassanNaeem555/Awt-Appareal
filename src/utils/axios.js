@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://dev73.myprojectstaging.com/AwtbAppareal/public/api",
+  baseURL: "https://dev73.myprojectstaging.com/AwtbAppareal/public/api/",
 });
 
 axiosInstance.interceptors.response.use(

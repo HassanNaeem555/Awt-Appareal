@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Pagination } from "react-bootstrap";
 import Filter from "./filters";
 import CommonBanner from "../../components/commonBanner";
 import RecommendedProducts from "../../components/recommendedProducts";
 import CommonProductCard from "../../components/commonProductCard";
 import LazyLoader from "../../components/lazyLoader";
-import { getApi } from "../../utils/apiFunctions";
+import { getApi, postApi } from "../../utils/apiFunctions";
 import {
   categories_products,
   recommended_product,
   category_filters,
+  filterProducts,
 } from "../../utils/api";
 
 const dummyCategory = [0, 1, 2, 3, 4, 5, 6, 7];
 
 const Category = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const category_name = location.state.id;
   const [active, setActive] = useState(1);
   const [pageNo, setPageNo] = useState(1);
@@ -27,6 +29,12 @@ const Category = () => {
   const [filterVariants, setFilterVariants] = useState([]);
   const [recommendedProducts, setRecommendedProducts] = useState([]);
   const [stopPagination, setStopPagination] = useState(false);
+  const [categoryChecked, setCategoryChecked] = useState([]);
+  const [colorChecked, setColorChecked] = useState([]);
+  const [variantChecked, setVariantChecked] = useState([]);
+  const [isFiltering, setIsFiltering] = useState(false);
+  const [isFilteringData, setIsFilteringData] = useState(false);
+  const [isDataArrived, setIsDataArrived] = useState(false);
 
   let items = [];
   for (let number = 1; number <= totalProducts; number++) {
@@ -49,12 +57,22 @@ const Category = () => {
     if (stopPagination && activeVal < active) {
       scrollTop();
       setProducts([]);
+      if (isFilteringData) {
+        setIsFilteringData(false);
+        filterQuery(activeVal);
+        return;
+      }
       getProductsData(category_name, activeVal);
       return;
     }
     if (stopPagination && activeVal > active) {
       scrollTop();
       setProducts([]);
+      if (isFilteringData) {
+        setIsFilteringData(false);
+        filterQuery(activeVal);
+        return;
+      }
       getProductsData(category_name, activeVal);
       return;
     }
@@ -101,6 +119,93 @@ const Category = () => {
       return "";
     }
   };
+  const onSubCategoryChange = (e, id) => {
+    if (e.target.checked) {
+      categoryChecked.push(id);
+    } else {
+      const cloneCategoryChecked = categoryChecked.filter((e) => e !== id);
+      setCategoryChecked(cloneCategoryChecked);
+    }
+  };
+  const onCategoryChange = (e, id) => {
+    if (e.target.checked) {
+      categoryChecked.push(id);
+    } else {
+      const cloneCategoryChecked = categoryChecked.filter((e) => e !== id);
+      setCategoryChecked(cloneCategoryChecked);
+    }
+  };
+  const onColorChange = (e, id) => {
+    if (e.target.checked) {
+      colorChecked.push(id);
+    } else {
+      const cloneColorChecked = colorChecked.filter((e) => e !== id);
+      setColorChecked(cloneColorChecked);
+    }
+  };
+  const onVariantChange = (e, id) => {
+    if (e.target.checked) {
+      variantChecked.push(id);
+    } else {
+      const cloneVariantChecked = variantChecked.filter((e) => e !== id);
+      setVariantChecked(cloneVariantChecked);
+    }
+  };
+  const filterQuery = async (page) => {
+    // if (categoryChecked || colorChecked || variantChecked) {
+    //   toast.warn("Please Select Any Filter");
+    //   return;
+    // } else {
+    // }
+    if (isDataArrived) {
+      setIsDataArrived(false);
+    }
+    let payload = {
+      category_id: category_name,
+      attribute_id: categoryChecked,
+      color_id: colorChecked,
+      variant_id: variantChecked,
+      page,
+    };
+    setStopPagination(false);
+    setProducts([]);
+    setActive(1);
+    setPageNo(1);
+    setTotalProducts(0);
+    setIsFiltering(true);
+    const result = await postApi(filterProducts, payload);
+    if (result?.products !== undefined) {
+      console.log("result?.products", result?.products);
+      const { data, total, current_page, prev_page_url, next_page_url } =
+        result?.products;
+      if (result?.success) {
+        setIsFiltering(false);
+        console.log("result if", result?.success);
+        setProducts(data);
+        setPageNo(current_page);
+        setCategoryChecked([]);
+        setColorChecked([]);
+        setVariantChecked([]);
+        setIsFilteringData(true);
+        if (data.length <= 0) {
+          setIsDataArrived(true);
+        }
+        const makeTotal = Math.floor(total / 10);
+        setTotalProducts(makeTotal);
+        if (next_page_url == null) {
+          setStopPagination(true);
+        }
+        if (prev_page_url == null) {
+          setStopPagination(true);
+        }
+      } else {
+        setIsFiltering(false);
+        console.log("result else", result?.success);
+      }
+    } else {
+      setIsDataArrived(true);
+    }
+  };
   const renderFilters = () => {
     if (location.pathname === "/category/new-arrival") {
       return (
@@ -109,6 +214,12 @@ const Category = () => {
           categories={filtersCategories}
           color={filterColors}
           variants={filterVariants}
+          onSubCategoryChange={onSubCategoryChange}
+          onCategoryChange={onCategoryChange}
+          onColorChange={onColorChange}
+          onVariantChange={onVariantChange}
+          filterQuery={filterQuery}
+          isFiltering={isFiltering}
         />
       );
     } else if (location.pathname === "/category/mens") {
@@ -118,6 +229,12 @@ const Category = () => {
           categories={filtersCategories}
           color={filterColors}
           variants={filterVariants}
+          onSubCategoryChange={onSubCategoryChange}
+          onCategoryChange={onCategoryChange}
+          onColorChange={onColorChange}
+          onVariantChange={onVariantChange}
+          filterQuery={filterQuery}
+          isFiltering={isFiltering}
         />
       );
     } else if (location.pathname === "/category/women") {
@@ -127,6 +244,12 @@ const Category = () => {
           categories={filtersCategories}
           color={filterColors}
           variants={filterVariants}
+          onSubCategoryChange={onSubCategoryChange}
+          onCategoryChange={onCategoryChange}
+          onColorChange={onColorChange}
+          onVariantChange={onVariantChange}
+          filterQuery={filterQuery}
+          isFiltering={isFiltering}
         />
       );
     } else if (location.pathname === "/category/youth") {
@@ -140,6 +263,12 @@ const Category = () => {
           categories={filtersCategories}
           color={filterColors}
           variants={filterVariants}
+          onSubCategoryChange={onSubCategoryChange}
+          onCategoryChange={onCategoryChange}
+          onColorChange={onColorChange}
+          onVariantChange={onVariantChange}
+          filterQuery={filterQuery}
+          isFiltering={isFiltering}
         />
       );
     }
@@ -197,6 +326,9 @@ const Category = () => {
       setPageNo(current_page);
       const makeTotal = Math.floor(total / 10);
       setTotalProducts(makeTotal);
+      if (data.length <= 0) {
+        setIsDataArrived(true);
+      }
       if (next_page_url == null) {
         setStopPagination(true);
       }
@@ -225,6 +357,7 @@ const Category = () => {
   useEffect(() => {
     scrollTop();
     setStopPagination(false);
+    setIsDataArrived(false);
     setProducts([]);
     setRecommendedProducts([]);
     setFiltersCategories(null);
@@ -249,6 +382,25 @@ const Category = () => {
               <div className="row m-0">
                 {products.length > 0 ? (
                   <CommonProductCard products={products} />
+                ) : isDataArrived ? (
+                  <section className="section_not_found">
+                    <div className="not_fount_content">
+                      <h1 className="black-heading mb-3">EMPTY</h1>
+                      <h2>We can't any data requested</h2>
+                      <p className="paragraph mb-4">
+                        We're fairly sure that page used to be here, but seems
+                        to have gone missing. We do apologise on it's behalf.
+                      </p>
+                    </div>
+                    <button
+                      className="cta-btn"
+                      onClick={() => {
+                        navigate("/");
+                      }}
+                    >
+                      Back To Home
+                    </button>
+                  </section>
                 ) : (
                   <>
                     {dummyCategory.map((item, index) => {
