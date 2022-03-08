@@ -8,15 +8,15 @@ const ProfileHeader = ({ name, image, url }) => {
           <div className="head-left-box"></div>
           <div className="dashboard-head-right">
             <div className="header-leftwrap">
-              <form className="search-form">
+              {/* <form className="search-form">
                 <input type="search" placeholder="Search..." />
-              </form>
+              </form> */}
               <div className="header-notificationwrap">
                 <ul>
                   <li className="list-inline-item notification-dropdown">
-                    <span className="cursor-pointer">
+                    {/* <span className="cursor-pointer">
                       <i className="fa fa-bell bellicn"></i>
-                    </span>
+                    </span> */}
                     <div className="notification-dropdown-wrap">
                       <div className="notification-item">
                         <div className="notification-item-image">
