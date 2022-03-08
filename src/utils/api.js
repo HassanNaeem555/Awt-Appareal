@@ -20,3 +20,4 @@ export const category_filters = "get_category_products";
 export const feed_back = "feed_back";
 export const updatePassword = "updatePassword";
 export const forgotPassword = "forgotPassword";
+export const filterProducts = "filter_products";

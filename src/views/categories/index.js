@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { Pagination } from "react-bootstrap";
+import { toast } from "react-toastify";
 import Filter from "./filters";
 import CommonBanner from "../../components/commonBanner";
 import RecommendedProducts from "../../components/recommendedProducts";
 import CommonProductCard from "../../components/commonProductCard";
 import LazyLoader from "../../components/lazyLoader";
-import { getApi } from "../../utils/apiFunctions";
+import { getApi, postApi } from "../../utils/apiFunctions";
 import {
   categories_products,
   recommended_product,
   category_filters,
+  filterProducts,
 } from "../../utils/api";
 
 const dummyCategory = [0, 1, 2, 3, 4, 5, 6, 7];
@@ -27,6 +29,10 @@ const Category = () => {
   const [filterVariants, setFilterVariants] = useState([]);
   const [recommendedProducts, setRecommendedProducts] = useState([]);
   const [stopPagination, setStopPagination] = useState(false);
+  const [categoryChecked, setCategoryChecked] = useState([]);
+  const [colorChecked, setColorChecked] = useState([]);
+  const [variantChecked, setVariantChecked] = useState([]);
+  const [isFiltering, setIsFiltering] = useState(false);
 
   let items = [];
   for (let number = 1; number <= totalProducts; number++) {
@@ -101,6 +107,80 @@ const Category = () => {
       return "";
     }
   };
+  const onSubCategoryChange = (e, id) => {
+    if (e.target.checked) {
+      categoryChecked.push(id);
+    } else {
+      const cloneCategoryChecked = categoryChecked.filter((e) => e !== id);
+      setCategoryChecked(cloneCategoryChecked);
+    }
+  };
+  const onCategoryChange = (e, id) => {
+    if (e.target.checked) {
+      categoryChecked.push(id);
+    } else {
+      const cloneCategoryChecked = categoryChecked.filter((e) => e !== id);
+      setCategoryChecked(cloneCategoryChecked);
+    }
+  };
+  const onColorChange = (e, id) => {
+    if (e.target.checked) {
+      colorChecked.push(id);
+    } else {
+      const cloneColorChecked = colorChecked.filter((e) => e !== id);
+      setColorChecked(cloneColorChecked);
+    }
+  };
+  const onVariantChange = (e, id) => {
+    if (e.target.checked) {
+      variantChecked.push(id);
+    } else {
+      const cloneVariantChecked = variantChecked.filter((e) => e !== id);
+      setVariantChecked(cloneVariantChecked);
+    }
+  };
+  const filterQuery = async (e, page) => {
+    // if (categoryChecked || colorChecked || variantChecked) {
+    //   toast.warn("Please Select Any Filter");
+    //   return;
+    // } else {
+    // }
+    let payload = {
+      attribute_id: categoryChecked,
+      color_id: colorChecked,
+      variant_id: variantChecked,
+      page,
+    };
+    setStopPagination(false);
+    setProducts([]);
+    setActive(1);
+    setPageNo(1);
+    setTotalProducts(0);
+    setIsFiltering(true);
+    const result = await postApi(filterProducts, payload);
+    const { data, total, current_page, prev_page_url, next_page_url } =
+      result?.products;
+    if (result?.success) {
+      setIsFiltering(false);
+      console.log("result if", result?.success);
+      setProducts(data);
+      setPageNo(current_page);
+      setCategoryChecked([]);
+      setColorChecked([]);
+      setVariantChecked([]);
+      const makeTotal = Math.floor(total / 10);
+      setTotalProducts(makeTotal);
+      if (next_page_url == null) {
+        setStopPagination(true);
+      }
+      if (prev_page_url == null) {
+        setStopPagination(true);
+      }
+    } else {
+      setIsFiltering(false);
+      console.log("result else", result?.success);
+    }
+  };
   const renderFilters = () => {
     if (location.pathname === "/category/new-arrival") {
       return (
@@ -109,6 +189,12 @@ const Category = () => {
           categories={filtersCategories}
           color={filterColors}
           variants={filterVariants}
+          onSubCategoryChange={onSubCategoryChange}
+          onCategoryChange={onCategoryChange}
+          onColorChange={onColorChange}
+          onVariantChange={onVariantChange}
+          filterQuery={filterQuery}
+          isFiltering={isFiltering}
         />
       );
     } else if (location.pathname === "/category/mens") {
@@ -118,6 +204,12 @@ const Category = () => {
           categories={filtersCategories}
           color={filterColors}
           variants={filterVariants}
+          onSubCategoryChange={onSubCategoryChange}
+          onCategoryChange={onCategoryChange}
+          onColorChange={onColorChange}
+          onVariantChange={onVariantChange}
+          filterQuery={filterQuery}
+          isFiltering={isFiltering}
         />
       );
     } else if (location.pathname === "/category/women") {
@@ -127,6 +219,12 @@ const Category = () => {
           categories={filtersCategories}
           color={filterColors}
           variants={filterVariants}
+          onSubCategoryChange={onSubCategoryChange}
+          onCategoryChange={onCategoryChange}
+          onColorChange={onColorChange}
+          onVariantChange={onVariantChange}
+          filterQuery={filterQuery}
+          isFiltering={isFiltering}
         />
       );
     } else if (location.pathname === "/category/youth") {
@@ -140,6 +238,12 @@ const Category = () => {
           categories={filtersCategories}
           color={filterColors}
           variants={filterVariants}
+          onSubCategoryChange={onSubCategoryChange}
+          onCategoryChange={onCategoryChange}
+          onColorChange={onColorChange}
+          onVariantChange={onVariantChange}
+          filterQuery={filterQuery}
+          isFiltering={isFiltering}
         />
       );
     }

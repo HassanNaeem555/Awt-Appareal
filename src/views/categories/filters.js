@@ -1,7 +1,17 @@
 import React from "react";
 import { Accordion, useAccordionButton } from "react-bootstrap";
 
-const Filters = ({ categories, color, variants }) => {
+const Filters = ({
+  categories,
+  color,
+  variants,
+  onSubCategoryChange,
+  onCategoryChange,
+  onColorChange,
+  onVariantChange,
+  filterQuery,
+  isFiltering,
+}) => {
   const ParentCategoryToggle = ({ children, eventKey }) => {
     const decoratedOnClick = useAccordionButton(eventKey, () =>
       console.log("totally custom!")
@@ -39,7 +49,7 @@ const Filters = ({ categories, color, variants }) => {
   };
   const SizeToggle = ({ eventKey }) => {
     const decoratedOnClick = useAccordionButton(eventKey, () =>
-      console.log("totally custom!")
+      console.log("totally custom!", eventKey)
     );
 
     return (
@@ -47,6 +57,10 @@ const Filters = ({ categories, color, variants }) => {
         Size's <i className="fa fa-chevron-down"></i>
       </p>
     );
+  };
+  const checkFilter = (e) => {
+    if (isFiltering) return null;
+    else return filterQuery(e, 1);
   };
   return (
     <aside className="filter-aside">
@@ -79,10 +93,12 @@ const Filters = ({ categories, color, variants }) => {
                                             type="checkbox"
                                             id={product?.id}
                                             name={product?.attribute_name}
-                                            value={
-                                              product?.attribute_name
-                                                ? product?.attribute_name
-                                                : ""
+                                            value={product?.attribute_name}
+                                            onChange={(e) =>
+                                              onSubCategoryChange(
+                                                e,
+                                                product?.id
+                                              )
                                             }
                                           />
                                           <label
@@ -111,11 +127,8 @@ const Filters = ({ categories, color, variants }) => {
                                 type="checkbox"
                                 id={name?.id}
                                 name={name?.attribute_name}
-                                value={
-                                  name?.attribute_name
-                                    ? name?.attribute_name
-                                    : ""
-                                }
+                                value={name?.attribute_name}
+                                onChange={(e) => onCategoryChange(e, name?.id)}
                               />
                               <label htmlFor={name?.id} className="filter-item">
                                 {name?.attribute_name}
@@ -147,7 +160,8 @@ const Filters = ({ categories, color, variants }) => {
                             type="checkbox"
                             id={color?.id}
                             name={color?.color_name}
-                            value={color?.color_name ? color?.color_name : ""}
+                            value={color?.color_name}
+                            onChange={(e) => onColorChange(e, color?.id)}
                           />
                           <label htmlFor={color?.id} className="filter-item">
                             {color?.color_name}
@@ -177,9 +191,8 @@ const Filters = ({ categories, color, variants }) => {
                             type="checkbox"
                             id={variant?.id}
                             name={variant?.verient_name}
-                            value={
-                              variant?.verient_name ? variant?.verient_name : ""
-                            }
+                            value={variant?.verient_name}
+                            onChange={(e) => onVariantChange(e, variant?.id)}
                           />
                           <label htmlFor={variant?.id}>
                             {variant?.verient_name}
@@ -194,6 +207,9 @@ const Filters = ({ categories, color, variants }) => {
           </Accordion>
         </div>
       ) : null}
+      <button className="cta-btn w-100" onClick={checkFilter}>
+        Filter
+      </button>
     </aside>
   );
 };
