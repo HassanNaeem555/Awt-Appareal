@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useLayoutEffect, useEffect } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { useDispatch } from "react-redux";
@@ -15,6 +15,26 @@ console.clear();
 
 const App = () => {
   const dispatch = useDispatch();
+  const [isDisconnected, setIsDisconnected] = useState(false);
+  const handleConnectionChange = () => {
+    const condition = navigator.onLine ? "online" : "offline";
+    if (condition === "online") {
+      const webPing = setInterval(() => {
+        fetch("//google.com", {
+          mode: "no-cors",
+        })
+          .then(() => {
+            setIsDisconnected(false, () => {
+              return clearInterval(webPing);
+            });
+          })
+          .catch(() => setIsDisconnected(true));
+      }, 2000);
+      return;
+    }
+
+    return setIsDisconnected(true);
+  };
   useEffect(() => {
     async function getCategory() {
       const result = await getApi(categories);
@@ -24,8 +44,21 @@ const App = () => {
     }
     getCategory();
   }, [dispatch]);
+  useLayoutEffect(() => {
+    window.addEventListener("online", handleConnectionChange);
+    window.addEventListener("offline", handleConnectionChange);
+    return () => {
+      window.removeEventListener("online", handleConnectionChange);
+      window.removeEventListener("offline", handleConnectionChange);
+    };
+  });
   return (
     <Router>
+      {isDisconnected && (
+        <div className="internet-error">
+          <p>Internet connection lost....</p>
+        </div>
+      )}
       <MainLayout>
         <RenderRoutes />
         <ToastContainer
