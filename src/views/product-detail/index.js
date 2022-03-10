@@ -28,7 +28,7 @@ const ProductDetail = () => {
   const [productsVarients, setProductsVarients] = useState([]);
   const [recommendedProducts, setRecommendedProducts] = useState([]);
   const [selectedVariant, setSelectedVariant] = useState("");
-  const [currentQuantityOfProduct, setcurrentQuantityOfProduct] = useState(0);
+  const [currentQuantityOfProduct, setcurrentQuantityOfProduct] = useState(1);
   const getProductsDetail = async () => {
     const { data } = await getApi(`${single_products}?product_id=${id}`);
     if (data) {
@@ -125,7 +125,7 @@ const ProductDetail = () => {
       user_cart.length > 0 &&
       user_cart.filter((e) => e?.id === productData?.id);
     if (getCurrentItemFromCart && getCurrentItemFromCart.length > 0) {
-      navigate("/cart");
+      navigate("/checkout");
     } else {
       toast.warn("Please Add This Item To Cart");
     }
@@ -136,7 +136,7 @@ const ProductDetail = () => {
       setGalleryImages([]);
       setProductsVarients([]);
       setProductData({});
-      setcurrentQuantityOfProduct(0);
+      setcurrentQuantityOfProduct(1);
       setSelectedVariant("");
     }
     id = location.pathname.substring(16);
@@ -174,7 +174,7 @@ const ProductDetail = () => {
                 ) : productData?.product_name === null ? null : (
                   <TextLoader height={"5%"} width={"80%"} />
                 )}
-                <div className="reviewwrap">
+                {/* <div className="reviewwrap">
                   <div className="product-rating mb-2">
                     <span>
                       <i className="fa fa-star"></i>
@@ -193,7 +193,7 @@ const ProductDetail = () => {
                     </span>
                   </div>
                   <span className="paragraph">3 Reviews</span>
-                </div>
+                </div> */}
                 <div
                   className={
                     productData?.product_code &&

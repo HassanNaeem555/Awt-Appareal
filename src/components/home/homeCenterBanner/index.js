@@ -8,11 +8,15 @@ function HomeCenterBanner() {
         src="assets/images/indexSec4-vector1.png"
         alt="img"
         className="img-fluid indexSec4-vector1"
+        width={200}
+        height={286}
       />
       <img
         src="assets/images/indexSec4-vector2.png"
         alt="img"
         className="img-fluid indexSec4-vector2"
+        width={200}
+        height={286}
       />
     </section>
   );

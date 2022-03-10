@@ -37,6 +37,8 @@ const Footer = () => {
                         : `${OwnImageURL}/assets/images/foot-cloud.jpg`
                     }
                     className="img-fluid"
+                    width={205}
+                    height={203}
                     alt="footer-logo"
                   />
                 </span>
@@ -118,7 +120,7 @@ const Footer = () => {
                       Privacy Policy
                     </span>
                   </li>
-                  <li>
+                  {/* <li>
                     <span> Terms and conditions</span>
                   </li>
                   <li>
@@ -129,7 +131,7 @@ const Footer = () => {
                   </li>
                   <li>
                     <span>Faq's</span>
-                  </li>
+                  </li> */}
                 </ul>
               </div>
             </div>
@@ -199,6 +201,8 @@ const Footer = () => {
                               }
                               className="img-fluid"
                               alt="visa-card-payment"
+                              width={55}
+                              height={26}
                             />
                           </a>
                         </li>

@@ -38,7 +38,7 @@ const SlickSlider = ({ images }) => {
           className="slider-thumbnail"
           focusOnSelect={true}
           arrows={false}
-          slidesToShow={4}
+          slidesToShow={images.length}
           swipeToSlide={true}
         >
           {images.map((gallery_images, index) => {

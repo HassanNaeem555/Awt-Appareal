@@ -224,6 +224,8 @@ const Header = () => {
                     }
                     alt="logo"
                     className="img-fluid"
+                    width={170}
+                    height={168}
                   />
                 </span>
               </div>
@@ -238,6 +240,8 @@ const Header = () => {
                           src={`${OwnImageURL}/assets/images/search-icon.png`}
                           alt="img"
                           className="img-fluid"
+                          width={17}
+                          height={17}
                         />
                       </span>
                     </li>
@@ -253,6 +257,8 @@ const Header = () => {
                           src={`${OwnImageURL}/assets/images/user-icon.png`}
                           alt="img"
                           className="img-fluid"
+                          width={17}
+                          height={17}
                         />
                       </span>
                     </li>
@@ -280,6 +286,8 @@ const Header = () => {
                           src={`${OwnImageURL}/assets/images/cart-icon.png`}
                           alt="img"
                           className="img-fluid"
+                          width={16}
+                          height={18}
                         />
                         <span>{user_cart?.length}</span>
                       </span>

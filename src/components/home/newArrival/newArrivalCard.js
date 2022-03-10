@@ -34,6 +34,8 @@ const NewArrivalCard = ({ item }) => {
           src={`${ImageURL}product/${item?.product_image}`}
           alt="img"
           className="img-fluid"
+          width={292}
+          height={380}
         />
         <div className="product-icons">
           <span
@@ -68,6 +70,8 @@ const NewArrivalCard = ({ item }) => {
               alt="img"
               className="img-fluid"
               title="View Product"
+              width={18}
+              height={18}
             />
           </span>
         </div>

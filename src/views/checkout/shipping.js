@@ -2,7 +2,16 @@ import React, { useState } from "react";
 import { Control, Form, Errors } from "react-redux-form";
 import { validEmail } from "../../utils/custom";
 
-const Shipping = ({ handleCheckoutDetails }) => {
+const Shipping = ({
+  handleCheckoutDetails,
+  email,
+  full_name,
+  id,
+  phone_number,
+  user_status,
+  address,
+  profile,
+}) => {
   const [showBillingDetails, setShowBillingDetails] = useState(false);
   const getResult = (e) => {
     if (e.target.checked) {
@@ -26,6 +35,7 @@ const Shipping = ({ handleCheckoutDetails }) => {
                 model=".first_name_shipping"
                 id="first_name_shipping"
                 name="first_name_shipping"
+                defaultValue={full_name.split(" ")[0]}
                 placeholder="First Name"
                 className="form-control"
               />
@@ -38,6 +48,7 @@ const Shipping = ({ handleCheckoutDetails }) => {
                 model=".last_name_shipping"
                 id="last_name_shipping"
                 name="last_name_shipping"
+                defaultValue={full_name.split(" ")[1]}
                 placeholder="Last Name"
                 className="form-control"
               />
@@ -49,6 +60,7 @@ const Shipping = ({ handleCheckoutDetails }) => {
                 type="email"
                 model=".email_shipping"
                 id="email_shipping"
+                defaultValue={email}
                 name="email_shipping"
                 placeholder="Email"
                 className="form-control"

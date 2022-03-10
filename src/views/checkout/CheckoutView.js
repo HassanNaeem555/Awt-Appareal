@@ -24,17 +24,19 @@ import OrderSummary from "./orderSummary";
 const CheckoutView = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const user_cart = useSelector(({ user_cart }) => {
+    return user_cart.cart;
+  });
+  const { email, full_name, id, phone_number, user_status, address, profile } =
+    useSelector(({ user_authenticate }) => {
+      return user_authenticate.user;
+    });
   const stripe = useStripe();
   const elements = useElements();
   const [key, setKey] = useState("checkout-tab-1");
   const [loading, setLoading] = useState(false);
   const [userCheckoutData, setUserCheckoutData] = useState({});
-  const user_cart = useSelector(({ user_cart }) => {
-    return user_cart.cart;
-  });
-  const { id } = useSelector(({ user_authenticate }) => {
-    return user_authenticate.user;
-  });
+
   const [data, setData] = useState({
     cvc: "",
     expiry: "",
@@ -183,6 +185,13 @@ const CheckoutView = () => {
                     <div className="tab-pane fade show active">
                       <div className="checkout-form">
                         <Shipping
+                          email={email}
+                          full_name={full_name}
+                          id={id}
+                          phone_number={phone_number}
+                          user_status={user_status}
+                          address={address}
+                          profile={profile}
                           handleCheckoutDetails={handleCheckoutDetails}
                         />
                       </div>
