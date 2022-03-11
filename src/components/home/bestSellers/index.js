@@ -26,6 +26,8 @@ const BestSeller = ({ category }) => {
                           src={`assets/images/bestSeller-img${index + 1}.jpg`}
                           alt={`img${index}`}
                           className="img-fluid"
+                          width={366}
+                          height={470}
                         />
                       </div>
                       <div className="content">

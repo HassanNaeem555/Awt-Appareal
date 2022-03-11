@@ -34,6 +34,8 @@ const NewArrivalCard = ({ item }) => {
           src={`${ImageURL}product/${item?.product_image}`}
           alt="img"
           className="img-fluid"
+          width={292}
+          height={380}
         />
         <div className="product-icons">
           <span
@@ -68,6 +70,8 @@ const NewArrivalCard = ({ item }) => {
               alt="img"
               className="img-fluid"
               title="View Product"
+              width={18}
+              height={18}
             />
           </span>
         </div>
@@ -81,23 +85,6 @@ const NewArrivalCard = ({ item }) => {
       <div className="product-detail">
         <span className="product-name">{item?.product_name}</span>
         <span className="product-price">{item?.product_price}</span>
-      </div>
-      <div className="product-rating mb-2">
-        <span>
-          <i className="fa fa-star"></i>
-        </span>
-        <span>
-          <i className="fa fa-star"></i>
-        </span>
-        <span>
-          <i className="fa fa-star"></i>
-        </span>
-        <span>
-          <i className="fa fa-star"></i>
-        </span>
-        <span>
-          <i className="fa fa-star"></i>
-        </span>
       </div>
       <div className="arrivalCard-button">
         <button

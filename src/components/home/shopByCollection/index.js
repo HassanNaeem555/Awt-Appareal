@@ -30,6 +30,8 @@ const ShopByCollection = ({ category }) => {
                           src={`assets/images/collection-img${index + 1}.jpg`}
                           alt="img"
                           className="img-fluid"
+                          width={366}
+                          height={470}
                         />
                       </div>
                       <div className="content">

@@ -17,7 +17,7 @@ const Search = () => {
   const [products, setProducts] = useState([]);
   const [recommendedProducts, setRecommendedProducts] = useState([]);
   const [stopPagination, setStopPagination] = useState(false);
-
+  const [isDataArrived, setIsDataArrived] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const searchKeyword = location.pathname.substring(8);
@@ -74,6 +74,9 @@ const Search = () => {
       setPageNo(current_page);
       const makeTotal = Math.ceil(total / 10);
       setTotalProducts(makeTotal);
+      if (data.length <= 0) {
+        setIsDataArrived(true);
+      }
       if (next_page_url == null) {
         setStopPagination(true);
       }
@@ -92,6 +95,7 @@ const Search = () => {
   useEffect(() => {
     scrollTop();
     setStopPagination(false);
+    setIsDataArrived(false);
     setProducts([]);
     setRecommendedProducts([]);
     setActive(1);
@@ -110,6 +114,25 @@ const Search = () => {
               <div className="row m-0">
                 {products.length > 0 ? (
                   <CommonProductCard products={products} />
+                ) : isDataArrived ? (
+                  <section className="section_not_found">
+                    <div className="not_fount_content">
+                      <h1 className="black-heading mb-3">EMPTY</h1>
+                      <h2>We can't have data requested</h2>
+                      <p className="paragraph mb-4">
+                        We're fairly sure that page used to be here, but seems
+                        to have gone missing. We do apologise on it's behalf.
+                      </p>
+                    </div>
+                    <button
+                      className="cta-btn"
+                      onClick={() => {
+                        navigate("/");
+                      }}
+                    >
+                      Back To Home
+                    </button>
+                  </section>
                 ) : (
                   <>
                     {dummyCategory.map((item, index) => {

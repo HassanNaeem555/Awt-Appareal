@@ -162,7 +162,7 @@ const Cart = () => {
                       </li>
                       <li>
                         <span>Delivery</span>
-                        <span>$5.00</span>
+                        <span>$0.00</span>
                       </li>
                     </ul>
                   </div>

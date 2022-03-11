@@ -27,8 +27,8 @@ const ProductDetail = () => {
   const [galleryImages, setGalleryImages] = useState([]);
   const [productsVarients, setProductsVarients] = useState([]);
   const [recommendedProducts, setRecommendedProducts] = useState([]);
-  const [selectedVariant, setSelectedVariant] = useState("");
-  const [currentQuantityOfProduct, setcurrentQuantityOfProduct] = useState(0);
+  const [selectedVariant, setSelectedVariant] = useState([]);
+  const [currentQuantityOfProduct, setcurrentQuantityOfProduct] = useState(1);
   const getProductsDetail = async () => {
     const { data } = await getApi(`${single_products}?product_id=${id}`);
     if (data) {
@@ -52,7 +52,8 @@ const ProductDetail = () => {
         user_cart.length > 0 &&
         user_cart.filter((e) => e.id === data?.id)[0]?.selectedVarient;
       if (getQuantity && typeof getQuantity === "number") {
-        setSelectedVariant(getSelectedVariant);
+        // setSelectedVariant(getSelectedVariant);
+        setSelectedVariant([]);
       }
       setProductData(data);
     }
@@ -68,10 +69,11 @@ const ProductDetail = () => {
   };
   const addToCart = (e) => {
     e.preventDefault();
+    console.log("function is running");
     if (
       productsVarients &&
       productsVarients.length > 0 &&
-      selectedVariant === ""
+      selectedVariant.length == 0
     ) {
       toast.warn("Please Select A Size...");
       return;
@@ -79,13 +81,12 @@ const ProductDetail = () => {
     if (
       productsVarients &&
       productsVarients.length > 0 &&
-      selectedVariant !== ""
+      selectedVariant.length > 0
     ) {
       let pre_send_cart_data = productData;
-      pre_send_cart_data.selectedVarient = selectedVariant;
+      pre_send_cart_data.selectedVarient = [selectedVariant];
       pre_send_cart_data.quantity = 1;
       pre_send_cart_data.total_price = pre_send_cart_data.product_price;
-      console.log("pre_send_cart_data", pre_send_cart_data);
       dispatch(addInCart(pre_send_cart_data));
       toast.success("Added To Cart Successfully");
       return;
@@ -107,17 +108,28 @@ const ProductDetail = () => {
     );
     dispatch(updateCart(cartData));
   };
-  const settleSelectedVariant = (e, variant_name) => {
+  const settleSelectedVariant = (e, variant_name, variant_id) => {
     e.preventDefault();
-    let getCartVariantName =
+    let userSelectedVariant = { id: variant_id, name: variant_name };
+    let getCartVariant =
       user_cart.length > 0 &&
-      user_cart.filter((e) => e.id === productData?.id)[0]?.selectedVarient;
-    if (getCartVariantName === variant_name) return;
-    if (getCartVariantName && getCartVariantName !== variant_name) {
-      toast.warn("Can't Take More Than One Size");
+      user_cart
+        .filter((e) => e.id === productData?.id)[0]
+        ?.selectedVarient.filter((e) => e.id === variant_id);
+    let getCartPresentItem =
+      getCartVariant.length > 0 &&
+      getCartVariant.filter((e) => e?.id === variant_id);
+    let cartVariantFound = selectedVariant.filter((e) => e.id === variant_id);
+    if (getCartPresentItem && getCartPresentItem.length > 0) return;
+    if (cartVariantFound && cartVariantFound.length > 0) {
+      let cartVariant = selectedVariant.filter((e) => e.id !== variant_id);
       return;
     }
-    setSelectedVariant(variant_name);
+    if (getCartVariant && getCartVariant[0]?.id !== variant_id) {
+      setSelectedVariant([...selectedVariant, userSelectedVariant]);
+      return;
+    }
+    setSelectedVariant([...selectedVariant, userSelectedVariant]);
   };
   const buyProduct = (e) => {
     e.preventDefault();
@@ -125,10 +137,24 @@ const ProductDetail = () => {
       user_cart.length > 0 &&
       user_cart.filter((e) => e?.id === productData?.id);
     if (getCurrentItemFromCart && getCurrentItemFromCart.length > 0) {
-      navigate("/cart");
+      navigate("/checkout");
     } else {
       toast.warn("Please Add This Item To Cart");
     }
+  };
+  const disabledBtn = () => {
+    // user_cart.length > 0 &&
+    // user_cart.filter((e) => e?.id === productData?.id)
+    //   .length > 0
+    //   ? true
+    //   : false
+    // const user_cart_data =
+    //   user_cart.length > 0 &&
+    //   user_cart.filter((e) => e?.id === productData?.id);
+    // if(user_cart_data.length > 0) {
+    //   user_cart_data.forEach((cart,index)= ()=> {
+    //   })
+    // }
   };
   useEffect(() => {
     if (recommendedProducts.length > 0) {
@@ -136,14 +162,15 @@ const ProductDetail = () => {
       setGalleryImages([]);
       setProductsVarients([]);
       setProductData({});
-      setcurrentQuantityOfProduct(0);
-      setSelectedVariant("");
+      setcurrentQuantityOfProduct(1);
+      setSelectedVariant([]);
     }
     id = location.pathname.substring(16);
     scrollTop();
     getProductsDetail();
     getRecommendedProducts();
   }, [location.pathname]);
+  console.log("selectedVariant", selectedVariant);
   return (
     <>
       <CommonBanner img={"productDetail-sec1"} name={"PRODUCTS DETAIL"} />
@@ -174,26 +201,6 @@ const ProductDetail = () => {
                 ) : productData?.product_name === null ? null : (
                   <TextLoader height={"5%"} width={"80%"} />
                 )}
-                <div className="reviewwrap">
-                  <div className="product-rating mb-2">
-                    <span>
-                      <i className="fa fa-star"></i>
-                    </span>
-                    <span>
-                      <i className="fa fa-star"></i>
-                    </span>
-                    <span>
-                      <i className="fa fa-star"></i>
-                    </span>
-                    <span>
-                      <i className="fa fa-star"></i>
-                    </span>
-                    <span>
-                      <i className="fa fa-star"></i>
-                    </span>
-                  </div>
-                  <span className="paragraph">3 Reviews</span>
-                </div>
                 <div
                   className={
                     productData?.product_code &&
@@ -252,20 +259,34 @@ const ProductDetail = () => {
                         return (
                           <button
                             className={
-                              selectedVariant === variant?.verient_name
+                              selectedVariant.length > 0 &&
+                              selectedVariant.filter(
+                                (e) => e?.id === variant?.id
+                              ).length > 0
                                 ? `bg-selected-variant cta-btn my-1`
                                 : user_cart.length > 0 &&
                                   user_cart.filter(
                                     (e) => e?.id === productData?.id
-                                  )[0]?.selectedVarient ===
-                                    variant?.verient_name
+                                  )[0]?.selectedVarient[0]?.id === variant?.id
                                 ? `bg-selected-variant cta-btn my-1`
                                 : `cta-btn my-1`
                             }
                             key={index}
                             onClick={(e) => {
-                              settleSelectedVariant(e, variant?.verient_name);
+                              settleSelectedVariant(
+                                e,
+                                variant?.verient_name,
+                                variant?.id
+                              );
                             }}
+                            disabled={
+                              user_cart.length > 0 &&
+                              user_cart.filter(
+                                (e) => e?.id === productData?.id
+                              )[0]?.selectedVarient[0]?.id === variant?.id
+                                ? true
+                                : false
+                            }
                           >
                             {variant?.verient_name}
                           </button>
@@ -275,7 +296,7 @@ const ProductDetail = () => {
                 </div>
                 <div className="productDetails-butotns">
                   <div className="quntity-counter">
-                    {user_cart.filter((e) => e?.id === productData?.id) &&
+                    {/* {user_cart.filter((e) => e?.id === productData?.id) &&
                       user_cart.filter((e) => e?.id === productData?.id)[0]
                         ?.quantity > 1 && (
                         <span
@@ -286,7 +307,7 @@ const ProductDetail = () => {
                         >
                           <i className="fa fa-minus"></i>
                         </span>
-                      )}
+                      )} */}
                     <input
                       type="tel"
                       className="count"
@@ -302,7 +323,7 @@ const ProductDetail = () => {
                       maxLength="100"
                       disabled="disabled"
                     />
-                    {user_cart.length > 0 &&
+                    {/* {user_cart.length > 0 &&
                       user_cart.filter((e) => e?.id === productData?.id)
                         .length > 0 && (
                         <span
@@ -313,7 +334,7 @@ const ProductDetail = () => {
                         >
                           <i className="fa fa-plus"></i>
                         </span>
-                      )}
+                      )} */}
                   </div>
                   <button
                     className="cta-btn"
@@ -324,13 +345,7 @@ const ProductDetail = () => {
                             "Product Stock Not Available For Purchasing"
                           );
                     }}
-                    disabled={
-                      user_cart.length > 0 &&
-                      user_cart.filter((e) => e?.id === productData?.id)
-                        .length > 0
-                        ? true
-                        : false
-                    }
+                    // disabled={disabledBtn}
                   >
                     <i className="fa fa-cart-plus"></i>{" "}
                     {user_cart.length > 0 &&
@@ -340,14 +355,14 @@ const ProductDetail = () => {
                       : "Add To Cart"}
                   </button>
                 </div>
-                <button
+                {/* <button
                   className="dashed-btn"
                   onClick={(e) => {
                     buyProduct(e);
                   }}
                 >
                   Buy It Now
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
