@@ -86,23 +86,6 @@ const NewArrivalCard = ({ item }) => {
         <span className="product-name">{item?.product_name}</span>
         <span className="product-price">{item?.product_price}</span>
       </div>
-      <div className="product-rating mb-2">
-        <span>
-          <i className="fa fa-star"></i>
-        </span>
-        <span>
-          <i className="fa fa-star"></i>
-        </span>
-        <span>
-          <i className="fa fa-star"></i>
-        </span>
-        <span>
-          <i className="fa fa-star"></i>
-        </span>
-        <span>
-          <i className="fa fa-star"></i>
-        </span>
-      </div>
       <div className="arrivalCard-button">
         <button
           className="cta-btn"
