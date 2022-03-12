@@ -450,7 +450,7 @@ const Header = () => {
                         <div className="cart-desc">
                           <p className="name">{item?.product_name}</p>
                           <p className="customized">
-                            {item?.selectedVarient[0]?.variant_name}
+                            {item?.selectedVarientName}
                           </p>
                           <p className="price">${item?.total_price}.00</p>
                           <div className="quaitity-box">

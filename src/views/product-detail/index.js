@@ -4,14 +4,10 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import CommonBanner from "../../components/commonBanner";
 import DetailWrap from "./detailWrap";
-import { addInCart, updateCart } from "../../store/action/cartAction";
+import { addInCart } from "../../store/action/cartAction";
 import { getApi } from "../../utils/apiFunctions";
 import TextLoader from "../../components/textLoader";
 import { recommended_product, single_products } from "../../utils/api";
-import {
-  procedureToUpdateIncrementInCart,
-  procedureToUpdateDecrementInCart,
-} from "../../utils/genericFunction";
 import RecommendedProducts from "../../components/recommendedProducts";
 import SlickSlider from "./slider";
 
@@ -67,94 +63,24 @@ const ProductDetail = () => {
   const scrollTop = () => {
     window.scrollTo(0, 0);
   };
-  const addToCart = (e) => {
-    e.preventDefault();
-    console.log("function is running");
-    if (
-      productsVarients &&
-      productsVarients.length > 0 &&
-      selectedVariant.length == 0
-    ) {
-      toast.warn("Please Select A Size...");
-      return;
-    }
-    if (
-      productsVarients &&
-      productsVarients.length > 0 &&
-      selectedVariant.length > 0
-    ) {
-      let pre_send_cart_data = productData;
-      pre_send_cart_data.selectedVarient = [selectedVariant];
-      pre_send_cart_data.quantity = 1;
-      pre_send_cart_data.total_price = pre_send_cart_data.product_price;
-      dispatch(addInCart(pre_send_cart_data));
-      toast.success("Added To Cart Successfully");
-      return;
-    }
-  };
-  const updateMaxExistingCart = (e) => {
-    e.preventDefault();
-    const cartData = procedureToUpdateIncrementInCart(
-      user_cart,
-      productData?.id
-    );
-    dispatch(updateCart(cartData));
-  };
-  const updateMinExistingCart = (e) => {
-    e.preventDefault();
-    const cartData = procedureToUpdateDecrementInCart(
-      user_cart,
-      productData?.id
-    );
-    dispatch(updateCart(cartData));
-  };
-  const settleSelectedVariant = (e, variant_name, variant_id) => {
-    e.preventDefault();
-    let userSelectedVariant = { id: variant_id, name: variant_name };
+  const settleSelectedVariant = (e, variant) => {
+    // e.preventDefault();
+    let getVariant = productsVarients.filter((e) => e?.id === variant?.id)[0];
+    let product = productData;
     let getCartVariant =
       user_cart.length > 0 &&
-      user_cart
-        .filter((e) => e.id === productData?.id)[0]
-        ?.selectedVarient.filter((e) => e.id === variant_id);
+      user_cart.filter((e) => e.id === product?.id)[0]?.selectedVarient?.id ===
+        variant?.id;
     let getCartPresentItem =
-      getCartVariant.length > 0 &&
-      getCartVariant.filter((e) => e?.id === variant_id);
-    let cartVariantFound = selectedVariant.filter((e) => e.id === variant_id);
-    if (getCartPresentItem && getCartPresentItem.length > 0) return;
-    if (cartVariantFound && cartVariantFound.length > 0) {
-      let cartVariant = selectedVariant.filter((e) => e.id !== variant_id);
+      getCartVariant !== null && getCartVariant?.id === variant?.id;
+    if (getCartPresentItem && getCartPresentItem !== null) {
+      toast.warn("Already Present In Cart");
       return;
     }
-    if (getCartVariant && getCartVariant[0]?.id !== variant_id) {
-      setSelectedVariant([...selectedVariant, userSelectedVariant]);
-      return;
-    }
-    setSelectedVariant([...selectedVariant, userSelectedVariant]);
-  };
-  const buyProduct = (e) => {
-    e.preventDefault();
-    let getCurrentItemFromCart =
-      user_cart.length > 0 &&
-      user_cart.filter((e) => e?.id === productData?.id);
-    if (getCurrentItemFromCart && getCurrentItemFromCart.length > 0) {
-      navigate("/checkout");
-    } else {
-      toast.warn("Please Add This Item To Cart");
-    }
-  };
-  const disabledBtn = () => {
-    // user_cart.length > 0 &&
-    // user_cart.filter((e) => e?.id === productData?.id)
-    //   .length > 0
-    //   ? true
-    //   : false
-    // const user_cart_data =
-    //   user_cart.length > 0 &&
-    //   user_cart.filter((e) => e?.id === productData?.id);
-    // if(user_cart_data.length > 0) {
-    //   user_cart_data.forEach((cart,index)= ()=> {
-    //   })
-    // }
+    let variants = getVariant;
+    let item = { product, variants };
+    dispatch(addInCart(item));
+    toast.success("Added To Cart Successfully");
   };
   useEffect(() => {
     if (recommendedProducts.length > 0) {
@@ -231,9 +157,28 @@ const ProductDetail = () => {
                   )}
                 </div>
                 {productData?.product_price ? (
-                  <span className="black-heading">
-                    ${productData?.product_price}
-                  </span>
+                  <div className="d-flex w-100 justify-content-between">
+                    <span className="black-heading">
+                      ${productData?.product_price}
+                    </span>
+                    <span className="quntity-counter">
+                      <input
+                        type="tel"
+                        className="count"
+                        value={
+                          user_cart.length > 0 &&
+                          user_cart.filter((e) => e?.id === productData?.id)
+                            .length > 0
+                            ? user_cart.filter(
+                                (e) => e?.id === productData?.id
+                              )[0]?.quantity
+                            : currentQuantityOfProduct
+                        }
+                        maxLength="100"
+                        disabled="disabled"
+                      />
+                    </span>
+                  </div>
                 ) : productData?.product_name === null ? null : (
                   <TextLoader height={"5%"} width={"80%"} />
                 )}
@@ -254,115 +199,48 @@ const ProductDetail = () => {
                 </div>
 
                 <div className="productVariant-butotns">
+                  {productsVarients.length > 0 ? (
+                    <p className="paragraph mt-3">
+                      Please Select Any Size To Proceed With Checkout
+                    </p>
+                  ) : (
+                    <TextLoader height={"5%"} width={"80%"} />
+                  )}
                   {productsVarients.length
                     ? productsVarients.map((variant, index) => {
                         return (
-                          <button
-                            className={
-                              selectedVariant.length > 0 &&
-                              selectedVariant.filter(
-                                (e) => e?.id === variant?.id
-                              ).length > 0
-                                ? `bg-selected-variant cta-btn my-1`
-                                : user_cart.length > 0 &&
-                                  user_cart.filter(
-                                    (e) => e?.id === productData?.id
-                                  )[0]?.selectedVarient[0]?.id === variant?.id
-                                ? `bg-selected-variant cta-btn my-1`
-                                : `cta-btn my-1`
-                            }
-                            key={index}
-                            onClick={(e) => {
-                              settleSelectedVariant(
-                                e,
-                                variant?.verient_name,
-                                variant?.id
-                              );
-                            }}
-                            disabled={
-                              user_cart.length > 0 &&
-                              user_cart.filter(
-                                (e) => e?.id === productData?.id
-                              )[0]?.selectedVarient[0]?.id === variant?.id
-                                ? true
-                                : false
-                            }
-                          >
-                            {variant?.verient_name}
-                          </button>
+                          <React.Fragment key={index}>
+                            <button
+                              className={
+                                user_cart.length > 0 &&
+                                user_cart
+                                  .filter((e) => e?.id === productData?.id)
+                                  .filter(
+                                    (e) =>
+                                      e?.selectedVarient?.id === variant?.id
+                                  )
+                                  ? `bg-selected-variant cta-btn my-1`
+                                  : `cta-btn my-1`
+                              }
+                              onClick={(e) => {
+                                settleSelectedVariant(e, variant);
+                              }}
+                              // disabled={
+                              //   user_cart.length > 0 &&
+                              //   user_cart.filter(
+                              //     (e) => e?.id === productData?.id
+                              //   )[0]?.selectedVarient[0]?.id === variant?.id
+                              //     ? true
+                              //     : false
+                              // }
+                            >
+                              {variant?.verient_name}
+                            </button>
+                          </React.Fragment>
                         );
                       })
                     : null}
                 </div>
-                <div className="productDetails-butotns">
-                  <div className="quntity-counter">
-                    {/* {user_cart.filter((e) => e?.id === productData?.id) &&
-                      user_cart.filter((e) => e?.id === productData?.id)[0]
-                        ?.quantity > 1 && (
-                        <span
-                          className="minus"
-                          onClick={(e) => {
-                            updateMinExistingCart(e);
-                          }}
-                        >
-                          <i className="fa fa-minus"></i>
-                        </span>
-                      )} */}
-                    <input
-                      type="tel"
-                      className="count"
-                      value={
-                        user_cart.length > 0 &&
-                        user_cart.filter((e) => e?.id === productData?.id)
-                          .length > 0
-                          ? user_cart.filter(
-                              (e) => e?.id === productData?.id
-                            )[0]?.quantity
-                          : currentQuantityOfProduct
-                      }
-                      maxLength="100"
-                      disabled="disabled"
-                    />
-                    {/* {user_cart.length > 0 &&
-                      user_cart.filter((e) => e?.id === productData?.id)
-                        .length > 0 && (
-                        <span
-                          className="plus"
-                          onClick={(e) => {
-                            updateMaxExistingCart(e);
-                          }}
-                        >
-                          <i className="fa fa-plus"></i>
-                        </span>
-                      )} */}
-                  </div>
-                  <button
-                    className="cta-btn"
-                    onClick={(e) => {
-                      productData?.availability > 0
-                        ? addToCart(e)
-                        : toast.warn(
-                            "Product Stock Not Available For Purchasing"
-                          );
-                    }}
-                    // disabled={disabledBtn}
-                  >
-                    <i className="fa fa-cart-plus"></i>{" "}
-                    {user_cart.length > 0 &&
-                    user_cart.filter((e) => e?.id === productData?.id).length >
-                      0
-                      ? "Added In Cart"
-                      : "Add To Cart"}
-                  </button>
-                </div>
-                {/* <button
-                  className="dashed-btn"
-                  onClick={(e) => {
-                    buyProduct(e);
-                  }}
-                >
-                  Buy It Now
-                </button> */}
               </div>
             </div>
           </div>

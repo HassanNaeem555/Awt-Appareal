@@ -12,7 +12,13 @@ const Cart = (state = INIT_STATE, action) => {
   switch (action.type) {
     case ADD_TO_CART:
       const cartClone = state.cart.slice(0);
-      cartClone.push(action.payload);
+      const { product, variants } = action.payload;
+      const { id, name } = variants;
+      product.selectedVarientId = id;
+      product.selectedVarientName = name;
+      product.quantity = 1;
+      product.total_price = product.product_price;
+      cartClone.push(product);
       return {
         ...state,
         cart: cartClone,
