@@ -184,12 +184,8 @@ const ProductDetail = () => {
                         type="tel"
                         className="count"
                         value={
-                          user_cart.length > 0 &&
-                          user_cart.filter((e) => e?.id === productData?.id)
-                            .length > 0
-                            ? user_cart.filter(
-                                (e) => e?.id === productData?.id
-                              )[0]?.quantity
+                          user_cart.length > 0
+                            ? user_cart.length
                             : currentQuantityOfProduct
                         }
                         maxLength="100"
