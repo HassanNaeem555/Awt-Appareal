@@ -25,10 +25,11 @@ const Review = ({ changeTab, user_cart, deleteFromCart, checkoutData }) => {
             </div>
             <div className="product-name">
               <p className="name">{product?.product_name}</p>
-              <p className="price">${product?.product_price}.00</p>
+              <p className="customized-own">{product?.selectedVarientName}</p>
+              <p className="price">${product?.product_price}</p>
             </div>
             <div className="product-action-price y-center">
-              <p>${product?.total_price}.00</p>
+              <p>${product?.total_price}</p>
               <button
                 className="remove-cart-item"
                 onClick={(e) => {

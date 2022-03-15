@@ -2939,6 +2939,12 @@ PRODUCT QUANTITY CSS END
   color: #28a745;
   text-transform: uppercase;
 }
+.customized-own {
+  font-size: 12px;
+  font-weight: 700;
+  color: #28a745;
+  text-transform: uppercase;
+}
 .cart-sidebar-inner .cart-item .cart-desc .price {
   font-size: 14px;
   font-weight: 500;

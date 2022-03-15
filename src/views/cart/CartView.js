@@ -25,12 +25,18 @@ const Cart = () => {
   });
   const updateMaxExistingCart = (e, product) => {
     e.preventDefault();
-    const cartData = procedureToUpdateIncrementInCart(user_cart, product?.id);
+    const cartData = procedureToUpdateIncrementInCart(
+      user_cart,
+      product?.selectedVarientId
+    );
     dispatch(updateCart(cartData));
   };
   const updateMinExistingCart = (e, product) => {
     e.preventDefault();
-    const cartData = procedureToUpdateDecrementInCart(user_cart, product?.id);
+    const cartData = procedureToUpdateDecrementInCart(
+      user_cart,
+      product?.selectedVarientId
+    );
     dispatch(updateCart(cartData));
   };
   const deleteFromCart = (e, id) => {
@@ -71,15 +77,25 @@ const Cart = () => {
                         </div>
                         <div className="product-name">
                           <p className="name">{item?.product_name}</p>
-                          <p className="price">${item?.product_price}.00</p>
+                          <p className="customized-own">
+                            {item?.selectedVarientName}
+                          </p>
+                          <p className="price">${item?.product_price}</p>
                         </div>
                         <div className="product-quantity-wrap y-center">
                           <div className="quaitity-box">
                             <form>
                               <div className="plus-minus">
-                                {user_cart.filter((e) => e?.id === item?.id) &&
-                                  user_cart.filter((e) => e?.id === item?.id)[0]
-                                    ?.quantity > 1 && (
+                                {user_cart.filter(
+                                  (e) =>
+                                    e?.selectedVarientId ===
+                                    item?.selectedVarientId
+                                ) &&
+                                  user_cart.filter(
+                                    (e) =>
+                                      e?.selectedVarientId ===
+                                      item?.selectedVarientId
+                                  )[0]?.quantity > 1 && (
                                     <span
                                       className="minus"
                                       onClick={(e) => {
@@ -98,7 +114,9 @@ const Cart = () => {
                                 />
                                 {user_cart.length > 0 &&
                                   user_cart.filter(
-                                    (e) => e?.id === item?.id
+                                    (e) =>
+                                      e?.selectedVarientId ===
+                                      item?.selectedVarientId
                                   ) && (
                                     <span
                                       className="plus"
@@ -118,7 +136,7 @@ const Cart = () => {
                           <button
                             className="remove-cart-item"
                             onClick={(e) => {
-                              deleteFromCart(e, item?.id);
+                              deleteFromCart(e, item?.selectedVarientId);
                             }}
                           >
                             <i className="fa fa-trash"></i>
