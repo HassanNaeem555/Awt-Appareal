@@ -5,11 +5,11 @@ import {
   EMPTY_CART,
 } from "../constants";
 
-export function addInCart(item_to_add) {
+export function addInCart(item_to_add, item_variants) {
   return async (dispatch) => {
     dispatch({
       type: ADD_TO_CART,
-      payload: item_to_add,
+      payload: { item_to_add, item_variants },
     });
   };
 }

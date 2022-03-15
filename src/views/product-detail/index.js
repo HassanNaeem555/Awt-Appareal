@@ -63,24 +63,43 @@ const ProductDetail = () => {
   const scrollTop = () => {
     window.scrollTo(0, 0);
   };
-  const settleSelectedVariant = (e, variant) => {
+  const settleSelectedVariant = (variant) => {
     // e.preventDefault();
-    let getVariant = productsVarients.filter((e) => e?.id === variant?.id)[0];
-    let product = productData;
-    let getCartVariant =
-      user_cart.length > 0 &&
-      user_cart.filter((e) => e.id === product?.id)[0]?.selectedVarient?.id ===
-        variant?.id;
-    let getCartPresentItem =
-      getCartVariant !== null && getCartVariant?.id === variant?.id;
-    if (getCartPresentItem && getCartPresentItem !== null) {
-      toast.warn("Already Present In Cart");
-      return;
+    let getVariant = variant;
+    console.log("getVariant", variant);
+    let product = Object.assign({}, productData);
+    let clonecart = user_cart.length > 0 && user_cart.slice(0);
+    if (clonecart) {
+      let getCartVariant = clonecart.filter((e) => e.id === product?.id);
+      if (getCartVariant) {
+        console.log(getCartVariant, "getCartVariant");
+        let getOrginatedVarient = getCartVariant.filter(
+          (e) => e?.selectedVarientId === getVariant?.id
+        );
+        console.log("getOrginatedVarient", getOrginatedVarient);
+        if (getOrginatedVarient && getOrginatedVarient.length > 0) {
+          let cartVariant = clonecart.filter((e) => e.id === product?.id);
+          if (cartVariant && cartVariant.length > 0) {
+            console.log("cartVariant if", cartVariant);
+            let getCartPresentItem = cartVariant.filter(
+              (e) => e?.selectedVarientId === getVariant?.id
+            );
+            console.log("getCartPresentItem if", getCartPresentItem);
+            if (getCartPresentItem && getCartPresentItem.length > 0) {
+              toast.warn("Already Present In Cart");
+              return;
+            }
+          }
+        }
+      }
+      let variants = getVariant;
+      dispatch(addInCart(product, variants));
+      toast.success("Added To Cart Successfully");
+    } else {
+      let variants = getVariant;
+      dispatch(addInCart(product, variants));
+      toast.success("Added To Cart Successfully");
     }
-    let variants = getVariant;
-    let item = { product, variants };
-    dispatch(addInCart(item));
-    toast.success("Added To Cart Successfully");
   };
   useEffect(() => {
     if (recommendedProducts.length > 0) {
@@ -96,7 +115,6 @@ const ProductDetail = () => {
     getProductsDetail();
     getRecommendedProducts();
   }, [location.pathname]);
-  console.log("selectedVariant", selectedVariant);
   return (
     <>
       <CommonBanner img={"productDetail-sec1"} name={"PRODUCTS DETAIL"} />
@@ -213,17 +231,14 @@ const ProductDetail = () => {
                             <button
                               className={
                                 user_cart.length > 0 &&
-                                user_cart
-                                  .filter((e) => e?.id === productData?.id)
-                                  .filter(
-                                    (e) =>
-                                      e?.selectedVarient?.id === variant?.id
-                                  )
+                                user_cart.filter(
+                                  (e) => e?.selectedVarientId === variant?.id
+                                ).length > 0
                                   ? `bg-selected-variant cta-btn my-1`
                                   : `cta-btn my-1`
                               }
                               onClick={(e) => {
-                                settleSelectedVariant(e, variant);
+                                settleSelectedVariant(variant);
                               }}
                               // disabled={
                               //   user_cart.length > 0 &&

@@ -115,12 +115,12 @@ const Header = () => {
   };
   const updateMaxExistingCart = (e, product) => {
     e.preventDefault();
-    const cartData = procedureToUpdateIncrementInCart(user_cart, product?.id);
+    const cartData = procedureToUpdateIncrementInCart(user_cart, product?.selectedVarientId);
     dispatch(updateCart(cartData));
   };
   const updateMinExistingCart = (e, product) => {
     e.preventDefault();
-    const cartData = procedureToUpdateDecrementInCart(user_cart, product?.id);
+    const cartData = procedureToUpdateDecrementInCart(user_cart, product?.selectedVarientId);
     dispatch(updateCart(cartData));
   };
   const deleteFromCart = (e, id) => {
@@ -456,8 +456,8 @@ const Header = () => {
                           <div className="quaitity-box">
                             <div className="plus-minus">
                               <label htmlFor="quantity-select">QUANTITY </label>
-                              {user_cart.filter((e) => e?.id === item?.id) &&
-                                user_cart.filter((e) => e?.id === item?.id)[0]
+                              {user_cart.filter((e) => e?.selectedVarientId === item?.selectedVarientId) &&
+                                user_cart.filter((e) => e?.selectedVarientId === item?.selectedVarientId)[0]
                                   ?.quantity > 1 && (
                                   <span
                                     className="minus"
@@ -477,7 +477,7 @@ const Header = () => {
                                 disabled={true}
                               />
                               {user_cart.length > 0 &&
-                                user_cart.filter((e) => e?.id === item?.id) && (
+                                user_cart.filter((e) => e?.selectedVarientId === item?.selectedVarientId) && (
                                   <span
                                     className="plus"
                                     onClick={(e) => {
@@ -492,7 +492,7 @@ const Header = () => {
                           <span
                             className="delete cursor-pointer"
                             onClick={(e) => {
-                              deleteFromCart(e, item?.id);
+                              deleteFromCart(e, item?.selectedVarientId);
                             }}
                           >
                             <i className="fa fa-times"></i>
