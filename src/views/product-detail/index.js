@@ -236,14 +236,6 @@ const ProductDetail = () => {
                               onClick={(e) => {
                                 settleSelectedVariant(variant);
                               }}
-                              // disabled={
-                              //   user_cart.length > 0 &&
-                              //   user_cart.filter(
-                              //     (e) => e?.id === productData?.id
-                              //   )[0]?.selectedVarient[0]?.id === variant?.id
-                              //     ? true
-                              //     : false
-                              // }
                             >
                               {variant?.verient_name}
                             </button>

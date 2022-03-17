@@ -65,9 +65,17 @@ const App = () => {
           position="top-right"
           autoClose={5000}
           hideProgressBar={false}
+          progressStyle={{ backgroundColor: "#fff" }}
+          icon={false}
           newestOnTop={false}
           rtl={false}
           draggable={true}
+          toastStyle={{
+            backgroundColor: "#006eb7",
+            color: "#fff",
+            fontSize: 15,
+            fontWeight: "600",
+          }}
           closeOnClick
           pauseOnFocusLoss
           pauseOnHover
